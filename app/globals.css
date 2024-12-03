@@ -15,23 +15,41 @@ body {
 /* add some component colors */
 @layer components {
   .primary {
-    color: #dee5e5;
+    color: white;
+    /* color: #b5ffe1; */
+  }
+  .bg-primary {
+    background-color: rgb(255, 255, 255);
   }
 
   .secondary {
-    color: #9dc5bb;
+    color: #f7f8fa;
   }
 
-  .tertiary {
-    color: #17b890;
+  .bg-secondary {
+    background-color: #f7f8fa;
   }
 
-  .quaternary {
-    color: #5e807f;
+  .fall {
+    color: #ff7f50;
+  }
+  .bg-fall {
+    background-color: #ff7f50;
   }
 
-  .quinary {
-    color: #082d0f;
+  .spring {
+    color: #76c043;
+  }
+  .bg-spring {
+    background-color: #76c043;
+  }
+
+  .summer {
+    color: #ffd700;
+  }
+
+  .bg-summer {
+    background-color: #ffd700;
   }
 }
 

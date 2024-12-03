@@ -11,32 +11,38 @@ import courseHistoryIcon from "@/assets/course-history.png";
 import uploadCoursesIcon from "@/assets/upload-courses.png";
 
 const menuItems = [
-  { name: "Home", href: "/", icon: homeIcon },
-  { name: "Departments", href: "/departments", icon: departmentsIcon },
+  { name: "Home", href: "/admin", icon: homeIcon },
+  { name: "Departments", href: "/admin/departments", icon: departmentsIcon },
   {
     name: "Graduate Assistants",
-    href: "/graduate-assistants",
+    href: "/admin/graduate-assistants",
     icon: graduateAssistantsIcon,
   },
-  { name: "Courses", href: "/courses", icon: coursesIcon },
-  { name: "Annual report", href: "/annual-report", icon: annualReportIcon },
+  { name: "Courses", href: "/admin/courses", icon: coursesIcon },
+  {
+    name: "Annual report",
+    href: "/admin/annual-report",
+    icon: annualReportIcon,
+  },
   {
     name: "Course History",
-    href: "/course-history",
+    href: "/admin/course-history",
     icon: courseHistoryIcon,
   },
   {
     name: "Upload Courses",
-    href: "/upload-courses",
+    href: "/admin/upload-courses",
     icon: uploadCoursesIcon,
   },
 ];
 
 const Menu = () => {
   return (
-    <div className="mt-4 text-sm">
+    <div className="mt-4 text-sm ">
       {menuItems.map((item) => (
-        <div className="flex flex-col gap-4" key={item.name}> {/* Increased gap */}
+        <div className="flex flex-col gap-4" key={item.name}>
+          {" "}
+          {/* Increased gap */}
           <Link
             href={item.href}
             className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight"
