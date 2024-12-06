@@ -1,21 +1,23 @@
 name: Deploy to EC2 on Merge
-on: 
+on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   deploy:
-    rons-on: ubuntu-latest
+    runs-on: ubuntu-latest
+
     steps:
-      name: Checkout the code
-      uses: actions/checkout@v2
-      name: Update code on EC2
-      uses: appleboy/ssh-action@master
-      with: 
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        port: 22
-        script: |
-          cd /home/ubuntu/frontend-development
-          git pull origin main
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Update code on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            cd /home/ubuntu/frontend-development
+            git pull origin main
