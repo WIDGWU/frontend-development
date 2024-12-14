@@ -8,7 +8,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file. I would recommend to look deeper into the branch of `app/page.tsx` and change the specific component that you want to change. If you want to create a new page, create one inside app folder. Like `app/admin/page.tsx`. But if you want to create a new component, create one side `app/local-components`. The reason I am using `local-components` instead of just `components` in a standard Nextjs project is because I am using `Shadcn` as well. By default, all the components you download from Shadcn will be imported in `@/components` folder. 
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
@@ -16,3 +16,13 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 At the current moment of building WID frontend, yarn has a better speed and performance than npm because of which I am using yarn.
 There is a possibility of getting deprecated warning with npm, so please stick with yarn if you are continuing to build this in future.
+
+## Use of Shadcn components
+
+Shadcn is used for its customizable UI components built on top of TailwindCSS. So, feel free to experiment and find new things.
+
+## API folder for data integration
+
+All the files for requesting and connecting to backend are placed inside the `app\api` folder. So, please use the same standard.  
+
+## Recharts for graphs
