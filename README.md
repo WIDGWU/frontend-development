@@ -1,3 +1,12 @@
+# frontend-development
+
+## CI Pipeline
+Current CI scripts live in Github actions under the main.yml file. Update here to change behaviours (e.g., deploy locations on the EC2 instance, etc.).
+```java
+TODO: Document the code for the next person. 
+```
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
 ## Getting Started
 
 First, run the development server:
