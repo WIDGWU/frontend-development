@@ -1,7 +1,7 @@
 name: Deploy to EC2 on Merge
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -21,8 +21,3 @@ jobs:
           script: |
             cd /home/ubuntu/frontend-development
             git pull origin main
-      - name : Install dependencies
-        run: yarn install
-      - name: Build
-        run: yarn build
-        
