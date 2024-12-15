@@ -1,11 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
-import { PieChart, Pie, Cell, Label, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Label,
+  ResponsiveContainer,
+  LabelProps,
+} from "recharts";
 
 type TermData = {
   name: string;
   value: number;
   color: string;
+};
+
+type CustomLabelProps = LabelProps & {
+  viewBox?: {
+    cx: number;
+    cy: number;
+  };
 };
 
 const cx = 150;
@@ -29,13 +43,13 @@ const TermCard = ({ term, data }: { term: string; data: TermData[] }) => {
     setUpdatedData(newData);
   }, [data]);
 
-  const renderCustomizedLabel = ({ viewBox }: any) => {
+  const renderCustomizedLabel = ({ viewBox }: CustomLabelProps) => {
     const termValue = data.reduce((sum, entry) => sum + entry.value, 0);
     const totalValue = 5611;
     return (
       <text
-        x={viewBox.cx}
-        y={viewBox.cy}
+        x={viewBox?.cx}
+        y={viewBox?.cy}
         fill="black"
         textAnchor="middle"
         dominantBaseline="central"
