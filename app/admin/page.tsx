@@ -13,7 +13,6 @@ const DifferenceCard = dynamic(
 );
 
 const AdminPage = () => {
-  const [reports, setReports] = useState<any>({});
   const [formattedReports, setFormattedReports] = useState<any>({});
   const [year, setYear] = useState(2024);
 
@@ -119,7 +118,6 @@ const AdminPage = () => {
 
   useEffect(() => {
     getReports(year).then((data) => {
-      setReports(data);
       setFormattedReports(formatReports(data));
     });
   }, [year]);
