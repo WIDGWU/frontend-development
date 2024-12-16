@@ -11,7 +11,7 @@ import upIcon from "@/assets/up-icon.png";
 import downIcon from "@/assets/down-icon.png";
 import Image from "next/image";
 
-const TermSelector = () => {
+const TermSelector = ({ setYear }: { setYear: (year: number) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTerms, setSelectedTerms] = useState<string[]>([]);
 
@@ -21,23 +21,27 @@ const TermSelector = () => {
         ? prevSelectedTerms.filter((t) => t !== term)
         : [...prevSelectedTerms, term]
     );
+    setYear(parseInt(term));
   };
 
   const terms = [
-    "202401",
-    "202402",
-    "202403",
-    "202301",
-    "202302",
-    "202303",
-    "202201",
-    "202202",
-    "202203",
+    "2024",
+    "2023",
+    "2022",
+    "2021",
+    "2020",
+    "2019",
+    "2018",
+    "2017",
+    "2016",
+    "2015",
+    "2014",
+    "2013",
   ];
 
   return (
     <div className="flex items-center select-none">
-      <p className="mr-4">Select a Term</p>
+      <p className="mr-4">Select a year</p>
       <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <DropdownMenuTrigger asChild>
           <Button

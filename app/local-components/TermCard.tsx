@@ -1,13 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Label,
-  ResponsiveContainer,
-  LabelProps,
-} from "recharts";
+import { PieChart, Pie, Cell, Label, ResponsiveContainer } from "recharts";
 
 type TermData = {
   name: string;
@@ -15,25 +8,25 @@ type TermData = {
   color: string;
 };
 
-type CustomLabelProps = LabelProps & {
-  viewBox?: {
-    cx: number;
-    cy: number;
-  };
-};
-
 const cx = 150;
 const cy = 200;
 const iR = 50;
 const oR = 100;
 
-const TermCard = ({ term, data }: { term: string; data: TermData[] }) => {
+const TermCard = ({
+  term,
+  data,
+  totalSeats,
+}: {
+  term: string;
+  data: TermData[];
+  totalSeats: number;
+}) => {
   const [updatedData, setUpdatedData] = useState<TermData[]>([]);
 
   useEffect(() => {
-    const totalValue = 5611;
     const dataValueSum = data.reduce((sum, entry) => sum + entry.value, 0);
-    const remainingValue = totalValue - dataValueSum;
+    const remainingValue = totalSeats - dataValueSum;
 
     const newData = [
       ...data,
@@ -43,9 +36,9 @@ const TermCard = ({ term, data }: { term: string; data: TermData[] }) => {
     setUpdatedData(newData);
   }, [data]);
 
-  const renderCustomizedLabel = ({ viewBox }: CustomLabelProps) => {
+  const renderCustomizedLabel = ({ viewBox }: any) => {
     const termValue = data.reduce((sum, entry) => sum + entry.value, 0);
-    const totalValue = 5611;
+
     return (
       <text
         x={viewBox?.cx}
@@ -54,7 +47,7 @@ const TermCard = ({ term, data }: { term: string; data: TermData[] }) => {
         textAnchor="middle"
         dominantBaseline="central"
       >
-        <tspan fontWeight="bold">{termValue}</tspan>/{totalValue}
+        <tspan fontWeight="bold">{termValue}</tspan>/{totalSeats}
       </text>
     );
   };
