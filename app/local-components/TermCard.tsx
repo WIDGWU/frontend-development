@@ -13,13 +13,20 @@ const cy = 200;
 const iR = 50;
 const oR = 100;
 
-const TermCard = ({ term, data }: { term: string; data: TermData[] }) => {
+const TermCard = ({
+  term,
+  data,
+  totalSeats,
+}: {
+  term: string;
+  data: TermData[];
+  totalSeats: number;
+}) => {
   const [updatedData, setUpdatedData] = useState<TermData[]>([]);
 
   useEffect(() => {
-    const totalValue = 5611;
     const dataValueSum = data.reduce((sum, entry) => sum + entry.value, 0);
-    const remainingValue = totalValue - dataValueSum;
+    const remainingValue = totalSeats - dataValueSum;
 
     const newData = [
       ...data,
@@ -31,16 +38,16 @@ const TermCard = ({ term, data }: { term: string; data: TermData[] }) => {
 
   const renderCustomizedLabel = ({ viewBox }: any) => {
     const termValue = data.reduce((sum, entry) => sum + entry.value, 0);
-    const totalValue = 5611;
+
     return (
       <text
-        x={viewBox.cx}
-        y={viewBox.cy}
+        x={viewBox?.cx}
+        y={viewBox?.cy}
         fill="black"
         textAnchor="middle"
         dominantBaseline="central"
       >
-        <tspan fontWeight="bold">{termValue}</tspan>/{totalValue}
+        <tspan fontWeight="bold">{termValue}</tspan>/{totalSeats}
       </text>
     );
   };
