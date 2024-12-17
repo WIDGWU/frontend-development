@@ -15,7 +15,7 @@ First, run the development server:
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The link to see the project live will be provided soon.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file. I would recommend to look deeper into the branch of `app/page.tsx` and change the specific component that you want to change. If you want to create a new page, create one inside app folder. Like `app/admin/page.tsx`. But if you want to create a new component, create one side `app/local-components`. The reason I am using `local-components` instead of just `components` in a standard Nextjs project is because I am using `Shadcn` as well. By default, all the components you download from Shadcn will be imported in `@/components` folder. 
 
