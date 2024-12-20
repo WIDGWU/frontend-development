@@ -96,14 +96,14 @@ const SeatsGraph = () => {
             type="monotone"
             dataKey="seats_available"
             name="Seats Available"
-            stroke="#ff7f50"
+            stroke="#E69F00"
             strokeWidth={5}
           />
           <Line
             type="monotone"
             dataKey="enrolled_seats"
             name="Enrolled Seats"
-            stroke="#76c043"
+            stroke="#0072B2"
             strokeWidth={5}
           />
         </LineChart>
