@@ -31,25 +31,25 @@ body {
   }
 
   .fall {
-    color: #ff7f50;
+    color: #e69f00;
   }
   .bg-fall {
-    background-color: #ff7f50;
+    background-color: #e69f00;
   }
 
   .spring {
-    color: #76c043;
+    color: #56b4e9;
   }
   .bg-spring {
-    background-color: #76c043;
+    background-color: #56b4e9;
   }
 
   .summer {
-    color: #ffd700;
+    color: #0072b2;
   }
 
   .bg-summer {
-    background-color: #ffd700;
+    background-color: #0072b2;
   }
 }
 

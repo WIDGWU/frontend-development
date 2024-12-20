@@ -11,7 +11,7 @@ const DifferenceCard = ({
   percent: string;
 }) => {
   return (
-    <div className="rounded-2xl odd:bg-lamaPurple even:bg-fall odd:bg-spring p-4 flex-1 min-w-[130px]">
+    <div className="rounded-2xl even:bg-fall odd:bg-spring p-4 flex-1 min-w-[130px]">
       <div className="flex justify-between items-center">
         <span className="text-[14px] px-2 py-1 rounded-full">{text}</span>
         <Image src={moreIcon} alt="" width={20} height={20} />

@@ -26,7 +26,7 @@ const AdminPage = () => {
             reports[
               `Total Fall Seats Available for academic year ${academicYear}`
             ],
-          color: "#ff7f50",
+          color: "#E69F00",
         },
       ],
       springCodeData: [
@@ -36,7 +36,7 @@ const AdminPage = () => {
             reports[
               `Total Spring Seats Available for academic year ${academicYear}`
             ],
-          color: "#76c043",
+          color: "#0072B2",
         },
       ],
       summerCodeData: [
@@ -46,7 +46,7 @@ const AdminPage = () => {
             reports[
               `Total Summer Seats Available for academic year ${academicYear}`
             ],
-          color: "#ffd700",
+          color: "#56B4E9",
         },
       ],
       totalSeats:

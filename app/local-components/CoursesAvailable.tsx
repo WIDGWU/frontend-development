@@ -96,14 +96,14 @@ const CoursesAvailable = () => {
             type="monotone"
             dataKey="sections_available"
             name="Seats Available"
-            stroke="#C3EBFA"
+            stroke="#56B4E9"
             strokeWidth={5}
           />
           <Line
             type="monotone"
             dataKey="courses_available"
             name="Enrolled Seats"
-            stroke="#ffd700"
+            stroke="#0072B2"
             strokeWidth={5}
           />
         </LineChart>
