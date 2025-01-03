@@ -2,7 +2,8 @@ import Image from "next/image";
 import Search from "@/assets/search.png";
 import Message from "@/assets/message.png";
 import Announcement from "@/assets/announcement.png";
-import Avatar from "@/assets/avatar.png";
+// import Avatar from "@/assets/avatar.png";
+import Carol from "@/assets/Carol-Hayes.jpg";
 const Navbar = () => {
   return (
     <div className="flex items-center justify-between p-4">
@@ -31,7 +32,7 @@ const Navbar = () => {
           <span className="text-[10px] text-gray-500 text-right">Admin</span>
         </div>
         <Image
-          src={Avatar}
+          src={Carol}
           alt=""
           width={36}
           height={36}
