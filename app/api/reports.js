@@ -28,7 +28,26 @@ export const getGADetails = async () => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_LOCAL}/get_all_GA/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_all_GA/`,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// Calls /get_GA_category/ endpoint to get specific parameter GA details
+export const getGACategoryDetails = async () => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_GA_category/`,
       { headers }
     );
     return response.data;
