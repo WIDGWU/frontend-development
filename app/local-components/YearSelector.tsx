@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,17 +11,13 @@ import upIcon from "@/assets/up-icon.png";
 import downIcon from "@/assets/down-icon.png";
 import Image from "next/image";
 
-const TermSelector = ({ setYear }: { setYear: (year: number) => void }) => {
+const YearSelector = ({ setYear }: { setYear: (year: number) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTerms, setSelectedTerms] = useState<string[]>([]);
+  const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
 
-  const handleCheckboxChange = (term: string) => {
-    setSelectedTerms((prevSelectedTerms) =>
-      prevSelectedTerms.includes(term)
-        ? prevSelectedTerms.filter((t) => t !== term)
-        : [...prevSelectedTerms, term]
-    );
-    setYear(parseInt(term));
+  const handleRadioChange = (term: string) => {
+    setSelectedTerm(term);
+    setYear(parseInt(term.split("-")[0]));
   };
 
   const terms = [
@@ -71,10 +67,10 @@ const TermSelector = ({ setYear }: { setYear: (year: number) => void }) => {
             <DropdownMenuItem key={term} onSelect={(e) => e.preventDefault()}>
               <div className="flex items-center space-x-2">
                 <input
-                  type="checkbox"
-                  checked={selectedTerms.includes(term)}
-                  onChange={() => handleCheckboxChange(term)}
-                  className="form-checkbox"
+                  type="radio"
+                  checked={selectedTerm === term}
+                  onChange={() => handleRadioChange(term)}
+                  className="form-radio"
                 />
                 <span>{term}</span>
               </div>
@@ -86,4 +82,4 @@ const TermSelector = ({ setYear }: { setYear: (year: number) => void }) => {
   );
 };
 
-export default TermSelector;
+export default YearSelector;

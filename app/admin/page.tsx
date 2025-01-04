@@ -1,13 +1,13 @@
 "use client";
 import dynamic from "next/dynamic";
-import TermSelector from "@/app/local-components/TermSelector";
 import { useState, useEffect } from "react";
 import { getReports } from "@/app/api/reports";
+import YearSelector from "@/app/local-components/YearSelector";
 const TermCard = dynamic(() => import("@/app/local-components/TermCard"));
-const SeatsGraph = dynamic(() => import("@/app/local-components/SeatsGraph"));
-const CoursesAvailable = dynamic(
-  () => import("@/app/local-components/CoursesAvailable")
-);
+// const SeatsGraph = dynamic(() => import("@/app/local-components/SeatsGraph"));
+// const CoursesAvailable = dynamic(
+//   () => import("@/app/local-components/CoursesAvailable")
+// );
 const DifferenceCard = dynamic(
   () => import("@/app/local-components/DifferenceCard")
 );
@@ -53,7 +53,7 @@ const AdminPage = () => {
         reports[`Total Seats Available for academic year ${academicYear}`],
       differenceCards: [
         {
-          text: "Difference in Seats compared to previous year",
+          text: `Difference in ${year} Seats compared to previous year`,
           difference:
             reports[
               `Difference in Seats compared to previous year (${
@@ -68,7 +68,7 @@ const AdminPage = () => {
             ],
         },
         {
-          text: "Difference in Enrolled Seats compared to previous year",
+          text: `Difference in ${year} Enrolled Seats compared to previous year`,
           difference:
             reports[
               `Difference in Enrolled Seats compared to previous year (${
@@ -83,7 +83,7 @@ const AdminPage = () => {
             ],
         },
         {
-          text: "Difference in Sections compared to previous year",
+          text: `Difference in ${year} Sections compared to previous year`,
           difference:
             reports[
               `Difference in Sections compared to previous year (${
@@ -98,7 +98,7 @@ const AdminPage = () => {
             ],
         },
         {
-          text: "Difference in Courses compared to previous year",
+          text: `Difference in ${year} Courses compared to previous year`,
           difference:
             reports[
               `Difference in Courses compared to previous year (${
@@ -124,19 +124,23 @@ const AdminPage = () => {
 
   return (
     <main className="m-4">
-      <TermSelector setYear={setYear} />
+      <YearSelector setYear={setYear} />
+      {/*  */}
       <div className="flex gap-4 justify-between flex-wrap my-4">
         <TermCard
+          year={year}
           term="Fall"
           data={formattedReports.fallCodeData || []}
           totalSeats={formattedReports.totalSeats || 0}
         />
         <TermCard
+          year={year}
           term="Spring"
           data={formattedReports.springCodeData || []}
           totalSeats={formattedReports.totalSeats || 0}
         />
         <TermCard
+          year={year + 1}
           term="Summer"
           data={formattedReports.summerCodeData || []}
           totalSeats={formattedReports.totalSeats || 0}
@@ -152,10 +156,10 @@ const AdminPage = () => {
           />
         ))}
       </div>
-      <div className="w-full h-[500px] flex items-center justify-center">
+      {/* <div className="w-full h-[500px] flex items-center justify-center">
         <SeatsGraph />
         <CoursesAvailable />
-      </div>
+      </div> */}
     </main>
   );
 };
