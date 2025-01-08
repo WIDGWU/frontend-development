@@ -57,7 +57,7 @@ const TermCard = ({
   return (
     <div className="rounded-2xl odd:bg-lamaPurple bg-white p-4 flex-1 min-w-[130px]">
       <div className="flex justify-between items-center">
-        <span className="text-[14px]text-bold px-2 pt-1 rounded-full text-green-600">
+        <span className="text-[14px] text-bold px-2 pt-1 rounded-full text-green-600">
           {year} {term} seats
         </span>
       </div>

@@ -32,7 +32,6 @@ const YearSelector = ({ setYear }: { setYear: (year: number) => void }) => {
     "2016-2017",
     "2015-2016",
     "2014-2015",
-    "2013-2014",
   ];
 
   return (
@@ -44,7 +43,7 @@ const YearSelector = ({ setYear }: { setYear: (year: number) => void }) => {
             className="relative px-4 py-2 border border-gray-300 rounded bg-white text-black cursor-pointer flex items-center hover:bg-[#F9F9F8] focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
           >
-            Term code
+            Year
             <span className="ml-1"></span>
             <Image
               src={upIcon}

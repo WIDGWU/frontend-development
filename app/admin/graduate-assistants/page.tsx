@@ -6,7 +6,7 @@ import {
   GATypeFilter,
   HomeDepartmentFilter,
   HomeSchoolFilter,
-} from "@/app/local-components/GAFilter";
+} from "@/app/local-components/GAPage/GAFilter";
 import { Button } from "@/components/ui/button";
 
 type GA = {
