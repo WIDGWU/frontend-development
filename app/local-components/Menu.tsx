@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
-// Import icons from the assets folder
 import homeIcon from "@/assets/home.png";
 import departmentsIcon from "@/assets/departments.png";
 import graduateAssistantsIcon from "@/assets/graduate-assistants.png";
@@ -10,6 +8,7 @@ import annualReportIcon from "@/assets/annual-report.png";
 import courseHistoryIcon from "@/assets/course-history.png";
 import uploadCoursesIcon from "@/assets/upload-courses.png";
 
+// these are all the menu items that will be displayed in the admin dashboard
 const menuItems = [
   { name: "Home", href: "/admin", icon: homeIcon },
   { name: "Departments", href: "/admin/departments", icon: departmentsIcon },

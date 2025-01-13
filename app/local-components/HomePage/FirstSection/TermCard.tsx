@@ -26,6 +26,7 @@ const TermCard = ({
 }) => {
   const [updatedData, setUpdatedData] = useState<TermData[]>([]);
 
+  // This useEffect is used to add a new data point to the data array. The new data point is the remaining seats.
   useEffect(() => {
     const dataValueSum = data.reduce((sum, entry) => sum + entry.value, 0);
     const remainingValue = totalSeats - dataValueSum;
@@ -38,6 +39,7 @@ const TermCard = ({
     setUpdatedData(newData);
   }, [data]);
 
+  // This function is used to render the label in the center of the semi pie chart.
   const renderCustomizedLabel = ({ viewBox }: any) => {
     const termValue = data.reduce((sum, entry) => sum + entry.value, 0);
 

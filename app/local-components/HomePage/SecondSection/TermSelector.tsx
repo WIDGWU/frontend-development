@@ -19,6 +19,7 @@ const TermSelector = ({
   setSelectedTerm: (term: string[]) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  // these are the terms that are available to select, it should also come from backend
   const [availableTerms, setAvailableTerms] = useState<string[]>([
     "202401",
     "202402",
@@ -55,11 +56,13 @@ const TermSelector = ({
     "201403",
   ]);
 
+  // function to handle the checkbox
   const handleCheckbox = (term: string) => {
     setSelectedTerm([...selectedTerm, term]);
     setAvailableTerms(availableTerms.filter((t) => t !== term));
   };
 
+  // function to remove the term from selected terms
   const handleRemoveTerm = (term: string) => {
     setSelectedTerm(selectedTerm.filter((t) => t !== term));
     setAvailableTerms([...availableTerms, term]);

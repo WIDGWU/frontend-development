@@ -20,6 +20,7 @@ const ComparisonBarChart = ({
 }) => {
   const [sampleData, setSampleData] = useState<any[]>([]);
 
+  // Format the data for the bar chart
   useEffect(() => {
     const newSampleData = selectedTerm.map((term) => {
       const yearData = yearlyBasedSeats.find(
@@ -32,10 +33,6 @@ const ComparisonBarChart = ({
     });
     setSampleData(newSampleData);
   }, [selectedTerm, yearlyBasedSeats]);
-
-  console.log("yearlyBasedSeats", yearlyBasedSeats);
-  console.log("selectedTerm", selectedTerm);
-  console.log("sampleData", sampleData);
 
   return (
     <div className="bg-white rounded-xl w-full h-full p-4 m-2">

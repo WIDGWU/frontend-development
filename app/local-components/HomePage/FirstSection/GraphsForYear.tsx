@@ -10,6 +10,7 @@ const GraphsForYear = () => {
   const [formattedReports, setFormattedReports] = useState<any>({});
   const [year, setYear] = useState(2024);
 
+  // The data from API comes is specific format, so you should use it like this
   const formatReports = (reports: any) => {
     const academicYear = `${year}-${year + 1}`;
     return {
@@ -110,6 +111,7 @@ const GraphsForYear = () => {
     };
   };
 
+  // Fetch reports for the selected year
   useEffect(() => {
     getReports(year).then((data) => {
       setFormattedReports(formatReports(data));

@@ -11,6 +11,7 @@ const GraphsForTerm = () => {
   const [selectedTerm, setSelectedTerm] = useState<string[]>([]);
   const [onlyYear, setOnlyYear] = useState<number[]>([]);
 
+  // Function to format the data for the bar chart
   const formatYearBasedSeats = (reports: any, year: number) => {
     const academicYear = `${year}-${year + 1}`;
     const springCode = `${year}01`;
@@ -31,6 +32,7 @@ const GraphsForTerm = () => {
     };
   };
 
+  // Fetch the reports for the selected years
   useEffect(() => {
     const uniqueYears = Array.from(
       new Set(selectedTerm.map((term) => parseInt(term.slice(0, 4))))
