@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // Remove any invalid keys here
-  },
+  output: 'export',
   // other configurations
 };
 
