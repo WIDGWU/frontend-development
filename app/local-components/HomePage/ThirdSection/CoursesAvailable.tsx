@@ -13,50 +13,19 @@ import {
 } from "recharts";
 import moreIcon from "@/assets/moreDark.png";
 
-const data = [
-  {
-    year: "2018",
-    seats_available: 4000,
-    enrolled_seats: 2400,
-  },
-  {
-    year: "2019",
-    seats_available: 3000,
-    enrolled_seats: 1398,
-  },
-  {
-    year: "2020",
-    seats_available: 2000,
-    enrolled_seats: 9800,
-  },
-  {
-    year: "2021",
-    seats_available: 2780,
-    enrolled_seats: 3908,
-  },
-  {
-    year: "2022",
-    seats_available: 1890,
-    enrolled_seats: 4800,
-  },
-  {
-    year: "2023",
-    seats_available: 2390,
-    enrolled_seats: 3800,
-  },
-  {
-    year: "2024",
-    seats_available: 3490,
-    enrolled_seats: 4300,
-  },
-];
-
-const SeatsGraph = () => {
+const CoursesAvailable = ({
+  rangeData,
+  selectedRange,
+}: {
+  rangeData: any[];
+  selectedRange: number | null;
+}) => {
   return (
     <div className="bg-white rounded-xl w-full h-full p-4 m-2">
       <div className="flex justify-between items-center">
         <h1 className="text-lg font-semibold">
-          Seats Available vs Enrolled Seats for 2018 to 2024
+          Sections Available vs Courses Seats for {selectedRange} to{" "}
+          {selectedRange !== null && selectedRange - 4}
         </h1>
         <Image src={moreIcon} alt="" width={20} height={20} />
       </div>
@@ -64,7 +33,7 @@ const SeatsGraph = () => {
         <LineChart
           width={500}
           height={300}
-          data={data}
+          data={rangeData}
           margin={{
             top: 5,
             right: 30,
@@ -94,15 +63,15 @@ const SeatsGraph = () => {
           />
           <Line
             type="monotone"
-            dataKey="seats_available"
-            name="Seats Available"
-            stroke="#E69F00"
+            dataKey="total_courses"
+            name="Total courses"
+            stroke="#56B4E9"
             strokeWidth={5}
           />
           <Line
             type="monotone"
-            dataKey="enrolled_seats"
-            name="Enrolled Seats"
+            dataKey="total_sections"
+            name="Total sections"
             stroke="#0072B2"
             strokeWidth={5}
           />
@@ -112,4 +81,4 @@ const SeatsGraph = () => {
   );
 };
 
-export default SeatsGraph;
+export default CoursesAvailable;

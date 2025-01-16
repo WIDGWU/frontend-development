@@ -6,7 +6,7 @@ import {
   GATypeFilter,
   HomeDepartmentFilter,
   HomeSchoolFilter,
-} from "@/app/local-components/GAFilter";
+} from "@/app/local-components/GAPage/GAFilter";
 import { Button } from "@/components/ui/button";
 
 type GA = {
@@ -40,10 +40,12 @@ const Page = () => {
     null
   );
 
+  // Function to get initials of first name and last name
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`;
   };
 
+  // Function to clear all filters
   const clearFilters = () => {
     setSelectedGAType(null);
     setSelectedHomeSchool(null);
@@ -51,6 +53,7 @@ const Page = () => {
     setSelectedCourseTerm(null);
   };
 
+  // Fetch data from API
   useEffect(() => {
     getGACategoryDetails().then((data) => {
       setGAType(data.GA_Type);
@@ -64,6 +67,7 @@ const Page = () => {
     });
   }, []);
 
+  // Filter data based on selected filters
   useEffect(() => {
     let filtered = ga;
 

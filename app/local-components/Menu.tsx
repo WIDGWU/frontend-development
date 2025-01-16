@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
-// Import icons from the assets folder
 import homeIcon from "@/assets/home.png";
 import departmentsIcon from "@/assets/departments.png";
 import graduateAssistantsIcon from "@/assets/graduate-assistants.png";
@@ -10,6 +8,7 @@ import annualReportIcon from "@/assets/annual-report.png";
 import courseHistoryIcon from "@/assets/course-history.png";
 import uploadCoursesIcon from "@/assets/upload-courses.png";
 
+// these are all the menu items that will be displayed in the admin dashboard
 const menuItems = [
   { name: "Home", href: "/admin", icon: homeIcon },
   { name: "Departments", href: "/admin/departments", icon: departmentsIcon },
@@ -41,8 +40,6 @@ const Menu = () => {
     <div className="mt-4 text-sm ">
       {menuItems.map((item) => (
         <div className="flex flex-col gap-4" key={item.name}>
-          {" "}
-          {/* Increased gap */}
           <Link
             href={item.href}
             className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight"

@@ -14,16 +14,19 @@ const iR = 50;
 const oR = 100;
 
 const TermCard = ({
+  year,
   term,
   data,
   totalSeats,
 }: {
+  year: number;
   term: string;
   data: TermData[];
   totalSeats: number;
 }) => {
   const [updatedData, setUpdatedData] = useState<TermData[]>([]);
 
+  // This useEffect is used to add a new data point to the data array. The new data point is the remaining seats.
   useEffect(() => {
     const dataValueSum = data.reduce((sum, entry) => sum + entry.value, 0);
     const remainingValue = totalSeats - dataValueSum;
@@ -36,6 +39,7 @@ const TermCard = ({
     setUpdatedData(newData);
   }, [data]);
 
+  // This function is used to render the label in the center of the semi pie chart.
   const renderCustomizedLabel = ({ viewBox }: any) => {
     const termValue = data.reduce((sum, entry) => sum + entry.value, 0);
 
@@ -55,8 +59,8 @@ const TermCard = ({
   return (
     <div className="rounded-2xl odd:bg-lamaPurple bg-white p-4 flex-1 min-w-[130px]">
       <div className="flex justify-between items-center">
-        <span className="text-[14px]text-bold px-2 pt-1 rounded-full text-green-600">
-          2024 {term} seats
+        <span className="text-[14px] text-bold px-2 pt-1 rounded-full text-green-600">
+          {year} {term} seats
         </span>
       </div>
       <ResponsiveContainer width="100%" height="90%">

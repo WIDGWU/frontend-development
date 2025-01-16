@@ -13,50 +13,19 @@ import {
 } from "recharts";
 import moreIcon from "@/assets/moreDark.png";
 
-const data = [
-  {
-    year: "2018",
-    sections_available: 4000,
-    courses_available: 2400,
-  },
-  {
-    year: "2019",
-    sections_available: 3000,
-    courses_available: 1398,
-  },
-  {
-    year: "2020",
-    sections_available: 2000,
-    courses_available: 9800,
-  },
-  {
-    year: "2021",
-    sections_available: 2780,
-    courses_available: 3908,
-  },
-  {
-    year: "2022",
-    sections_available: 1890,
-    courses_available: 4800,
-  },
-  {
-    year: "2023",
-    sections_available: 2390,
-    courses_available: 3800,
-  },
-  {
-    year: "2024",
-    sections_available: 3490,
-    courses_available: 4300,
-  },
-];
-
-const CoursesAvailable = () => {
+const SeatsGraph = ({
+  rangeData,
+  selectedRange,
+}: {
+  rangeData: any[];
+  selectedRange: number | null;
+}) => {
   return (
     <div className="bg-white rounded-xl w-full h-full p-4 m-2">
       <div className="flex justify-between items-center">
         <h1 className="text-lg font-semibold">
-          Sections Available vs Courses Seats for 2018 to 2024
+          Seats Available vs Enrolled Seats from {selectedRange} to{" "}
+          {selectedRange !== null && selectedRange - 4}
         </h1>
         <Image src={moreIcon} alt="" width={20} height={20} />
       </div>
@@ -64,7 +33,7 @@ const CoursesAvailable = () => {
         <LineChart
           width={500}
           height={300}
-          data={data}
+          data={rangeData}
           margin={{
             top: 5,
             right: 30,
@@ -94,15 +63,15 @@ const CoursesAvailable = () => {
           />
           <Line
             type="monotone"
-            dataKey="sections_available"
-            name="Seats Available"
-            stroke="#56B4E9"
+            dataKey="total_seats"
+            name="Total Seats"
+            stroke="#E69F00"
             strokeWidth={5}
           />
           <Line
             type="monotone"
-            dataKey="courses_available"
-            name="Enrolled Seats"
+            dataKey="total_enrollment"
+            name="Total Enrolled"
             stroke="#0072B2"
             strokeWidth={5}
           />
@@ -112,4 +81,4 @@ const CoursesAvailable = () => {
   );
 };
 
-export default CoursesAvailable;
+export default SeatsGraph;

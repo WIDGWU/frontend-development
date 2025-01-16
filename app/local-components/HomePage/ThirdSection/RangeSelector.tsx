@@ -11,44 +11,42 @@ import upIcon from "@/assets/up-icon.png";
 import downIcon from "@/assets/down-icon.png";
 import Image from "next/image";
 
-const TermSelector = ({ setYear }: { setYear: (year: number) => void }) => {
+const RangeSelector = ({
+  selectedRange,
+  setSelectedRange,
+}: {
+  selectedRange: number | null;
+  setSelectedRange: (range: number | null) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTerms, setSelectedTerms] = useState<string[]>([]);
 
-  const handleCheckboxChange = (term: string) => {
-    setSelectedTerms((prevSelectedTerms) =>
-      prevSelectedTerms.includes(term)
-        ? prevSelectedTerms.filter((t) => t !== term)
-        : [...prevSelectedTerms, term]
-    );
-    setYear(parseInt(term));
+  // Handle radio change
+  const handleRadioChange = (term: string) => {
+    const startYear = parseInt(term.substring(0, 4));
+    setSelectedRange(startYear);
   };
 
-  const terms = [
-    "2024-2025",
-    "2023-2024",
-    "2022-2023",
-    "2021-2022",
-    "2020-2021",
-    "2019-2020",
-    "2018-2019",
-    "2017-2018",
-    "2016-2017",
-    "2015-2016",
-    "2014-2015",
-    "2013-2014",
+  // range to be collected from backend
+  const yearRange = [
+    "2024-2020",
+    "2023-2019",
+    "2022-2018",
+    "2021-2017",
+    "2020-2016",
+    "2019-2015",
+    "2018-2014",
   ];
 
   return (
     <div className="flex items-center select-none">
-      <p className="mr-4">Select a year</p>
+      <p className="mr-4">Select the 5 year range</p>
       <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <DropdownMenuTrigger asChild>
           <Button
             className="relative px-4 py-2 border border-gray-300 rounded bg-white text-black cursor-pointer flex items-center hover:bg-[#F9F9F8] focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
           >
-            Term code
+            Year
             <span className="ml-1"></span>
             <Image
               src={upIcon}
@@ -67,16 +65,16 @@ const TermSelector = ({ setYear }: { setYear: (year: number) => void }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="max-h-48 overflow-y-auto">
-          {terms.map((term) => (
-            <DropdownMenuItem key={term} onSelect={(e) => e.preventDefault()}>
+          {yearRange.map((year) => (
+            <DropdownMenuItem key={year} onSelect={(e) => e.preventDefault()}>
               <div className="flex items-center space-x-2">
                 <input
-                  type="checkbox"
-                  checked={selectedTerms.includes(term)}
-                  onChange={() => handleCheckboxChange(term)}
-                  className="form-checkbox"
+                  type="radio"
+                  checked={selectedRange === parseInt(year.substring(0, 4))}
+                  onChange={() => handleRadioChange(year)}
+                  className="form-radio"
                 />
-                <span>{term}</span>
+                <span>{year}</span>
               </div>
             </DropdownMenuItem>
           ))}
@@ -86,4 +84,4 @@ const TermSelector = ({ setYear }: { setYear: (year: number) => void }) => {
   );
 };
 
-export default TermSelector;
+export default RangeSelector;

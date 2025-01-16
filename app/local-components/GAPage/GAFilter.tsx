@@ -6,6 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Filter based on GA Type
 export const GATypeFilter = ({
   gaType,
   selectedGAType,
@@ -35,6 +36,7 @@ export const GATypeFilter = ({
   );
 };
 
+// Filter based on Home School
 export const HomeSchoolFilter = ({
   homeschool,
   selectedHomeSchool,
@@ -64,6 +66,7 @@ export const HomeSchoolFilter = ({
   );
 };
 
+// Filter based on Home Department
 export const HomeDepartmentFilter = ({
   homeDepartment,
   selectedDepartment,
@@ -93,6 +96,7 @@ export const HomeDepartmentFilter = ({
   );
 };
 
+// Filter based on Course Term
 export const CourseTermFilter = ({
   courseTerm,
   selectedCourseTerm,
