@@ -8,10 +8,14 @@ export const getReports = async (year) => {
       accept: "application/json",
     };
 
+    console.log("Showing env variables", secrets.NEXT_PUBLIC_BASE_URL_PROD);
+    console.log("Showing env variables", process.env.NEXT_PUBLIC_BASE_URL_PROD);
+
     const response = await axios.get(
       `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/annual_report/?year=${year}`,
       { headers }
     );
+
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
