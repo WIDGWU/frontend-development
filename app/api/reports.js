@@ -4,15 +4,12 @@ import axios from "axios";
 export const getReports = async (year) => {
   try {
     const headers = {
-      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
-    console.log("Showing env variables", secrets.NEXT_PUBLIC_BASE_URL_PROD);
-    console.log("Showing env variables", process.env.NEXT_PUBLIC_BASE_URL_PROD);
-
     const response = await axios.get(
-      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/annual_report/?year=${year}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/annual_report/?year=${year}`,
       { headers }
     );
 
@@ -27,12 +24,12 @@ export const getReports = async (year) => {
 export const getGADetails = async () => {
   try {
     const headers = {
-      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
     const response = await axios.get(
-      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/get_all_GA/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_all_GA/`,
       { headers }
     );
     return response.data;
@@ -46,12 +43,12 @@ export const getGADetails = async () => {
 export const getGACategoryDetails = async () => {
   try {
     const headers = {
-      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
     const response = await axios.get(
-      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/get_GA_category/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_GA_category/`,
       { headers }
     );
     return response.data;
@@ -65,12 +62,12 @@ export const getGACategoryDetails = async () => {
 export const getFiveYearReport = async (year) => {
   try {
     const headers = {
-      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
     const response = await axios.get(
-      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/wid_5y_report/?year=${year}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/wid_5y_report/?year=${year}`,
       { headers }
     );
     return response.data;
