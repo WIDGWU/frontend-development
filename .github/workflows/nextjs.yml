@@ -33,6 +33,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Read env variables
+        run: echo "data link is $NEXT_PUBLIC_BASE_URL_PROD"
+      - name: Test env variables
+        run: echo "data link is ${{ secrets.NEXT_PUBLIC_BASE_URL_PROD }} "
+      - name: Process env variables
+        run: echo "data link is ${{ process.env.NEXT_PUBLIC_BASE_URL_PROD }} "
       - name: Checkout
         uses: actions/checkout@v4
       - name: Detect package manager
