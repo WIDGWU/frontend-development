@@ -120,7 +120,7 @@ const GraphsForYear = () => {
 
   return (
     <div>
-      <h1 className="font-bold text-2xl mb-4"> Graphs for Respective Years</h1>
+      <h1 className="font-bold text-2xl mb-4"> Devs for no world</h1>
       <YearSelector setYear={setYear} />
 
       <div className="flex gap-4 justify-between flex-wrap my-4">
