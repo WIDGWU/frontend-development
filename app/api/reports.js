@@ -4,12 +4,12 @@ import axios from "axios";
 export const getReports = async (year) => {
   try {
     const headers = {
-      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/annual_report/?year=${year}`,
+      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/annual_report/?year=${year}`,
       { headers }
     );
     return response.data;
@@ -23,12 +23,12 @@ export const getReports = async (year) => {
 export const getGADetails = async () => {
   try {
     const headers = {
-      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_all_GA/`,
+      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/get_all_GA/`,
       { headers }
     );
     return response.data;
@@ -42,12 +42,12 @@ export const getGADetails = async () => {
 export const getGACategoryDetails = async () => {
   try {
     const headers = {
-      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_GA_category/`,
+      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/get_GA_category/`,
       { headers }
     );
     return response.data;
@@ -61,12 +61,12 @@ export const getGACategoryDetails = async () => {
 export const getFiveYearReport = async (year) => {
   try {
     const headers = {
-      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      "X-CSRFToken": secrets.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/wid_5y_report/?year=${year}`,
+      `${secrets.NEXT_PUBLIC_BASE_URL_PROD}/wid_5y_report/?year=${year}`,
       { headers }
     );
     return response.data;
