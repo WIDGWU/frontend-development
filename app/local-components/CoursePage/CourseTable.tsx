@@ -90,7 +90,7 @@ export const columns: ColumnDef<CourseType>[] = [
     header: "Last Approved Date",
     cell: ({ row }) => {
       const dateValue = row.getValue("Last_Approved_Date");
-      const date = new Date(dateValue);
+      const date = new Date(dateValue as string);
       const formattedDate = isNaN(date.getTime())
         ? "Invalid Date"
         : date.toISOString().split("T")[0];
@@ -102,7 +102,7 @@ export const columns: ColumnDef<CourseType>[] = [
     header: "Last Edit Date",
     cell: ({ row }) => {
       const dateValue = row.getValue("Last_Edit_Date");
-      const date = new Date(dateValue);
+      const date = new Date(dateValue as string);
       const formattedDate = isNaN(date.getTime())
         ? "Invalid Date"
         : date.toISOString().split("T")[0];
@@ -206,7 +206,7 @@ export const columns: ColumnDef<CourseType>[] = [
   },
 ];
 
-const CourseTable = ({ courseData }) => {
+const CourseTable = ({ courseData }: { courseData: CourseType[] }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
