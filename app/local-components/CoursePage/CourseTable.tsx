@@ -187,7 +187,7 @@ export const columns: ColumnDef<CourseType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      // console.log("Selected row", row);
+      console.log("Selected row", row);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

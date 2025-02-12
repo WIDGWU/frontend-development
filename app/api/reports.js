@@ -1,5 +1,8 @@
 import axios from "axios";
 
+const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_PROD;
+
 export const getnginxReports = async (year) => {
   try {
     const headers = {
@@ -8,7 +11,7 @@ export const getnginxReports = async (year) => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/api/annual_report/?year=${year}`,
+      `${baseURL}/api/annual_report/?year=${year}`,
       { headers }
     );
 
@@ -27,10 +30,9 @@ export const getReports = async (year) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/annual_report/?year=${year}`,
-      { headers }
-    );
+    const response = await axios.get(`${baseURL}/annual_report/?year=${year}`, {
+      headers,
+    });
 
     return response.data;
   } catch (error) {
@@ -47,10 +49,7 @@ export const getGADetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_all_GA/`,
-      { headers }
-    );
+    const response = await axios.get(`${baseURL}/get_all_GA/`, { headers });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -66,10 +65,9 @@ export const getGACategoryDetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_GA_category/`,
-      { headers }
-    );
+    const response = await axios.get(`${baseURL}/get_GA_category/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -85,10 +83,9 @@ export const getFiveYearReport = async (year) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/wid_5y_report/?year=${year}`,
-      { headers }
-    );
+    const response = await axios.get(`${baseURL}/wid_5y_report/?year=${year}`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -104,10 +101,9 @@ export const getAllCourses = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_all_courses/`,
-      { headers }
-    );
+    const response = await axios.get(`${baseURL}/get_all_courses/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -123,10 +119,9 @@ export const getCourseByDepartment = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_course_by_department/`,
-      { headers }
-    );
+    const response = await axios.get(`${baseURL}/get_course_by_department/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
