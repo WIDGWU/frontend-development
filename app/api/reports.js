@@ -28,7 +28,7 @@ export const getReports = async (year) => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/annual_report/?year=${year}`,
+      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/annual_report/?year=${year}`,
       { headers }
     );
 
@@ -48,7 +48,7 @@ export const getGADetails = async () => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_all_GA/`,
+      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_all_GA/`,
       { headers }
     );
     return response.data;
@@ -67,7 +67,7 @@ export const getGACategoryDetails = async () => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/get_GA_category/`,
+      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_GA_category/`,
       { headers }
     );
     return response.data;
@@ -86,7 +86,7 @@ export const getFiveYearReport = async (year) => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/wid_5y_report/?year=${year}`,
+      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/wid_5y_report/?year=${year}`,
       { headers }
     );
     return response.data;
@@ -105,7 +105,7 @@ export const getAllCourses = async () => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_LOCAL}/get_all_courses/`,
+      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_all_courses/`,
       { headers }
     );
     return response.data;
@@ -124,7 +124,7 @@ export const getCourseByDepartment = async () => {
     };
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL_LOCAL}/get_course_by_department/`,
+      `${process.env.NEXT_PUBLIC_BASE_NGINX_PROD}/get_course_by_department/`,
       { headers }
     );
     return response.data;

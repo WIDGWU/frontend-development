@@ -4,11 +4,16 @@ import { useState, useEffect } from "react";
 
 import { getAllCourses, getCourseByDepartment } from "@/app/api/reports";
 import CourseTable from "@/app/local-components/CoursePage/CourseTable";
+import { CourseType } from "@/app/local-components/CoursePage/CourseTable";
 import CourseFilter from "@/app/local-components/CoursePage/CourseFilter";
 import { Button } from "@/components/ui/button";
+// import DesignTest from "@/app/local-components/CoursePage/DesignTest";
 
 const Page = () => {
-  const [courseData, setCourseData] = useState([]);
+  const [courseData, setCourseData] = useState<CourseType[]>([]);
+  const [filteredCourseData, setFilteredCourseData] = useState<CourseType[]>(
+    []
+  );
   const [department, setDepartment] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
     null
@@ -17,15 +22,34 @@ const Page = () => {
   useEffect(() => {
     getAllCourses().then((data) => {
       setCourseData(data);
+      setFilteredCourseData(data);
     });
     getCourseByDepartment().then((data) => {
       setDepartment(data);
     });
   }, []);
 
-  console.log("Course Data", courseData);
-  // console.log("Department Data", department);
+  useEffect(() => {
+    filterCoursesByDepartment();
+  }, [selectedDepartment]);
 
+  const filterCoursesByDepartment = () => {
+    if (selectedDepartment) {
+      const filteredCourses = courseData.filter((course) =>
+        course.Course_Number.includes(selectedDepartment)
+      );
+      setFilteredCourseData(filteredCourses);
+    } else {
+      setFilteredCourseData(courseData);
+    }
+  };
+
+  const clearFilter = () => {
+    setSelectedDepartment(null);
+  };
+  // console.log("Course Data", courseData);
+  // console.log("Department Data", department);
+  console.log("Selected courses", courseData);
   return (
     <main className="m-4">
       <div className="flex items-center">
@@ -37,10 +61,11 @@ const Page = () => {
             setSelectedDepartment={setSelectedDepartment}
           />
         </div>
-        <Button> Clear filter </Button>
+        <Button onClick={clearFilter}> Clear filter </Button>
       </div>
 
-      <CourseTable courseData={courseData} />
+      <CourseTable courseData={filteredCourseData} />
+      {/* <DesignTest /> */}
     </main>
   );
 };
