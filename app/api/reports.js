@@ -2,6 +2,7 @@ import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL_PROD;
+// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
 
 export const getnginxReports = async (year) => {
   try {
@@ -30,9 +31,12 @@ export const getReports = async (year) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/annual_report/?year=${year}`, {
-      headers,
-    });
+    const response = await axios.get(
+      `${baseURL}/api/annual_report/?year=${year}`,
+      {
+        headers,
+      }
+    );
 
     return response.data;
   } catch (error) {
@@ -49,7 +53,7 @@ export const getGADetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_all_GA/`, { headers });
+    const response = await axios.get(`${baseURL}/api/get_all_GA/`, { headers });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -65,7 +69,7 @@ export const getGACategoryDetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_GA_category/`, {
+    const response = await axios.get(`${baseURL}/api/get_GA_category/`, {
       headers,
     });
     return response.data;
@@ -83,9 +87,12 @@ export const getFiveYearReport = async (year) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/wid_5y_report/?year=${year}`, {
-      headers,
-    });
+    const response = await axios.get(
+      `${baseURL}/api/wid_5y_report/?year=${year}`,
+      {
+        headers,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -101,7 +108,7 @@ export const getAllCourses = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_all_courses/`, {
+    const response = await axios.get(`${baseURL}/api/get_all_courses/`, {
       headers,
     });
     return response.data;
@@ -119,9 +126,12 @@ export const getCourseByDepartment = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_course_by_department/`, {
-      headers,
-    });
+    const response = await axios.get(
+      `${baseURL}/api/get_course_by_department/`,
+      {
+        headers,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
