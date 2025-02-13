@@ -11,108 +11,109 @@ const GraphsForYear = () => {
   const [year, setYear] = useState(2024);
 
   // The data from API comes is specific format, so you should use it like this
-  const formatReports = (reports: any) => {
-    const academicYear = `${year}-${year + 1}`;
-    return {
-      fallCodeData: [
-        {
-          name: "fall",
-          value:
-            reports[
-              `Total Fall Seats Available for academic year ${academicYear}`
-            ],
-          color: "#E69F00",
-        },
-      ],
-      springCodeData: [
-        {
-          name: "spring",
-          value:
-            reports[
-              `Total Spring Seats Available for academic year ${academicYear}`
-            ],
-          color: "#0072B2",
-        },
-      ],
-      summerCodeData: [
-        {
-          name: "summer",
-          value:
-            reports[
-              `Total Summer Seats Available for academic year ${academicYear}`
-            ],
-          color: "#56B4E9",
-        },
-      ],
-      totalSeats:
-        reports[`Total Seats Available for academic year ${academicYear}`],
-      differenceCards: [
-        {
-          text: `Difference in ${year} Seats compared to previous year`,
-          difference:
-            reports[
-              `Difference in Seats compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-          percent:
-            reports[
-              `Percentage change in Seats compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-        },
-        {
-          text: `Difference in ${year} Enrolled Seats compared to previous year`,
-          difference:
-            reports[
-              `Difference in Enrolled Seats compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-          percent:
-            reports[
-              `Percentage change in Enrolled Seats compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-        },
-        {
-          text: `Difference in ${year} Sections compared to previous year`,
-          difference:
-            reports[
-              `Difference in Sections compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-          percent:
-            reports[
-              `Percentage change in Sections compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-        },
-        {
-          text: `Difference in ${year} Courses compared to previous year`,
-          difference:
-            reports[
-              `Difference in Courses compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-          percent:
-            reports[
-              `Percentage change in Courses compared to previous year (${
-                year - 1
-              }-${year})`
-            ],
-        },
-      ],
-    };
-  };
 
   // Fetch reports for the selected year
   useEffect(() => {
+    const formatReports = (reports: any) => {
+      const academicYear = `${year}-${year + 1}`;
+      return {
+        fallCodeData: [
+          {
+            name: "fall",
+            value:
+              reports[
+                `Total Fall Seats Available for academic year ${academicYear}`
+              ],
+            color: "#E69F00",
+          },
+        ],
+        springCodeData: [
+          {
+            name: "spring",
+            value:
+              reports[
+                `Total Spring Seats Available for academic year ${academicYear}`
+              ],
+            color: "#0072B2",
+          },
+        ],
+        summerCodeData: [
+          {
+            name: "summer",
+            value:
+              reports[
+                `Total Summer Seats Available for academic year ${academicYear}`
+              ],
+            color: "#56B4E9",
+          },
+        ],
+        totalSeats:
+          reports[`Total Seats Available for academic year ${academicYear}`],
+        differenceCards: [
+          {
+            text: `Difference in ${year} Seats compared to previous year`,
+            difference:
+              reports[
+                `Difference in Seats compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+            percent:
+              reports[
+                `Percentage change in Seats compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+          },
+          {
+            text: `Difference in ${year} Enrolled Seats compared to previous year`,
+            difference:
+              reports[
+                `Difference in Enrolled Seats compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+            percent:
+              reports[
+                `Percentage change in Enrolled Seats compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+          },
+          {
+            text: `Difference in ${year} Sections compared to previous year`,
+            difference:
+              reports[
+                `Difference in Sections compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+            percent:
+              reports[
+                `Percentage change in Sections compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+          },
+          {
+            text: `Difference in ${year} Courses compared to previous year`,
+            difference:
+              reports[
+                `Difference in Courses compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+            percent:
+              reports[
+                `Percentage change in Courses compared to previous year (${
+                  year - 1
+                }-${year})`
+              ],
+          },
+        ],
+      };
+    };
+
     getReports(year).then((data) => {
       setFormattedReports(formatReports(data));
     });

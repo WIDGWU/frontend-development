@@ -37,7 +37,7 @@ const TermCard = ({
     ];
 
     setUpdatedData(newData);
-  }, [data]);
+  }, [data, totalSeats]);
 
   // This function is used to render the label in the center of the semi pie chart.
   const renderCustomizedLabel = ({ viewBox }: any) => {
