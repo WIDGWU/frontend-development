@@ -20,6 +20,7 @@ type GA = {
   Home_Dept: string;
   Home_School: string;
   Hour_Assignment: string;
+  Course_Number: string;
 };
 
 const Page = () => {
@@ -163,12 +164,13 @@ const Page = () => {
                     {g.COURSE_ID}
                   </p>
                   <p className="text-left text-gray-600">
-                    <span className="font-bold">CRN : </span> {g.CRN}
+                    <span className="font-bold">Course Number : </span>{" "}
+                    {g.Course_Number}
                   </p>
-                  <p className="text-left text-gray-600">
+                  {/* <p className="text-left text-gray-600">
                     <span className="font-bold">Course Term Code : </span>
                     {g.Course_Term_Code}
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </div>
