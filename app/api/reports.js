@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+// const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL_PROD;
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
@@ -89,7 +89,7 @@ export const getAllCourses = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/api/get_all_courses/`, {
+    const response = await axios.get(`${baseURL}/get_all_courses/`, {
       headers,
     });
     return response.data;
@@ -107,12 +107,9 @@ export const getCourseByDepartment = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}/api/get_course_by_department/`,
-      {
-        headers,
-      }
-    );
+    const response = await axios.get(`${baseURL}/get_course_by_department/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
