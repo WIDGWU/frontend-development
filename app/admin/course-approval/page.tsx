@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { getAllCourses, getCourseByDepartment } from "@/app/api/reports";
+import { getAllCoursesHistory, getCourseByDepartment } from "@/app/api/reports";
 import CourseTable from "@/app/local-components/CoursePage/CourseTable";
 import { CourseType } from "@/app/local-components/CoursePage/CourseTable";
 import CourseFilter from "@/app/local-components/CoursePage/CourseFilter";
@@ -20,7 +20,7 @@ const CourseApproval = () => {
   );
 
   useEffect(() => {
-    getAllCourses().then((data) => {
+    getAllCoursesHistory().then((data) => {
       setCourseData(data);
       setFilteredCourseData(data);
     });

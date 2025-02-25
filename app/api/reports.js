@@ -81,7 +81,7 @@ export const getFiveYearReport = async (year) => {
   }
 };
 
-// Call /get_all_courses/ endpoint to get all courses
+// get_all_courses
 export const getAllCourses = async () => {
   try {
     const headers = {
@@ -99,6 +99,27 @@ export const getAllCourses = async () => {
   }
 };
 
+// Call /get_all_courses/ endpoint to get all courses
+export const getAllCoursesHistory = async () => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}/api/get_all_courses_history/`,
+      {
+        headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
 // Call /get_course_by_department/ endpoint to get all courses by department
 export const getCourseByDepartment = async () => {
   try {
@@ -107,9 +128,12 @@ export const getCourseByDepartment = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_course_by_department/`, {
-      headers,
-    });
+    const response = await axios.get(
+      `${baseURL}/api/get_course_by_department/`,
+      {
+        headers,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
