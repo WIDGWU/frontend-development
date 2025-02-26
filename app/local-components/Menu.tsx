@@ -24,8 +24,8 @@ const menuItems = [
     icon: annualReportIcon,
   },
   {
-    name: "Course History",
-    href: "/admin/course-history",
+    name: "Course Approval",
+    href: "/admin/course-approval",
     icon: courseHistoryIcon,
   },
   {

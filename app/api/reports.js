@@ -1,27 +1,8 @@
 import axios from "axios";
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+// const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL_PROD;
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
-
-export const getnginxReports = async (year) => {
-  try {
-    const headers = {
-      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
-      accept: "application/json",
-    };
-
-    const response = await axios.get(
-      `${baseURL}/api/annual_report/?year=${year}`,
-      { headers }
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching reports:", error);
-    throw error;
-  }
-};
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
@@ -100,7 +81,7 @@ export const getFiveYearReport = async (year) => {
   }
 };
 
-// Call /get_all_courses/ endpoint to get all courses
+// get_all_courses
 export const getAllCourses = async () => {
   try {
     const headers = {
@@ -108,9 +89,30 @@ export const getAllCourses = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/api/get_all_courses/`, {
+    const response = await axios.get(`${baseURL}/get_all_courses/`, {
       headers,
     });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// Call /get_all_courses/ endpoint to get all courses
+export const getAllCoursesHistory = async () => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}/api/get_all_courses_history/`,
+      {
+        headers,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
