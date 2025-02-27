@@ -66,7 +66,7 @@ const Courses = () => {
                       {course.COURSE_ID}
                     </span>
                     <h1 className="text-2xl font-semibold text-center">
-                      {course.Course}
+                      {course.Course_Number}
                     </h1>
                     <h1 className="text-xl text-center">
                       {course.Course_College_Desc}
@@ -82,8 +82,8 @@ const Courses = () => {
                         {course.Course_Term_Code}
                       </p>
                       <p className="text-left text-gray-600">
-                        <span className="font-bold">Course Number : </span>
-                        {course.Course_Number}
+                        <span className="font-bold">Course : </span>
+                        {course.Course}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Section Number : </span>
