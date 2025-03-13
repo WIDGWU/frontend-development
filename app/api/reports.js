@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_PROD;
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
 
 // Calls /annural_report/ endpoint to get all reports for that specific year

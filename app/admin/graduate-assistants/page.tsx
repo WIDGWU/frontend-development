@@ -6,6 +6,7 @@ import {
   GATypeFilter,
   HomeDepartmentFilter,
   HomeSchoolFilter,
+  CourseDepartmentFilter,
 } from "@/app/local-components/GAPage/GAFilter";
 import { Button } from "@/components/ui/button";
 
@@ -21,11 +22,13 @@ type GA = {
   Home_School: string;
   Hour_Assignment: string;
   Course_Number: string;
+  Course_Dept: string;
 };
 
 const Page = () => {
   const [ga, setGA] = useState<GA[]>([]);
   const [filteredGA, setFilteredGA] = useState<GA[]>([]);
+  const [totalGACount, setTotalGACount] = useState<number>(0);
   const [gaType, setGAType] = useState<string[]>([]);
   const [selectedGAType, setSelectedGAType] = useState<string | null>(null);
   const [homeSchool, setHomeSchool] = useState<string[]>([]);
@@ -40,6 +43,10 @@ const Page = () => {
   const [selectedCourseTerm, setSelectedCourseTerm] = useState<string | null>(
     null
   );
+  const [courseDepartment, setCourseDepartment] = useState<string[]>([]);
+  const [selectedCourseDepartment, setSelectedCourseDepartment] = useState<
+    string | null
+  >(null);
 
   // Function to get initials of first name and last name
   const getInitials = (firstName: string, lastName: string) => {
@@ -52,6 +59,7 @@ const Page = () => {
     setSelectedHomeSchool(null);
     setSelectedDepartment(null);
     setSelectedCourseTerm(null);
+    setSelectedCourseDepartment(null);
   };
 
   // Fetch data from API
@@ -61,10 +69,12 @@ const Page = () => {
       setHomeSchool(data.Home_School);
       setHomeDepartment(data.Home_Dept);
       setCourseTerm(data.Course_Term_Code);
+      setCourseDepartment(data.Course_Dept);
     });
     getGADetails().then((data) => {
       setGA(data);
       setFilteredGA(data); // Initialize filteredGA with all data
+      setTotalGACount(data.length);
     });
   }, []);
 
@@ -86,16 +96,22 @@ const Page = () => {
         (g) => g.Course_Term_Code === selectedCourseTerm
       );
     }
-
+    if (selectedCourseDepartment) {
+      filtered = filtered.filter(
+        (g) => g.Course_Dept === selectedCourseDepartment
+      );
+    }
     setFilteredGA(filtered);
   }, [
     selectedGAType,
     selectedHomeSchool,
     selectedDepartment,
     selectedCourseTerm,
+    selectedCourseDepartment,
     ga,
   ]);
 
+  console.log("total GA count", totalGACount);
   return (
     <main className="m-4">
       <div className="flex items-center">
@@ -121,8 +137,20 @@ const Page = () => {
             selectedCourseTerm={selectedCourseTerm}
             setSelectedCourseTerm={setSelectedCourseTerm}
           />
+          <CourseDepartmentFilter
+            courseDepartment={courseDepartment}
+            selectedCourseDepartment={selectedCourseDepartment}
+            setSelectedCourseDepartment={setSelectedCourseDepartment}
+          />
+
           <Button onClick={clearFilters}> Clear all filters </Button>
         </div>
+      </div>
+
+      <div className="flex items-center justify-between my-4">
+        <h4 className="text-xl font-semibold">
+          Total GA Count: {filteredGA.length} out of {totalGACount}
+        </h4>
       </div>
 
       {filteredGA.length > 0 ? (
