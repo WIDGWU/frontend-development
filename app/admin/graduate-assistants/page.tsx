@@ -69,7 +69,7 @@ const Page = () => {
       setHomeSchool(data.Home_School);
       setHomeDepartment(data.Home_Dept);
       setCourseTerm(data.Course_Term_Code);
-      setCourseDepartment(data.Course_Dept);
+      setCourseDepartment(data.Course_Prefix);
     });
     getGADetails().then((data) => {
       setGA(data);
@@ -98,7 +98,9 @@ const Page = () => {
     }
     if (selectedCourseDepartment) {
       filtered = filtered.filter(
-        (g) => g.Course_Dept === selectedCourseDepartment
+        (g) =>
+          g.Course_Number &&
+          g.Course_Number.split(" ")[0] === selectedCourseDepartment
       );
     }
     setFilteredGA(filtered);
@@ -111,7 +113,6 @@ const Page = () => {
     ga,
   ]);
 
-  console.log("total GA count", totalGACount);
   return (
     <main className="m-4">
       <div className="flex items-center">
@@ -185,7 +186,7 @@ const Page = () => {
                   </p>
                   <p className="text-left text-gray-600">
                     <span className="font-bold">Assigned Hours : </span>
-                    {g.Hour_Assignment} hours
+                    {g.Hour_Assignment ? g.Hour_Assignment : 0} hours
                   </p>
                   <p className="text-left text-gray-600">
                     <span className="font-bold">Course ID : </span>{" "}
@@ -195,10 +196,6 @@ const Page = () => {
                     <span className="font-bold">Course Number : </span>{" "}
                     {g.Course_Number}
                   </p>
-                  {/* <p className="text-left text-gray-600">
-                    <span className="font-bold">Course Term Code : </span>
-                    {g.Course_Term_Code}
-                  </p> */}
                 </div>
               </div>
             </div>
