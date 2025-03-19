@@ -98,6 +98,24 @@ export const getAllCourses = async () => {
   }
 };
 
+// Courses category
+export const getCourseCategory = async () => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(`${baseURL}/api/get_course_categories/`, {
+      headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
 // Call /get_all_courses/ endpoint to get all courses
 export const getAllCoursesHistory = async () => {
   try {
