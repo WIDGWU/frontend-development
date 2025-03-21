@@ -79,8 +79,8 @@ export const CourseNumberPrefixFilter = ({
     <div className="flex items-center select-none">
       <Select onValueChange={(value) => setSelectedCourseNumberPrefix(value)}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a course number">
-            {selectedCourseNumberPrefix || "Select a course number"}
+          <SelectValue placeholder="Select a department">
+            {selectedCourseNumberPrefix || "Select a department"}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>

@@ -110,8 +110,8 @@ export const CourseTermFilter = ({
     <div className="flex items-center select-none">
       <Select onValueChange={(value) => setSelectedCourseTerm(value)}>
         <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="Select a Course Term">
-            {selectedCourseTerm || "Select a Course Term"}
+          <SelectValue placeholder="Select Course Term">
+            {selectedCourseTerm || "Select Course Term"}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -140,8 +140,8 @@ export const CourseDepartmentFilter = ({
     <div className="flex items-center select-none">
       <Select onValueChange={(value) => setSelectedCourseDepartment(value)}>
         <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="Select Course Number">
-            {selectedCourseDepartment || "Select Course Number"}
+          <SelectValue placeholder="Select Teaching Department">
+            {selectedCourseDepartment || "Select Teaching Department"}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>

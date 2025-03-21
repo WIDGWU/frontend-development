@@ -1,13 +1,10 @@
-"use client";
-import AggregateView from "@/app/local-components/GAPage/AggregateView";
-import IndividualView from "@/app/local-components/GAPage/IndividualView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Page = () => {
   return (
-    <div className="m-4">
+    <main className="m-4">
       <div className="flex items-center justify-between mb-4">
-        <Tabs defaultValue="individual" className="w-full">
+        <Tabs defaultValue="individual" className="w-[400px]">
           <TabsList>
             <TabsTrigger value="individual" className="text-xl px-4 py-2">
               Individual View
@@ -17,14 +14,14 @@ const Page = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="individual">
-            <IndividualView />
+            <div className="mx-4">Individual View</div>
           </TabsContent>
           <TabsContent value="aggregate">
-            <AggregateView />
+            <div className="mx-4">Aggregate View</div>
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </main>
   );
 };
 
