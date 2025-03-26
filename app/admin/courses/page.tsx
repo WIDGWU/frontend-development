@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import {
   CourseTermFilter,
   CourseCollegeDescriptionFilter,
-  CourseNumberPrefixFilter,
+  DepartmentFilter,
   InstructorFilter,
 } from "@/app/local-components/CoursePage/CourseFilter";
 interface Course {
@@ -102,7 +102,7 @@ const Courses = () => {
     }
     if (selectedCourseNumberPrefix) {
       filtered = filtered.filter(
-        (c) => c.Course_Number.split(' ')[0] === selectedCourseNumberPrefix
+        (c) => c.Course_Number.split(" ")[0] === selectedCourseNumberPrefix
       );
     }
     if (selectedInstructor) {
@@ -137,10 +137,10 @@ const Courses = () => {
               setSelectedCourseCollegeDescription
             }
           />
-          <CourseNumberPrefixFilter
-            courseNumberPrefix={courseNumberPrefix}
-            selectedCourseNumberPrefix={selectedCourseNumberPrefix}
-            setSelectedCourseNumberPrefix={setSelectedCourseNumberPrefix}
+          <DepartmentFilter
+            department={courseNumberPrefix}
+            selectedDepartment={selectedCourseNumberPrefix}
+            setSelectedDepartment={setSelectedCourseNumberPrefix}
           />
           <InstructorFilter
             instructor={instructor}

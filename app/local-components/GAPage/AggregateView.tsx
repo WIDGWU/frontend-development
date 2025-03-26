@@ -8,14 +8,6 @@ import {
   GATypeFilter,
 } from "@/app/local-components/GAPage/GAFilter";
 import { Button } from "@/components/ui/button";
-// import {
-//   Table,
-//   TableBody,
-//   TableCaption,
-//   TableCell,
-//   TableHeader,
-//   TableRow,
-// } from "@/components/ui/table"
 
 type GA = {
   GA_Net_ID: string;
@@ -24,6 +16,9 @@ type GA = {
   GA_First_Name: string;
   GA_Last_Name: string;
   Courses: string;
+  Term_Codes: string;
+  Total_Actual_Enrollment: number;
+  Total_Max_Enrollment: number;
 };
 
 const AggregateView = () => {
@@ -68,25 +63,31 @@ const AggregateView = () => {
       filtered = filtered.filter((g) => g.GA_Type === selectedGAType);
     }
 
+    if (selectedCourseTerm) {
+      filtered = filtered.filter((g) =>
+        g.Term_Codes.split(",").includes(selectedCourseTerm)
+      );
+    }
+
     setFilteredGA(filtered);
   }, [selectedGAType, selectedCourseTerm, ga]);
   return (
     <main className="m-4">
       <div className="flex items-center">
         <h4 className="text-xl font-semibold my-4 mr-4">Filter </h4>
-        <div className="flex items-center justify-space-between gap-4">
-          <GATypeFilter
-            gaType={gaType}
-            selectedGAType={selectedGAType}
-            setSelectedGAType={setSelectedGAType}
-          />
-          <CourseTermFilter
-            courseTerm={courseTerm}
-            selectedCourseTerm={selectedCourseTerm}
-            setSelectedCourseTerm={setSelectedCourseTerm}
-          />
-          <Button onClick={clearFilters}>Clear Filters</Button>
-        </div>
+      </div>
+      <div className="flex items-center justify-space-between gap-4">
+        <GATypeFilter
+          gaType={gaType}
+          selectedGAType={selectedGAType}
+          setSelectedGAType={setSelectedGAType}
+        />
+        <CourseTermFilter
+          courseTerm={courseTerm}
+          selectedCourseTerm={selectedCourseTerm}
+          setSelectedCourseTerm={setSelectedCourseTerm}
+        />
+        <Button onClick={clearFilters}>Clear Filters</Button>
       </div>
 
       <div className="flex items-center justify-between my-4">
@@ -124,8 +125,16 @@ const AggregateView = () => {
                     {g.Home_School}
                   </p>
                   <p className="text-left text-gray-600">
+                    <span className="font-bold">Total Actual Enrollment: </span>
+                    {g.Total_Actual_Enrollment}
+                  </p>
+                  <p className="text-left text-gray-600">
+                    <span className="font-bold">Total Maximum Enrollment:</span>
+                    {g.Total_Max_Enrollment}
+                  </p>
+                  <p className="text-left text-gray-600">
                     <span className="font-bold">Courses : </span>
-                    <div className="flex flex-col space-y-2 mt-2">
+                    <span className="flex flex-col space-y-2 mt-2">
                       {g.Courses &&
                         g.Courses.split(",").map((course, index) => (
                           <span
@@ -135,7 +144,7 @@ const AggregateView = () => {
                             {course}
                           </span>
                         ))}
-                    </div>
+                    </span>
                   </p>
                 </div>
               </div>

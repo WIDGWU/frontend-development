@@ -115,35 +115,35 @@ const IndividualView = () => {
     <main className="m-4">
       <div className="flex items-center">
         <h4 className="text-xl font-semibold my-4 mr-4">Filter </h4>
-        <div className="flex items-center justify-space-between gap-4">
-          <GATypeFilter
-            gaType={gaType}
-            selectedGAType={selectedGAType}
-            setSelectedGAType={setSelectedGAType}
-          />
-          <HomeSchoolFilter
-            homeschool={homeSchool}
-            selectedHomeSchool={selectedHomeSchool}
-            setSelectedHomeSchool={setSelectedHomeSchool}
-          />
-          <HomeDepartmentFilter
-            homeDepartment={homeDepartment}
-            selectedDepartment={selectedDepartment}
-            setSelectedDepartment={setSelectedDepartment}
-          />
-          <CourseTermFilter
-            courseTerm={courseTerm}
-            selectedCourseTerm={selectedCourseTerm}
-            setSelectedCourseTerm={setSelectedCourseTerm}
-          />
-          <CourseDepartmentFilter
-            courseDepartment={courseDepartment}
-            selectedCourseDepartment={selectedCourseDepartment}
-            setSelectedCourseDepartment={setSelectedCourseDepartment}
-          />
+      </div>
+      <div className="flex items-center justify-space-between gap-4">
+        <GATypeFilter
+          gaType={gaType}
+          selectedGAType={selectedGAType}
+          setSelectedGAType={setSelectedGAType}
+        />
+        <HomeSchoolFilter
+          homeschool={homeSchool}
+          selectedHomeSchool={selectedHomeSchool}
+          setSelectedHomeSchool={setSelectedHomeSchool}
+        />
+        <HomeDepartmentFilter
+          homeDepartment={homeDepartment}
+          selectedDepartment={selectedDepartment}
+          setSelectedDepartment={setSelectedDepartment}
+        />
+        <CourseTermFilter
+          courseTerm={courseTerm}
+          selectedCourseTerm={selectedCourseTerm}
+          setSelectedCourseTerm={setSelectedCourseTerm}
+        />
+        <CourseDepartmentFilter
+          courseDepartment={courseDepartment}
+          selectedCourseDepartment={selectedCourseDepartment}
+          setSelectedCourseDepartment={setSelectedCourseDepartment}
+        />
 
-          <Button onClick={clearFilters}> Clear all filters </Button>
-        </div>
+        <Button onClick={clearFilters}> Clear all filters </Button>
       </div>
 
       <div className="flex items-center justify-between my-4">

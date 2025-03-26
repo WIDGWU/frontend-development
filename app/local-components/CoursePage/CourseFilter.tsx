@@ -66,25 +66,25 @@ export const CourseCollegeDescriptionFilter = ({
   );
 };
 
-export const CourseNumberPrefixFilter = ({
-  courseNumberPrefix,
-  selectedCourseNumberPrefix,
-  setSelectedCourseNumberPrefix,
+export const DepartmentFilter = ({
+  department,
+  selectedDepartment,
+  setSelectedDepartment,
 }: {
-  courseNumberPrefix: string[];
-  selectedCourseNumberPrefix: string | null;
-  setSelectedCourseNumberPrefix: (value: string | null) => void;
+  department: string[];
+  selectedDepartment: string | null;
+  setSelectedDepartment: (value: string | null) => void;
 }) => {
   return (
     <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedCourseNumberPrefix(value)}>
+      <Select onValueChange={(value) => setSelectedDepartment(value)}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a department">
-            {selectedCourseNumberPrefix || "Select a department"}
+            {selectedDepartment || "Select a department"}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          {courseNumberPrefix?.map((cn, index) => (
+          {department?.map((cn, index) => (
             <SelectItem key={index} value={cn}>
               {cn}
             </SelectItem>

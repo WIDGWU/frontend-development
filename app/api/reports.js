@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
+const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
@@ -33,7 +33,7 @@ export const getGADetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_all_GA/`, { headers });
+    const response = await axios.get(`${baseURL}/api/get_all_GA/`, { headers });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -49,7 +49,7 @@ export const getCollectiveGADetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_collective_GA/`, {
+    const response = await axios.get(`${baseURL}/api/get_collective_GA/`, {
       headers,
     });
     return response.data;
@@ -59,7 +59,6 @@ export const getCollectiveGADetails = async () => {
   }
 };
 
-
 // Calls /get_GA_category/ endpoint to get specific parameter GA details
 export const getGACategoryDetails = async () => {
   try {
@@ -68,7 +67,7 @@ export const getGACategoryDetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}/get_GA_category/`, {
+    const response = await axios.get(`${baseURL}/api/get_GA_category/`, {
       headers,
     });
     return response.data;
@@ -143,12 +142,9 @@ export const getAllCoursesHistory = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}/api/get_all_courses_history/`,
-      {
-        headers,
-      }
-    );
+    const response = await axios.get(`${baseURL}/get_all_courses_history/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
