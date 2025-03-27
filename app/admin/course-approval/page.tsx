@@ -5,9 +5,8 @@ import { useState, useEffect } from "react";
 import { getAllCoursesHistory, getCourseByDepartment } from "@/app/api/reports";
 import CourseTable from "@/app/local-components/CoursePage/CourseTable";
 import { CourseType } from "@/app/local-components/CoursePage/CourseTable";
-import CourseFilter from "@/app/local-components/CoursePage/CourseFilter";
+import { DepartmentFilter } from "@/app/local-components/CoursePage/CourseFilter";
 import { Button } from "@/components/ui/button";
-// import DesignTest from "@/app/local-components/CoursePage/DesignTest";
 
 const CourseApproval = () => {
   const [courseData, setCourseData] = useState<CourseType[]>([]);
@@ -53,7 +52,7 @@ const CourseApproval = () => {
       <div className="flex items-center">
         <h4 className="text-xl font-semibold my-4 mr-4">Course Approval </h4>
         <div className="flex items-center justify-space-between gap-4 mx-4">
-          <CourseFilter
+          <DepartmentFilter
             department={department}
             selectedDepartment={selectedDepartment}
             setSelectedDepartment={setSelectedDepartment}
