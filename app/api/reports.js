@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_PROD;
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
@@ -35,6 +34,24 @@ export const getGADetails = async () => {
     };
 
     const response = await axios.get(`${baseURL}/api/get_all_GA/`, { headers });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// Calls /get_collective_GA for collective GA details
+export const getCollectiveGADetails = async () => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(`${baseURL}/api/get_collective_GA/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -99,6 +116,24 @@ export const getAllCourses = async () => {
   }
 };
 
+// Courses category
+export const getCourseCategory = async () => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(`${baseURL}/api/get_course_categories/`, {
+      headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
 // Call /get_all_courses/ endpoint to get all courses
 export const getAllCoursesHistory = async () => {
   try {
@@ -107,12 +142,9 @@ export const getAllCoursesHistory = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}/api/get_all_courses_history/`,
-      {
-        headers,
-      }
-    );
+    const response = await axios.get(`${baseURL}/get_all_courses_history/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
