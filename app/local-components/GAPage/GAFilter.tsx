@@ -80,8 +80,8 @@ export const HomeDepartmentFilter = ({
     <div className="flex items-center select-none">
       <Select onValueChange={(value) => setSelectedDepartment(value)}>
         <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="Select a Department">
-            {selectedDepartment || "Select a Department"}
+          <SelectValue placeholder="Select a Home Department">
+            {selectedDepartment || "Select a Home Department"}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -110,14 +110,44 @@ export const CourseTermFilter = ({
     <div className="flex items-center select-none">
       <Select onValueChange={(value) => setSelectedCourseTerm(value)}>
         <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="Select a Course Term">
-            {selectedCourseTerm || "Select a Course Term"}
+          <SelectValue placeholder="Select Course Term">
+            {selectedCourseTerm || "Select Course Term"}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {courseTerm?.map((term, index) => (
             <SelectItem key={index} value={term}>
               {term}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+};
+
+// Filter based on Home Department
+export const CourseDepartmentFilter = ({
+  courseDepartment,
+  selectedCourseDepartment,
+  setSelectedCourseDepartment,
+}: {
+  courseDepartment: string[];
+  selectedCourseDepartment: string | null;
+  setSelectedCourseDepartment: (value: string | null) => void;
+}) => {
+  return (
+    <div className="flex items-center select-none">
+      <Select onValueChange={(value) => setSelectedCourseDepartment(value)}>
+        <SelectTrigger className="w-[200px]">
+          <SelectValue placeholder="Select Teaching Department">
+            {selectedCourseDepartment || "Select Teaching Department"}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {courseDepartment?.map((course, index) => (
+            <SelectItem key={index} value={course}>
+              {course}
             </SelectItem>
           ))}
         </SelectContent>
