@@ -122,7 +122,7 @@ const GraphsForYear = () => {
   return (
     <div>
       <h1 className="font-bold text-2xl mb-4">
-        Comparison of seats for Fall, Spring and Summer term Or Maybe not
+        Comparison of seats for Fall, Spring and Summer term
       </h1>
       <YearSelector setYear={setYear} />
 
