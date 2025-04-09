@@ -65,12 +65,15 @@ const AggregateView = () => {
 
     if (selectedCourseTerm) {
       filtered = filtered.filter((g) =>
-        g.Term_Codes.split(",").includes(selectedCourseTerm)
+        g.Term_Codes.split(",")
+          .map((term) => term.trim())
+          .includes(selectedCourseTerm)
       );
     }
 
     setFilteredGA(filtered);
   }, [selectedGAType, selectedCourseTerm, ga]);
+
   return (
     <main className="m-4">
       <div className="flex items-center">

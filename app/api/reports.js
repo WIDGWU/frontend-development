@@ -1,10 +1,10 @@
 import axios from "axios";
 // For production
-const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-const link = "/api/";
+// const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+// const link = "/api/";
 // For local development
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
-// const link = "/";
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
+const link = "/";
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
@@ -177,6 +177,24 @@ export const getCourseByDepartment = async () => {
         headers,
       }
     );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// call get_course_count_by_department endpoint to get course count by department
+export const getDepartmentInfo = async () => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(`${baseURL}${link}get_department_info/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
