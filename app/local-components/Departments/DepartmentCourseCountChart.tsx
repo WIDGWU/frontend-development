@@ -11,10 +11,22 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const DepartmentCourseCountChat = ({ departmentsCourseCount }) => {
-  console.log(departmentsCourseCount);
+// Define interface for department course count data
+interface DepartmentCourseCount {
+  Department: string;
+  Courses_Count: number;
+}
+
+// Fix component props with interface
+interface DepartmentCourseCountChartProps {
+  departmentsCourseCount: DepartmentCourseCount[];
+}
+
+const DepartmentCourseCountChart = ({
+  departmentsCourseCount,
+}: DepartmentCourseCountChartProps) => {
   return (
-    <div className="bg-white rounded-xl w-full h-full p-4 m-2">
+    <div className="bg-white rounded-xl w-full h-auto p-4 m-2">
       <div className="flex items-center justify-between my-4">
         <h4 className="text-xl font-semibold">
           Total Departments Count: {departmentsCourseCount.length}
@@ -51,4 +63,5 @@ const DepartmentCourseCountChat = ({ departmentsCourseCount }) => {
   );
 };
 
-export default DepartmentCourseCountChat;
+// Fixed component name from "Chat" to "Chart"
+export default DepartmentCourseCountChart;

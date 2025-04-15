@@ -172,7 +172,7 @@ export const getCourseByDepartment = async () => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}get_course_by_department/`,
+      `${baseURL}${link}get_course_number_by_department/`,
       {
         headers,
       }
@@ -195,6 +195,27 @@ export const getDepartmentInfo = async () => {
     const response = await axios.get(`${baseURL}${link}get_department_info/`, {
       headers,
     });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+export const getEachDepartmentStatistics = async (department) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}${link}get_each_department_statistics/`,
+      {
+        headers,
+        params: { department },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
