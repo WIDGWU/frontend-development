@@ -1,10 +1,10 @@
 import axios from "axios";
 // For production
-// const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-// const link = "/api/";
+const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+const link = "/api/";
 // For local development
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
-const link = "/";
+// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
+// const link = "/";
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
