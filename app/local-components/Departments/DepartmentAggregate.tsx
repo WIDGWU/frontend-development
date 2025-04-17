@@ -30,7 +30,7 @@ const DepartmentAggregate = ({
     });
   }, [selectedDepartment]);
 
-  console.log("departmentStatistics", departmentStatistics);
+  
 
   return (
     <div className="bg-white rounded-xl w-full h-auto p-4 m-2">
