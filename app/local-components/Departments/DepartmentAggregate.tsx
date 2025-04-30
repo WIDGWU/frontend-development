@@ -9,8 +9,16 @@ import {
 import { useState, useEffect } from "react";
 import { getEachDepartmentStatistics } from "@/app/api/reports";
 import DepartmentChart from "./DepartmentChart";
+import MaxAndActualEnrollmentChart from "./MaxAndActualEnrollmentChart";
 
-// Define interface for component props
+interface DepartmentStatistic {
+  Course_Term_Code: string;
+  Course_Count: number;
+  Total_Max_Enrollment: number;
+  Total_Actual_Enrollment: number;
+  Total_Seats_Available: number;
+}
+
 interface DepartmentAggregateProps {
   department: string[];
   selectedDepartment: string | null;
@@ -22,15 +30,44 @@ const DepartmentAggregate = ({
   selectedDepartment,
   setDepartment,
 }: DepartmentAggregateProps) => {
-  const [departmentStatistics, setDepartmentStatistics] = useState<any[]>([]);
+  const [departmentStatistics, setDepartmentStatistics] = useState<
+    DepartmentStatistic[]
+  >([]);
+  const [fallStatistics, setFallStatistics] = useState<DepartmentStatistic[]>(
+    []
+  );
+  const [springStatistics, setSpringStatistics] = useState<
+    DepartmentStatistic[]
+  >([]);
+  const [summerStatistics, setSummerStatistics] = useState<
+    DepartmentStatistic[]
+  >([]);
 
   useEffect(() => {
-    getEachDepartmentStatistics(selectedDepartment).then((data) => {
-      setDepartmentStatistics(data);
-    });
-  }, [selectedDepartment]);
+    getEachDepartmentStatistics(selectedDepartment).then(
+      (data: DepartmentStatistic[]) => {
+        setDepartmentStatistics(data);
 
-  console.log("departmentStatistics", departmentStatistics);
+        // Categorize by semester
+        const spring = data.filter(
+          (item: DepartmentStatistic) =>
+            item.Course_Term_Code.slice(-2) === "01"
+        );
+        const summer = data.filter(
+          (item: DepartmentStatistic) =>
+            item.Course_Term_Code.slice(-2) === "02"
+        );
+        const fall = data.filter(
+          (item: DepartmentStatistic) =>
+            item.Course_Term_Code.slice(-2) === "03"
+        );
+
+        setSpringStatistics(spring);
+        setSummerStatistics(summer);
+        setFallStatistics(fall);
+      }
+    );
+  }, [selectedDepartment]);
 
   return (
     <div className="bg-white rounded-xl w-full h-auto p-4 m-2">
@@ -78,8 +115,10 @@ const DepartmentAggregate = ({
       <div className="w-full h-96 m-4 flex flex-row">
         {/* For Total Max Enrollment Total_Max_Enrollment */}
         <div className="w-1/2 h-full">
-          <DepartmentChart
-            departmentStatistics={departmentStatistics}
+          <MaxAndActualEnrollmentChart
+            springStatistics={springStatistics}
+            summerStatistics={summerStatistics}
+            fallStatistics={fallStatistics}
             XAxisDataKey="Course_Term_Code"
             YAxisDataKey="Total_Max_Enrollment"
             YAxisLabel="Total Max Enrollment"
@@ -89,12 +128,14 @@ const DepartmentAggregate = ({
 
         {/* For Total Actual Enrollment.  Total_Actual_Enrollment*/}
         <div className="w-1/2 h-full">
-          <DepartmentChart
-            departmentStatistics={departmentStatistics}
+          <MaxAndActualEnrollmentChart
+            springStatistics={springStatistics}
+            summerStatistics={summerStatistics}
+            fallStatistics={fallStatistics}
             XAxisDataKey="Course_Term_Code"
             YAxisDataKey="Total_Actual_Enrollment"
             YAxisLabel="Total Actual Enrollment"
-            strokeColor="#56b4e9"
+            strokeColor="#0072b2"
           />
         </div>
       </div>

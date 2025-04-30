@@ -82,6 +82,26 @@ export const getGACategoryDetails = async () => {
   }
 };
 
+export const getCollectiveFilteredGA = async (selectedCourseTerm) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}${link}get_collective_GA/?course_term=${selectedCourseTerm}`,
+      {
+        headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
 // Calls /wid_5y_report/ endpoint to get all reports for that specific year
 export const getFiveYearReport = async (year) => {
   try {

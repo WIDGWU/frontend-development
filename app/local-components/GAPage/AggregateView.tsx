@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   getCollectiveGADetails,
   getGACategoryDetails,
+  getCollectiveFilteredGA,
 } from "@/app/api/reports";
 import {
   CourseTermFilter,
@@ -51,27 +52,31 @@ const AggregateView = () => {
     });
     getCollectiveGADetails().then((data) => {
       setGA(data);
-      setFilteredGA(data); // Initialize filteredGA with all data
+      setFilteredGA(data);
       setTotalGACount(data.length);
     });
   }, []);
 
   useEffect(() => {
-    let filtered = ga;
-
-    if (selectedGAType) {
-      filtered = filtered.filter((g) => g.GA_Type === selectedGAType);
-    }
-
+    // If course term is selected, use API filtering and then apply GA type filter locally
     if (selectedCourseTerm) {
-      filtered = filtered.filter((g) =>
-        g.Term_Codes.split(",")
-          .map((term) => term.trim())
-          .includes(selectedCourseTerm)
-      );
+      getCollectiveFilteredGA(selectedCourseTerm).then((data) => {
+        // Apply GA type filter to the API response if needed
+        let filtered = data;
+        if (selectedGAType) {
+          filtered = filtered.filter((g: GA) => g.GA_Type === selectedGAType);
+        }
+        setFilteredGA(filtered);
+      });
     }
-
-    setFilteredGA(filtered);
+    // If only GA type is selected without course term, filter locally
+    else {
+      let filtered = ga;
+      if (selectedGAType) {
+        filtered = filtered.filter((g) => g.GA_Type === selectedGAType);
+      }
+      setFilteredGA(filtered);
+    }
   }, [selectedGAType, selectedCourseTerm, ga]);
 
   return (
