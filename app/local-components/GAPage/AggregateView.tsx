@@ -64,7 +64,7 @@ const AggregateView = () => {
         // Apply GA type filter to the API response if needed
         let filtered = data;
         if (selectedGAType) {
-          filtered = filtered.filter((g) => g.GA_Type === selectedGAType);
+          filtered = filtered.filter((g: GA) => g.GA_Type === selectedGAType);
         }
         setFilteredGA(filtered);
       });
