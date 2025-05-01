@@ -29,8 +29,8 @@ const menuItems = [
     icon: courseHistoryIcon,
   },
   {
-    name: "Upload Courses",
-    href: "/admin/upload-courses",
+    name: "Upload Items",
+    href: "/admin/upload",
     icon: uploadCoursesIcon,
   },
 ];
