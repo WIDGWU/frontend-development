@@ -2,14 +2,25 @@
 
 import React from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Person from "@/assets/personIcon.png";
 import Book from "@/assets/uploadBook.png";
 import UploadIcon from "@/assets/uploadIcon.png";
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const [gaHovered, setGaHovered] = useState(false);
   const [coursesHovered, setCoursesHovered] = useState(false);
+  const router = useRouter();
+
+  const addGA = () => {
+    router.push("./upload/add-ga");
+  };
+
+  const addCourses = () => {
+    router.push("./upload/add-courses");
+  };
 
   return (
     <main className="m-4">
@@ -49,10 +60,11 @@ const Page = () => {
               The system accepts individual data entry or CSV file uploads.
             </p>
 
-            <button
+            <Button
               className={`flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-md ${
                 gaHovered ? "scale-105" : ""
               }`}
+              onClick={() => addGA()}
             >
               <Image
                 src={UploadIcon}
@@ -62,7 +74,7 @@ const Page = () => {
                 className="w-6 h-6"
               />
               Upload Graduate Assistant Data
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -95,10 +107,13 @@ const Page = () => {
               accepts individual data entry or CSV file uploads.
             </p>
 
-            <button
+            <Button
               className={`flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg transition-all duration-300 hover:bg-green-700 hover:shadow-md ${
                 coursesHovered ? "scale-105" : ""
               }`}
+              onClick={() => {
+                addCourses();
+              }}
             >
               <Image
                 src={UploadIcon}
@@ -108,7 +123,7 @@ const Page = () => {
                 className="w-6 h-6"
               />
               Upload Courses Data
-            </button>
+            </Button>
           </div>
         </div>
       </div>
