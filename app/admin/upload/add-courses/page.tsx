@@ -35,7 +35,9 @@ const Page = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      courseName: "",
+      courseDescription: "",
+      courseDuration: "",
     },
   });
 
@@ -54,7 +56,7 @@ const Page = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="username"
+              name="courseName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
