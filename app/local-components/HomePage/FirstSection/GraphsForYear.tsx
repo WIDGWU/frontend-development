@@ -129,20 +129,20 @@ const GraphsForYear = () => {
       <div className="flex gap-4 justify-between flex-wrap my-4">
         <TermCard
           year={year}
+          term="Summer"
+          data={formattedReports.summerCodeData || []}
+          totalSeats={formattedReports.totalSeats || 0}
+        />
+        <TermCard
+          year={year}
           term="Fall"
           data={formattedReports.fallCodeData || []}
           totalSeats={formattedReports.totalSeats || 0}
         />
         <TermCard
-          year={year}
+          year={year + 1}
           term="Spring"
           data={formattedReports.springCodeData || []}
-          totalSeats={formattedReports.totalSeats || 0}
-        />
-        <TermCard
-          year={year + 1}
-          term="Summer"
-          data={formattedReports.summerCodeData || []}
           totalSeats={formattedReports.totalSeats || 0}
         />
       </div>
