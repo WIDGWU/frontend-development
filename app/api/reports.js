@@ -263,3 +263,23 @@ export const addGraduateAssistant = async (data) => {
     throw error;
   }
 };
+
+// post /add_course_approvals/ endpoint to add course approvals
+export const addCourseApprovals = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.post(
+      `${baseURL}${link}add_course_approvals/`,
+      data,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding course approvals:", error);
+    throw error;
+  }
+};

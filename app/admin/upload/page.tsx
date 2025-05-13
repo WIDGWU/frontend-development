@@ -7,11 +7,13 @@ import Image from "next/image";
 import Person from "@/assets/personIcon.png";
 import Book from "@/assets/uploadBook.png";
 import UploadIcon from "@/assets/uploadIcon.png";
+import ApprovalIcon from "@/assets/approval-icon.png";
 import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const [gaHovered, setGaHovered] = useState(false);
   const [coursesHovered, setCoursesHovered] = useState(false);
+  const [approvalHovered, setApprovalHovered] = useState(false); // New state for approval section
   const router = useRouter();
 
   const addGA = () => {
@@ -123,6 +125,56 @@ const Page = () => {
                 className="w-6 h-6"
               />
               Upload Courses Data
+            </Button>
+          </div>
+        </div>
+
+        {/* Approve New Courses section */}
+        <div
+          className="flex-1 bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl"
+          onMouseEnter={() => setApprovalHovered(true)}
+          onMouseLeave={() => setApprovalHovered(false)}
+        >
+          <div className="flex flex-col items-center text-center">
+            <div
+              className={`w-24 h-24 mb-6 transition-transform duration-300 ${
+                approvalHovered ? "scale-110" : ""
+              }`}
+            >
+              <div className="w-full h-full flex items-center justify-center">
+                <Image
+                  src={ApprovalIcon}
+                  alt="Course Approval"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </div>
+
+            <h2 className="text-xl font-semibold mb-4">Approve New Courses</h2>
+            <p className="mb-8 text-gray-600">
+              You need to be an admin to approve courses. To approve courses,
+              please press the button below. The system accepts individual data
+              entry or CSV file uploads.
+            </p>
+
+            <Button
+              className={`flex items-center gap-2 px-6 py-3 bg-purple-500 text-white rounded-lg transition-all duration-300 hover:bg-purple-700 hover:shadow-md ${
+                approvalHovered ? "scale-105" : ""
+              }`}
+              onClick={() => {
+                router.push("./upload/add-course-approval");
+              }}
+            >
+              <Image
+                src={UploadIcon}
+                alt="Upload"
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+              Add Course Approval
             </Button>
           </div>
         </div>
