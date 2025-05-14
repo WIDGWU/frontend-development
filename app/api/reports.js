@@ -1,10 +1,10 @@
 import axios from "axios";
 // For production
-const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-const link = "/api/";
+// const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+// const link = "/api/";
 // For local development
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
-// const link = "/";
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
+const link = "/";
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
@@ -280,6 +280,28 @@ export const addCourseApprovals = async (data) => {
     return response.data;
   } catch (error) {
     console.error("Error adding course approvals:", error);
+    throw error;
+  }
+};
+
+// delete /delete_graduate_assistant/ endpoint to delete graduate assistant
+export const deleteGraduateAssistant = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.delete(
+      `${baseURL}${link}delete_graduate_assistant/`,
+      {
+        headers,
+        data,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting graduate assistant:", error);
     throw error;
   }
 };
