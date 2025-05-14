@@ -83,7 +83,6 @@ const IndividualView = () => {
   };
 
   const handleDelete = () => {
-    // Implement your delete logic here
     const formatDeleteGA = {
       GA_Net_ID: selectedGA?.GA_Net_ID,
       Course_Term_Code: selectedGA?.Course_Term_Code,
