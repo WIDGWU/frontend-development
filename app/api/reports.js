@@ -222,6 +222,7 @@ export const getDepartmentInfo = async () => {
   }
 };
 
+// Call /get_each_department_statistics/ endpoint to get each department statistics
 export const getEachDepartmentStatistics = async (department) => {
   try {
     const headers = {
@@ -239,6 +240,68 @@ export const getEachDepartmentStatistics = async (department) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// post add_graduate_assistant/ endpoint to add graduate assistant
+export const addGraduateAssistant = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.post(
+      `${baseURL}${link}add_graduate_assistant/`,
+      data,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding graduate assistant:", error);
+    throw error;
+  }
+};
+
+// post /add_course_approvals/ endpoint to add course approvals
+export const addCourseApprovals = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.post(
+      `${baseURL}${link}add_course_approvals/`,
+      data,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding course approvals:", error);
+    throw error;
+  }
+};
+
+// delete /delete_graduate_assistant/ endpoint to delete graduate assistant
+export const deleteGraduateAssistant = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.delete(
+      `${baseURL}${link}delete_graduate_assistant/`,
+      {
+        headers,
+        data,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting graduate assistant:", error);
     throw error;
   }
 };

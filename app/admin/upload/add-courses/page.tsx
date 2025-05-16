@@ -1,10 +1,17 @@
-import React from "react";
+"use client";
+
+// import { Button } from "@/components/ui/button";
+import FileUpload from "@/app/local-components/upload/fileUpload";
 
 const Page = () => {
   return (
     <main className="m-4">
       <h1 className="text-2xl font-bold mb-6 text-center">Add Courses Data</h1>
-      <form className="flex flex-col items-center justify-center h-screen bg-gray-100"></form>
+
+      {/* <div className="w-full md:w-1/2 mx-auto bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+        File Upload Component
+      </div> */}
+      <FileUpload />
     </main>
   );
 };
