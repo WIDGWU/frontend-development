@@ -164,7 +164,7 @@ const Page = () => {
               name="Last_Approved_Date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Last Approved Date</FormLabel>
+                  <FormLabel>Last WID Approved Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
