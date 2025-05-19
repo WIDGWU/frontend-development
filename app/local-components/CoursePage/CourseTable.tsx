@@ -12,16 +12,18 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import PencilIcon from "@/assets/pencilIcon.png";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 
 import {
   Table,
@@ -48,7 +50,9 @@ export type CourseType = {
   Elliott_School_of_International_Affairs: string;
 };
 
-export const columns: ColumnDef<CourseType>[] = [
+export const createColumns = (
+  router: ReturnType<typeof useRouter>
+): ColumnDef<CourseType>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -187,23 +191,51 @@ export const columns: ColumnDef<CourseType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      console.log("Selected row", row);
+      const course = row.original;
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>View </DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            router.push(
+              `/admin/upload/edit-course-approval/${course.Course_Number}`
+            );
+          }}
+          className="flex p-4 items-center gap-1 bg-blue-600  text-white hover:bg-blue-700 cursor-pointer hover:text-white"
+        >
+          <Image
+            src={PencilIcon}
+            alt="Edit"
+            width={16}
+            height={16}
+            className="w-4 h-4 brightness-0 invert"
+          />
+          <span>Edit</span>
+        </Button>
       );
     },
   },
+  // {
+  //   id: "actions",
+  //   enableHiding: false,
+  //   cell: ({ row }) => {
+  //     console.log("Selected row", row);
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreHorizontal />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuItem>View </DropdownMenuItem>
+  //           <DropdownMenuItem>Delete</DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  // },
 ];
 
 const CourseTable = ({ courseData }: { courseData: CourseType[] }) => {
@@ -211,6 +243,9 @@ const CourseTable = ({ courseData }: { courseData: CourseType[] }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const router = useRouter();
+
+  const columns = createColumns(router);
 
   const table = useReactTable({
     data: courseData,

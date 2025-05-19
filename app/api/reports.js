@@ -1,10 +1,10 @@
 import axios from "axios";
 // For production
-const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-const link = "/api/";
+// const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
+// const link = "/api/";
 // For local development
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
-// const link = "/";
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
+const link = "/";
 
 // Calls /annural_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
@@ -179,6 +179,49 @@ export const getAllCoursesHistory = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// Cals get_course_history_by_id endpoint to get course history by id
+export const getCourseApprovalById = async (course_id) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    console.log("This function is called");
+    const response = await axios.get(
+      `${baseURL}${link}get_course_history_by_id/`,
+      {
+        headers,
+        params: { course_id },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// Call update_course_approvals/ endpoint to update course approvals
+export const updateCourseApprovals = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.put(
+      `${baseURL}${link}update_course_approvals/`,
+      data,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating course approvals:", error);
     throw error;
   }
 };

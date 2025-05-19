@@ -151,7 +151,9 @@ const Page = () => {
               name="Course_Term_Code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Term Code</FormLabel>
+                  <FormLabel>
+                    Course Term Code <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="202401"
@@ -172,7 +174,9 @@ const Page = () => {
               name="CRN"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>CRN</FormLabel>
+                  <FormLabel>
+                    CRN <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="96623"
@@ -193,7 +197,9 @@ const Page = () => {
               name="GA_Net_ID"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>GA Net ID</FormLabel>
+                  <FormLabel>
+                    GA Net ID <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="aaronameek" {...field} />
                   </FormControl>
@@ -205,7 +211,9 @@ const Page = () => {
               name="GA_Type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>GA Type</FormLabel>
+                  <FormLabel>
+                    GA Type <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -229,7 +237,9 @@ const Page = () => {
               name="GA_First_Name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>GA First Name</FormLabel>
+                  <FormLabel>
+                    GA First Name <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Garrett" {...field} />
                   </FormControl>
@@ -241,7 +251,9 @@ const Page = () => {
               name="GA_Last_Name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>GA Last Name</FormLabel>
+                  <FormLabel>
+                    GA Last Name <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Johnson" {...field} />
                   </FormControl>
@@ -253,7 +265,9 @@ const Page = () => {
               name="Home_School"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Home School</FormLabel>
+                  <FormLabel>
+                    Home School <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -276,7 +290,9 @@ const Page = () => {
               name="Home_Dept"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Home Department</FormLabel>
+                  <FormLabel>
+                    Home Department <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -299,7 +315,9 @@ const Page = () => {
               name="Hour_Assignment"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assigned Hours</FormLabel>
+                  <FormLabel>
+                    Assigned Hours <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="20.0" {...field} />
                   </FormControl>
