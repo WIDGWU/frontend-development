@@ -1,4 +1,7 @@
 "use client";
+
+import React, { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +23,10 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { addCourseApprovals } from "@/app/api/reports";
+import {
+  getCourseApprovalById,
+  updateCourseApprovals,
+} from "@/app/api/reports";
 import { Input } from "@/components/ui/input";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -35,18 +41,32 @@ const formSchema = z.object({
   }),
   Long_Course_Title: z.string().min(1, "Long Course Title is required"),
   Short_Course_Title: z.string().min(1, "Short Course Title is required"),
-  Effective_Term: z.string(),
-  Comments: z.string(),
-  Reviewer_Comments: z.string(),
-  Status_Head: z.string(),
-  University_general_education: z.string(),
-  CCAS_general_education: z.string(),
-  Honors: z.string(),
-  Elliott_School_of_International_Affairs: z.string(),
-  Other: z.string(),
+
+  // Effective_Term: z.string().optional(),
+  // Comments: z.string().optional(),
+  // Reviewer_Comments: z.string().optional(),
+  // Status_Head: z.string().optional(),
+  // University_general_education: z.string().optional(),
+  // CCAS_general_education: z.string().optional(),
+  // Honors: z.string().optional(),
+  // Elliott_School_of_International_Affairs: z.string().optional(),
+  // Other: z.string().optional(),
+  Effective_Term: z.string().nullable().optional(),
+  Comments: z.string().nullable().optional(),
+  Reviewer_Comments: z.string().nullable().optional(),
+  Status_Head: z.string().nullable().optional(),
+  University_general_education: z.string().nullable().optional(),
+  CCAS_general_education: z.string().nullable().optional(),
+  Honors: z.string().nullable().optional(),
+  Elliott_School_of_International_Affairs: z.string().nullable().optional(),
+  Other: z.string().nullable().optional(),
 });
 
 const Page = () => {
+  const params = useParams();
+  const id = decodeURIComponent(params.id as string);
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,6 +76,8 @@ const Page = () => {
       Last_Edit_Date: undefined,
       Long_Course_Title: "",
       Short_Course_Title: "",
+
+      // Optional fields with default values
       Effective_Term: "",
       Comments: "",
       Reviewer_Comments: "",
@@ -75,12 +97,6 @@ const Page = () => {
       Course_Title: data.Course_Title,
       Long_Course_Title: data.Long_Course_Title,
       Short_Course_Title: data.Short_Course_Title,
-      Last_Approved_Date: data.Last_Approved_Date
-        ? format(data.Last_Approved_Date, "yyyy-MM-dd")
-        : "",
-      Last_Edit_Date: data.Last_Edit_Date
-        ? format(data.Last_Edit_Date, "yyyy-MM-dd")
-        : "",
 
       // Optional fields with fallback values
       Effective_Term: data?.Effective_Term || "N/A",
@@ -93,12 +109,20 @@ const Page = () => {
       Elliott_School_of_International_Affairs:
         data?.Elliott_School_of_International_Affairs || "N/A",
       Other: data?.Other || "N/A",
+
+      // Date fields
+      Last_Approved_Date: data.Last_Approved_Date
+        ? format(data.Last_Approved_Date, "yyyy-MM-dd")
+        : "",
+      Last_Edit_Date: data.Last_Edit_Date
+        ? format(data.Last_Edit_Date, "yyyy-MM-dd")
+        : "",
     };
 
-    addCourseApprovals(formattedData)
+    updateCourseApprovals(formattedData)
       .then((response) => {
-        if (response.status === "success") {
-          toast.success("Successfully added Course Approval", {
+        if (response.status === 200) {
+          toast.success("Successfully updated Course Approval", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -108,7 +132,10 @@ const Page = () => {
             progress: undefined,
             theme: "light",
           });
-          form.reset();
+          setTimeout(() => {
+            router.push("/admin/course-approval");
+            form.reset();
+          }, 2000);
         } else {
           toast.error("Error adding Course Approval", {
             position: "top-right",
@@ -136,9 +163,62 @@ const Page = () => {
       });
   };
 
+  useEffect(() => {
+    getCourseApprovalById(id)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          const data = response.data;
+          form.reset({
+            Course_Number: data.Course_Number,
+            Course_Title: data.Course_Title,
+            Last_Approved_Date: new Date(data.Last_Approved_Date),
+            Last_Edit_Date: new Date(data.Last_Edit_Date),
+            Long_Course_Title: data.Long_Course_Title,
+            Short_Course_Title: data.Short_Course_Title,
+            Effective_Term: data.Effective_Term,
+            Comments: data.Comments,
+            Reviewer_Comments: data.Reviewer_Comments,
+            Status_Head: data.Status_Head,
+            University_general_education: data.University_general_education,
+            CCAS_general_education: data.CCAS_general_education,
+            Honors: data.Honors,
+            Elliott_School_of_International_Affairs:
+              data.Elliott_School_of_International_Affairs,
+            Other: data.Other,
+          });
+        } else {
+          toast.error("Error fetching Course Approval", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }, [id]);
+
   return (
     <main className="m-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">Approve Courses</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Edit Approved Courses : {id}
+      </h1>
 
       <div className="w-full md:w-1/2 mx-auto bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
         <Form {...form}>
@@ -148,12 +228,18 @@ const Page = () => {
               name="Course_Number"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Course Number <span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>Course Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="AMST 101" {...field} />
+                    <Input
+                      placeholder="AMST 101"
+                      {...field}
+                      readOnly
+                      className="bg-gray-100 cursor-not-allowed border-gray-300"
+                    />
                   </FormControl>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Course Number cannot be changed
+                  </p>
                 </FormItem>
               )}
             />
@@ -164,7 +250,7 @@ const Page = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Course Title <span className="text-red-500">*</span>
+                    Course Title<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="Special Topics" {...field} />
@@ -307,7 +393,11 @@ const Page = () => {
                 <FormItem>
                   <FormLabel>Effective Term</FormLabel>
                   <FormControl>
-                    <Input placeholder="202401" {...field} />
+                    <Input
+                      placeholder="202401"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -316,12 +406,22 @@ const Page = () => {
             <FormField
               control={form.control}
               name="Comments"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Comments</FormLabel>
                   <FormControl>
-                    <Input placeholder="Requesting" {...field} />
+                    <Input
+                      {...field}
+                      value={field.value ?? ""}
+                      placeholder="Requesting"
+                      className={fieldState.invalid ? "border-red-500" : ""}
+                    />
                   </FormControl>
+                  {fieldState.error && (
+                    <p className="text-sm text-red-600">
+                      {fieldState.error.message}
+                    </p>
+                  )}
                 </FormItem>
               )}
             />
@@ -333,7 +433,11 @@ const Page = () => {
                 <FormItem>
                   <FormLabel>Reviewer Comments</FormLabel>
                   <FormControl>
-                    <Input placeholder="Looks good" {...field} />
+                    <Input
+                      placeholder="Looks good"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -349,6 +453,7 @@ const Page = () => {
                     <Input
                       placeholder="Course Activation proposal"
                       {...field}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                 </FormItem>
@@ -365,6 +470,7 @@ const Page = () => {
                     <Input
                       placeholder="University General Education"
                       {...field}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                 </FormItem>
@@ -378,7 +484,11 @@ const Page = () => {
                 <FormItem>
                   <FormLabel>CCAS General Education</FormLabel>
                   <FormControl>
-                    <Input placeholder="CCOM" {...field} />
+                    <Input
+                      placeholder="CCOM"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -391,7 +501,11 @@ const Page = () => {
                 <FormItem>
                   <FormLabel>Honors</FormLabel>
                   <FormControl>
-                    <Input placeholder="Honors" {...field} />
+                    <Input
+                      placeholder="Honors"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -404,7 +518,11 @@ const Page = () => {
                 <FormItem>
                   <FormLabel>Elliot School of International Affairs</FormLabel>
                   <FormControl>
-                    <Input placeholder="ESIC Humanities" {...field} />
+                    <Input
+                      placeholder="ESIC Humanities"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -417,7 +535,11 @@ const Page = () => {
                 <FormItem>
                   <FormLabel>Other</FormLabel>
                   <FormControl>
-                    <Input placeholder="Other" {...field} />
+                    <Input
+                      placeholder="Other"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                 </FormItem>
               )}

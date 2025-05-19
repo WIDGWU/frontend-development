@@ -183,6 +183,49 @@ export const getAllCoursesHistory = async () => {
   }
 };
 
+// Cals get_course_history_by_id endpoint to get course history by id
+export const getCourseApprovalById = async (course_id) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    console.log("This function is called");
+    const response = await axios.get(
+      `${baseURL}${link}get_course_history_by_id/`,
+      {
+        headers,
+        params: { course_id },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// Call update_course_approvals/ endpoint to update course approvals
+export const updateCourseApprovals = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.put(
+      `${baseURL}${link}update_course_approvals/`,
+      data,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating course approvals:", error);
+    throw error;
+  }
+};
+
 // Call /get_course_by_department/ endpoint to get all courses by department
 export const getCourseByDepartment = async () => {
   try {
