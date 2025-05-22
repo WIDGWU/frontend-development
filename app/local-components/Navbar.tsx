@@ -1,10 +1,13 @@
+"use client";
 import Image from "next/image";
 import Search from "@/assets/search.png";
-import Message from "@/assets/message.png";
-import Announcement from "@/assets/announcement.png";
 import Carol from "@/assets/Carol-Hayes.jpg";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Navbar = () => {
+  const { logout, user } = useAuth();
+
   return (
     <div className="flex items-center justify-between p-4">
       {/* SEARCH BAR */}
@@ -18,26 +21,23 @@ const Navbar = () => {
       </div>
       {/* ICONS AND USER */}
       <div className="flex items-center gap-6 justify-end w-full">
-        <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
-          <Image src={Message} alt="" width={20} height={20} />
-        </div>
-        <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer relative">
-          <Image src={Announcement} alt="" width={20} height={20} />
-          <div className="absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-spring text-white rounded-full text-xs">
-            1
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-xs leading-3 font-medium">Carol Hayes</span>
-          <span className="text-[10px] text-gray-500 text-right">Admin</span>
+        {/* User details */}
+        <div className="flex flex-col mr-2">
+          <span className="text-xs leading-3 font-medium">
+            {user?.email || "User"}
+          </span>
+          <span className="text-xs text-gray-500">Admin</span>
         </div>
         <Image
           src={Carol}
           alt=""
-          width={36}
-          height={36}
-          className="rounded-full"
+          width={40}
+          height={40}
+          className="rounded-full object-cover"
         />
+        <Button onClick={logout} variant="outline" size="sm">
+          Log Out
+        </Button>
       </div>
     </div>
   );
