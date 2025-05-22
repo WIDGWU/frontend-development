@@ -5,7 +5,6 @@ import Link from "next/link";
 import Logo from "@/assets/WID_logo.png";
 import ProtectedRoute from "@/app/local-components/ProtectedRoute";
 
-// Basic Dashboard Layout for Admin view
 export default function DashboardLayout({
   children,
 }: Readonly<{

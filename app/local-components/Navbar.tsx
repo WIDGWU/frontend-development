@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
 
 const Navbar = () => {
-  const { logout, user } = useAuth(); // Get the logout function and user from context
+  const { logout, user } = useAuth();
 
   return (
     <div className="flex items-center justify-between p-4">
@@ -21,29 +21,22 @@ const Navbar = () => {
       </div>
       {/* ICONS AND USER */}
       <div className="flex items-center gap-6 justify-end w-full">
-        {/* User details - optionally show username from auth context */}
+        {/* User details */}
         <div className="flex flex-col mr-2">
           <span className="text-xs leading-3 font-medium">
-            {user?.username || "Guest"}
+            {user?.email || "User"}
           </span>
-          <span className="text-[10px] text-gray-500 text-right">
-            {user?.role || ""}
-          </span>
+          <span className="text-xs text-gray-500">Admin</span>
         </div>
-
         <Image
           src={Carol}
           alt=""
-          width={36}
-          height={36}
-          className="rounded-full"
+          width={40}
+          height={40}
+          className="rounded-full object-cover"
         />
-
-        <Button
-          className="bg-red-600 hover:bg-red-700"
-          onClick={logout} // Add the onClick handler
-        >
-          Logout
+        <Button onClick={logout} variant="outline" size="sm">
+          Log Out
         </Button>
       </div>
     </div>
