@@ -348,3 +348,28 @@ export const deleteGraduateAssistant = async (data) => {
     throw error;
   }
 };
+
+// Call upload_courses/ to upload excel file
+export const uploadCourses = async (formData) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.post(
+      `${baseURL}${link}upload_courses/`,
+      formData,
+      {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading courses:", error);
+    throw error;
+  }
+};
