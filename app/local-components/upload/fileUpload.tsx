@@ -39,7 +39,7 @@ const FileUpload = () => {
       .then((response) => {
         console.log("File uploaded successfully:", response);
 
-        toast.success("File uploaded successfully", {
+        toast.success(response.message, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
