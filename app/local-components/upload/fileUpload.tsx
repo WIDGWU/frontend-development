@@ -13,7 +13,7 @@ const FileUpload = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const acceptedFileExtensions = ["xlsx", "xls"];
+  const acceptedFileExtensions = ["xlsx", "xlsm"];
 
   const acceptedFileTypesString = acceptedFileExtensions
     .map((ext) => `.${ext}`)
