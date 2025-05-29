@@ -6,7 +6,11 @@ import { getReports } from "@/app/api/reports";
 const ComparisonBarChart = dynamic(() => import("./ComparisonBarChart"));
 const TermSelector = dynamic(() => import("./TermSelector"));
 
-const GraphsForTerm = () => {
+interface GraphsForTermProps {
+  filterValues: string[];
+}
+
+const GraphsForTerm = ({ filterValues }: GraphsForTermProps) => {
   const [yearlyBasedSeats, setYearlyBasedSeats] = useState<any>([]);
   const [selectedTerm, setSelectedTerm] = useState<string[]>([]);
   const [onlyYear, setOnlyYear] = useState<number[]>([]);
@@ -61,6 +65,7 @@ const GraphsForTerm = () => {
     <div>
       <h1 className="font-bold text-2xl mb-4">Comparison of different Terms</h1>
       <TermSelector
+        filterValues={filterValues}
         selectedTerm={selectedTerm}
         setSelectedTerm={setSelectedTerm}
       />

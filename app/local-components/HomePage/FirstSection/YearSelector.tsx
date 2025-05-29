@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,28 +11,33 @@ import upIcon from "@/assets/up-icon.png";
 import downIcon from "@/assets/down-icon.png";
 import Image from "next/image";
 
-const YearSelector = ({ setYear }: { setYear: (year: number) => void }) => {
+const YearSelector = ({
+  filterValues,
+  setYear,
+}: {
+  filterValues: string[];
+  setYear: (year: number) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
+
+  // Create dynamic terms array from filterValues
+  const terms = useMemo(() => {
+    const years = filterValues.map((item) => item.substring(0, 4));
+    const uniqueYears = [...new Set(years)];
+    const sortedYears = uniqueYears.sort((a, b) => parseInt(b) - parseInt(a));
+    return sortedYears.map((year) => {
+      const nextYear = (parseInt(year) + 1).toString();
+      return `${year}-${nextYear}`;
+    });
+  }, [filterValues]);
 
   const handleRadioChange = (term: string) => {
     setSelectedTerm(term);
     setYear(parseInt(term.split("-")[0]));
   };
 
-  const terms = [
-    "2024-2025",
-    "2023-2024",
-    "2022-2023",
-    "2021-2022",
-    "2020-2021",
-    "2019-2020",
-    "2018-2019",
-    "2017-2018",
-    "2016-2017",
-    "2015-2016",
-    "2014-2015",
-  ];
+  console.log("filterValues in YearSelector:", filterValues);
 
   return (
     <div className="flex items-center select-none">

@@ -66,7 +66,6 @@ const formSchema = z.object({
 const Page = () => {
   const [gaType, setGAType] = useState([]);
   const [homeSchool, setHomeSchool] = useState([]);
-  const [homeDepartment, setHomeDepartment] = useState([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,6 +83,7 @@ const Page = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    // console.log("Form Data:", data);
     addGraduateAssistant(data)
       .then((response) => {
         if (response.status === "success") {
@@ -133,7 +133,6 @@ const Page = () => {
     getGACategoryDetails().then((data) => {
       setGAType(data.GA_Type);
       setHomeSchool(data.Home_School);
-      setHomeDepartment(data.Home_Dept);
     });
   }, []);
 
@@ -293,20 +292,9 @@ const Page = () => {
                   <FormLabel>
                     Home Department <span className="text-red-500">*</span>
                   </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Home Department" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {homeDepartment.map((dept, index) => (
-                        <SelectItem key={index} value={dept}>
-                          {dept}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <Input placeholder="CCAS" {...field} />
+                  </FormControl>
                 </FormItem>
               )}
             />

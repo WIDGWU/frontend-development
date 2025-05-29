@@ -6,7 +6,11 @@ import YearSelector from "@/app/local-components/HomePage/FirstSection/YearSelec
 const TermCard = dynamic(() => import("./TermCard"));
 const DifferenceCard = dynamic(() => import("./DifferenceCard"));
 
-const GraphsForYear = () => {
+interface GraphsForTermProps {
+  filterValues: string[];
+}
+
+const GraphsForYear = ({ filterValues }: GraphsForTermProps) => {
   const [formattedReports, setFormattedReports] = useState<any>({});
   const [year, setYear] = useState(2024);
 
@@ -124,7 +128,7 @@ const GraphsForYear = () => {
       <h1 className="font-bold text-2xl mb-4">
         Comparison of seats for Fall, Spring and Summer term
       </h1>
-      <YearSelector setYear={setYear} />
+      <YearSelector filterValues={filterValues} setYear={setYear} />
 
       <div className="flex gap-4 justify-between flex-wrap my-4">
         <TermCard

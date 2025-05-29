@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,49 +12,26 @@ import downIcon from "@/assets/down-icon.png";
 import Image from "next/image";
 
 const TermSelector = ({
+  filterValues,
   selectedTerm,
   setSelectedTerm,
 }: {
+  filterValues: string[];
   selectedTerm: string[];
   setSelectedTerm: (term: string[]) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // these are the terms that are available to select, it should also come from backend
-  const [availableTerms, setAvailableTerms] = useState<string[]>([
-    "202401",
-    "202402",
-    "202403",
-    "202301",
-    "202302",
-    "202303",
-    "202201",
-    "202202",
-    "202203",
-    "202101",
-    "202102",
-    "202103",
-    "202001",
-    "202002",
-    "202003",
-    "201901",
-    "201902",
-    "201903",
-    "201801",
-    "201802",
-    "201803",
-    "201701",
-    "201702",
-    "201703",
-    "201601",
-    "201602",
-    "201603",
-    "201501",
-    "201502",
-    "201503",
-    "201401",
-    "201402",
-    "201403",
-  ]);
+
+  const [availableTerms, setAvailableTerms] = useState<string[]>([]);
+
+  // Update availableTerms when years or selectedTerm changes
+  useEffect(() => {
+    // Filter out terms that are already selected
+    const filteredTerms = filterValues.filter(
+      (term) => !selectedTerm.includes(term)
+    );
+    setAvailableTerms(filteredTerms);
+  }, [filterValues, selectedTerm]);
 
   // function to handle the checkbox
   const handleCheckbox = (term: string) => {

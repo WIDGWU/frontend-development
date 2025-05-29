@@ -24,10 +24,14 @@ const SeatsGraph = ({
     <div className="bg-white rounded-xl w-full h-full p-4 m-2">
       <div className="flex justify-between items-center">
         <h1 className="text-lg font-semibold">
-          Seats Available vs Enrolled Seats from {selectedRange} to{" "}
+          Seats Available vs Enrolled Seats from AY {selectedRange} to AY{" "}
           {selectedRange !== null && selectedRange - 4}
         </h1>
         <Image src={moreIcon} alt="" width={20} height={20} />
+      </div>
+      <div className="text-sm  m-2">
+        NOTE: The Year Like 2024 generally indicates the value of AY calendar as
+        202402, 202403, 202501.
       </div>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart
