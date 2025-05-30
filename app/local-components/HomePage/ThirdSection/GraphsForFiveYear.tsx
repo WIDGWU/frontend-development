@@ -5,7 +5,11 @@ import CoursesAvailable from "./CoursesAvailable";
 import RangeSelector from "./RangeSelector";
 import { getFiveYearReport } from "@/app/api/reports";
 
-const GraphsForFiveYear = () => {
+interface GraphsForFiveYearProps {
+  filterValues: string[];
+}
+
+const GraphsForFiveYear = ({ filterValues }: GraphsForFiveYearProps) => {
   const [selectedRange, setSelectedRange] = useState<number | null>(null);
   const [rangeData, setRangeData] = useState<any[]>([]);
 
@@ -26,10 +30,11 @@ const GraphsForFiveYear = () => {
     <div>
       <h1 className="font-bold text-2xl mb-4">5 year reports</h1>
       <RangeSelector
+        filterValues={filterValues}
         selectedRange={selectedRange}
         setSelectedRange={setSelectedRange}
       />
-      <div className="w-full h-[500px] flex items-center justify-center">
+      <div className="w-full h-[800px] flex items-start justify-center gap-4 py-6">
         <SeatsGraph rangeData={rangeData} selectedRange={selectedRange} />
 
         <CoursesAvailable rangeData={rangeData} selectedRange={selectedRange} />

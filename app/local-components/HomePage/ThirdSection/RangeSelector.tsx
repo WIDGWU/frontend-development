@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +12,11 @@ import downIcon from "@/assets/down-icon.png";
 import Image from "next/image";
 
 const RangeSelector = ({
+  filterValues,
   selectedRange,
   setSelectedRange,
 }: {
+  filterValues: string[];
   selectedRange: number | null;
   setSelectedRange: (range: number | null) => void;
 }) => {
@@ -26,16 +28,29 @@ const RangeSelector = ({
     setSelectedRange(startYear);
   };
 
+  console.log("Filter Values:", filterValues);
   // range to be collected from backend
-  const yearRange = [
-    "2024-2020",
-    "2023-2019",
-    "2022-2018",
-    "2021-2017",
-    "2020-2016",
-    "2019-2015",
-    "2018-2014",
-  ];
+  // Create dynamic terms array from filterValues
+  const yearRange = useMemo(() => {
+    const years = filterValues.map((item) => item.substring(0, 4));
+
+    const uniqueYears = [...new Set(years)];
+    const sortedYears = uniqueYears.sort((a, b) => parseInt(b) - parseInt(a));
+    return sortedYears.map((year) => {
+      const prevYear = (parseInt(year) - 4).toString();
+      return `${year}-${prevYear}`;
+    });
+  }, [filterValues]);
+
+  // const yearRange = [
+  //   "2024-2020",
+  //   "2023-2019",
+  //   "2022-2018",
+  //   "2021-2017",
+  //   "2020-2016",
+  //   "2019-2015",
+  //   "2018-2014",
+  // ];
 
   return (
     <div className="flex items-center select-none">
