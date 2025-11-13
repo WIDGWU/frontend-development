@@ -6,7 +6,7 @@ const link = "/api/";
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
 // const link = "/";
 
-// Calls /annural_report/ endpoint to get all reports for that specific year
+// Calls /annual_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
   try {
     const headers = {
@@ -21,6 +21,30 @@ export const getReports = async (year) => {
       }
     );
 
+    console.log("Response data:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// Calls /annual_report/ endpoint to get all reports for that specific year
+export const getReportsByTerm = async (term) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}${link}report_by_term/?term=${term}`,
+      {
+        headers,
+      }
+    );
+
+    console.log("Term Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -355,7 +379,7 @@ export const uploadCourses = async (formData) => {
     const headers = {
       "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
-    };
+    };  
 
     const response = await axios.post(
       `${baseURL}${link}upload_courses/`,

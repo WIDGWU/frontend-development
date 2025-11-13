@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import upIcon from "@/assets/up-icon.png";
 import downIcon from "@/assets/down-icon.png";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 const TermSelector = ({
   filterValues,
@@ -93,15 +94,18 @@ const TermSelector = ({
 
       <div className="flex flex-wrap gap-2">
         {selectedTerm.map((term) => (
-          <span
+          <p
             key={term}
-            className="bg-gray-200 px-4 py-3 rounded-full text-sm"
+            className="flex items-center justify-center bg-gray-200 px-4 py-3 rounded-full text-sm"
           >
+            <span>
+
             {term}
+            </span>
             <button onClick={() => handleRemoveTerm(term)} className="ml-2">
-              X
+              <X size={16} className="p-0.5 bg-black text-white rounded-full" />
             </button>
-          </span>
+          </p>
         ))}
       </div>
     </div>

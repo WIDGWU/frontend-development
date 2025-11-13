@@ -9,30 +9,13 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 const ComparisonBarChart = ({
-  selectedTerm,
-  yearlyBasedSeats,
+  termBasedSeats
 }: {
-  selectedTerm: string[];
-  yearlyBasedSeats: any;
+  termBasedSeats: {name: string, seats: number}[];
 }) => {
-  const [sampleData, setSampleData] = useState<any[]>([]);
-
-  // Format the data for the bar chart
-  useEffect(() => {
-    const newSampleData = selectedTerm.map((term) => {
-      const yearData = yearlyBasedSeats.find(
-        (seat: any) => seat.year === parseInt(term.slice(0, 4))
-      );
-      return {
-        name: term,
-        seats: yearData ? yearData[term] : 0,
-      };
-    });
-    setSampleData(newSampleData);
-  }, [selectedTerm, yearlyBasedSeats]);
 
   return (
     <div className="bg-white rounded-xl w-full h-full p-4 m-2">
@@ -46,7 +29,7 @@ const ComparisonBarChart = ({
           <BarChart
             width={500}
             height={300}
-            data={sampleData}
+            data={termBasedSeats}
             margin={{
               top: 5,
               right: 30,

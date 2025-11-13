@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
-import { getReports } from "@/app/api/reports";
+import { getReportsByTerm } from "@/app/api/reports";
 
 const ComparisonBarChart = dynamic(() => import("./ComparisonBarChart"));
 const TermSelector = dynamic(() => import("./TermSelector"));
@@ -11,30 +11,33 @@ interface GraphsForTermProps {
 }
 
 const GraphsForTerm = ({ filterValues }: GraphsForTermProps) => {
-  const [yearlyBasedSeats, setYearlyBasedSeats] = useState<any>([]);
+  // const [yearlyBasedSeats, setYearlyBasedSeats] = useState<any>([]);
   const [selectedTerm, setSelectedTerm] = useState<string[]>([]);
   const [onlyYear, setOnlyYear] = useState<number[]>([]);
+  const [termBasedSeats, setTermBasedSeats] = useState<
+    { name: string; seats: number }[]
+  >([]);
 
   // Function to format the data for the bar chart
-  const formatYearBasedSeats = (reports: any, year: number) => {
-    const academicYear = `${year}-${year + 1}`;
-    const springCode = `${year}01`;
-    const summerCode = `${year}02`;
-    const fallCode = `${year}03`;
-    return {
-      year,
-      [fallCode]:
-        reports[`Total Fall Seats Available for academic year ${academicYear}`],
-      [springCode]:
-        reports[
-          `Total Spring Seats Available for academic year ${academicYear}`
-        ],
-      [summerCode]:
-        reports[
-          `Total Summer Seats Available for academic year ${academicYear}`
-        ],
-    };
-  };
+  // const formatYearBasedSeats = (reports: any, year: number) => {
+  //   const academicYear = `${year}-${year + 1}`;
+  //   const springCode = `${year}01`;
+  //   const summerCode = `${year}02`;
+  //   const fallCode = `${year}03`;
+  //   return {
+  //     year,
+  //     [fallCode]:
+  //       reports[`Total Fall Seats Available for academic year ${academicYear}`],
+  //     [springCode]:
+  //       reports[
+  //         `Total Spring Seats Available for academic year ${academicYear}`
+  //       ],
+  //     [summerCode]:
+  //       reports[
+  //         `Total Summer Seats Available for academic year ${academicYear}`
+  //       ],
+  //   };
+  // };
 
   // Fetch the reports for the selected years
   useEffect(() => {
@@ -46,14 +49,25 @@ const GraphsForTerm = ({ filterValues }: GraphsForTermProps) => {
 
   useEffect(() => {
     const fetchReports = async () => {
-      const reports = await Promise.all(
-        onlyYear.map((year) => getReports(year))
-      );
-      const formatted = reports.map((report, index) =>
-        formatYearBasedSeats(report, onlyYear[index])
+      // const reports = await Promise.all(
+      //   onlyYear.map((year) => getReports(year))
+      // );
+
+      const seatsReports = await Promise.all(
+        selectedTerm.map((term) => getReportsByTerm(term))
       );
 
-      setYearlyBasedSeats(formatted);
+      const formattedSeats = seatsReports.map((report) => {
+        return { name: report.term, seats: report.total_seats };
+      });
+
+      setTermBasedSeats(formattedSeats);
+
+      // const formatted = reports.map((report, index) =>
+      //   formatYearBasedSeats(report, onlyYear[index])
+      // );
+
+      // setYearlyBasedSeats(formatted);
     };
 
     if (onlyYear.length > 0) {
@@ -71,8 +85,9 @@ const GraphsForTerm = ({ filterValues }: GraphsForTermProps) => {
       />
       <div className="w-full flex items-center justify-center my-2">
         <ComparisonBarChart
-          selectedTerm={selectedTerm}
-          yearlyBasedSeats={yearlyBasedSeats}
+          // selectedTerm={selectedTerm}
+          // yearlyBasedSeats={yearlyBasedSeats}
+          termBasedSeats={termBasedSeats}
         />
       </div>
     </div>
