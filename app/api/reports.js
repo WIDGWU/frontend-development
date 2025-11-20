@@ -1,10 +1,8 @@
 import axios from "axios";
 // For production
 const baseURL = process.env.NEXT_PUBLIC_BASE_NGINX_PROD;
-const link = "/api/";
 // For local development
 // const baseURL = process.env.NEXT_PUBLIC_BASE_URL_LOCAL;
-// const link = "/";
 
 // Calls /annual_report/ endpoint to get all reports for that specific year
 export const getReports = async (year) => {
@@ -15,7 +13,7 @@ export const getReports = async (year) => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}annual_report/?year=${year}`,
+      `${baseURL}annual_report/?year=${year}`,
       {
         headers,
       }
@@ -38,7 +36,7 @@ export const getReportsByTerm = async (term) => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}report_by_term/?term=${term}`,
+      `${baseURL}report_by_term/?term=${term}`,
       {
         headers,
       }
@@ -60,7 +58,7 @@ export const getGADetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}${link}get_all_GA/`, {
+    const response = await axios.get(`${baseURL}get_all_GA/`, {
       headers,
     });
     return response.data;
@@ -78,7 +76,7 @@ export const getCollectiveGADetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}${link}get_collective_GA/`, {
+    const response = await axios.get(`${baseURL}get_collective_GA/`, {
       headers,
     });
     return response.data;
@@ -96,7 +94,7 @@ export const getGACategoryDetails = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}${link}get_GA_category/`, {
+    const response = await axios.get(`${baseURL}get_GA_category/`, {
       headers,
     });
     return response.data;
@@ -114,7 +112,7 @@ export const getCollectiveFilteredGA = async (selectedCourseTerm) => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}get_collective_GA/?course_term=${selectedCourseTerm}`,
+      `${baseURL}get_collective_GA/?course_term=${selectedCourseTerm}`,
       {
         headers,
       }
@@ -135,7 +133,7 @@ export const getFiveYearReport = async (year) => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}wid_5y_report/?year=${year}`,
+      `${baseURL}wid_5y_report/?year=${year}`,
       {
         headers,
       }
@@ -155,7 +153,7 @@ export const getAllCourses = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}${link}get_all_courses/`, {
+    const response = await axios.get(`${baseURL}get_all_courses/`, {
       headers,
     });
     return response.data;
@@ -174,7 +172,7 @@ export const getCourseCategory = async () => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}get_course_categories/`,
+      `${baseURL}get_course_categories/`,
       {
         headers,
       }
@@ -195,7 +193,7 @@ export const getAllCoursesHistory = async () => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}get_all_courses_history/`,
+      `${baseURL}get_all_courses_history/`,
       {
         headers,
       }
@@ -217,7 +215,7 @@ export const getCourseApprovalById = async (course_id) => {
 
     console.log("This function is called");
     const response = await axios.get(
-      `${baseURL}${link}get_course_history_by_id/`,
+      `${baseURL}get_course_history_by_id/`,
       {
         headers,
         params: { course_id },
@@ -239,7 +237,7 @@ export const updateCourseApprovals = async (data) => {
     };
 
     const response = await axios.put(
-      `${baseURL}${link}update_course_approvals/`,
+      `${baseURL}update_course_approvals/`,
       data,
       { headers }
     );
@@ -259,7 +257,7 @@ export const getCourseByDepartment = async () => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}get_course_number_by_department/`,
+      `${baseURL}get_course_number_by_department/`,
       {
         headers,
       }
@@ -279,7 +277,7 @@ export const getDepartmentInfo = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}${link}get_department_info/`, {
+    const response = await axios.get(`${baseURL}get_department_info/`, {
       headers,
     });
     return response.data;
@@ -298,7 +296,7 @@ export const getEachDepartmentStatistics = async (department) => {
     };
 
     const response = await axios.get(
-      `${baseURL}${link}get_each_department_statistics/`,
+      `${baseURL}get_each_department_statistics/`,
       {
         headers,
         params: { department },
@@ -320,7 +318,7 @@ export const addGraduateAssistant = async (data) => {
     };
 
     const response = await axios.post(
-      `${baseURL}${link}add_graduate_assistant/`,
+      `${baseURL}add_graduate_assistant/`,
       data,
       { headers }
     );
@@ -340,7 +338,7 @@ export const addCourseApprovals = async (data) => {
     };
 
     const response = await axios.post(
-      `${baseURL}${link}add_course_approvals/`,
+      `${baseURL}add_course_approvals/`,
       data,
       { headers }
     );
@@ -360,7 +358,7 @@ export const deleteGraduateAssistant = async (data) => {
     };
 
     const response = await axios.delete(
-      `${baseURL}${link}delete_graduate_assistant/`,
+      `${baseURL}delete_graduate_assistant/`,
       {
         headers,
         data,
@@ -382,7 +380,7 @@ export const uploadCourses = async (formData) => {
     };  
 
     const response = await axios.post(
-      `${baseURL}${link}upload_courses/`,
+      `${baseURL}upload_courses/`,
       formData,
       {
         headers: {
