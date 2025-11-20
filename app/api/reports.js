@@ -19,7 +19,7 @@ export const getReports = async (year) => {
       }
     );
 
-    console.log("Response data:", response.data);
+    // console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -42,7 +42,7 @@ export const getReportsByTerm = async (term) => {
       }
     );
 
-    console.log("Term Response data:", response.data);
+    // console.log("Term Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -213,7 +213,7 @@ export const getCourseApprovalById = async (course_id) => {
       accept: "application/json",
     };
 
-    console.log("This function is called");
+    // console.log("This function is called");
     const response = await axios.get(
       `${baseURL}get_course_history_by_id/`,
       {
