@@ -7,12 +7,14 @@ const TermCard = dynamic(() => import("./TermCard"));
 const DifferenceCard = dynamic(() => import("./DifferenceCard"));
 
 interface GraphsForTermProps {
-  filterValues: string[];
+  filterValues: { year: number; academicYear: string }[];
 }
 
 const GraphsForYear = ({ filterValues }: GraphsForTermProps) => {
   const [formattedReports, setFormattedReports] = useState<any>({});
-  const [year, setYear] = useState(2024);
+  const [year, setYear] = useState(
+    filterValues[0]?.year || new Date().getFullYear()
+  );
 
   // The data from API comes is specific format, so you should use it like this
 

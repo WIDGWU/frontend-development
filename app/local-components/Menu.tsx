@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 
 // these are all the menu items that will be displayed in the admin dashboard
 const menuItems = [
-  { name: "Home", href: "/admin/", icon: homeIcon },
+  { name: "Home", href: "/admin", icon: homeIcon },
   { name: "Departments", href: "/admin/departments", icon: departmentsIcon },
   {
     name: "Graduate Assistants",

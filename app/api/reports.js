@@ -156,6 +156,7 @@ export const getAllCourses = async () => {
     const response = await axios.get(`${baseURL}get_all_courses/`, {
       headers,
     });
+    console.log("All Courses:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -177,6 +178,7 @@ export const getCourseCategory = async () => {
         headers,
       }
     );
+    console.log("Course Categories:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);

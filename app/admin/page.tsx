@@ -4,10 +4,17 @@ import GraphsForTerm from "../local-components/HomePage/SecondSection/GraphsForT
 import GraphsForYear from "../local-components/HomePage/FirstSection/GraphsForYear";
 import { useState, useEffect } from "react";
 import { getCourseCategory } from "@/app/api/reports";
+import { useQuery } from "@tanstack/react-query";
+import { deriveAcademicYears } from "@/lib/helpers";
 
 // Home Page for Admin
 const AdminPage = () => {
   const [years, setYears] = useState<string[]>([]);
+
+  const { data: termCodes, isLoading } = useQuery({
+    queryKey: ["termCodes"],
+    queryFn: () => getCourseCategory(),
+  });
 
   useEffect(() => {
     // Fetch the course categories to get the years
@@ -21,14 +28,18 @@ const AdminPage = () => {
       });
   }, []);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   // console.log("Years fetched:", years);
 
   return (
     <main className="m-4">
       {/* Three graphs are shown, graphs for year, individual term and for five year long period */}
-      <GraphsForYear filterValues={years} />
+      <GraphsForYear filterValues={deriveAcademicYears(termCodes.Course_Term_Code)} />
       <GraphsForTerm filterValues={years} />
-      <GraphsForFiveYear filterValues={years}/>
+      <GraphsForFiveYear filterValues={years} />
     </main>
   );
 };
