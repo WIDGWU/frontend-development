@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import homeIcon from "@/assets/home.png";
@@ -7,10 +8,11 @@ import coursesIcon from "@/assets/courses.png";
 import annualReportIcon from "@/assets/annual-report.png";
 import courseHistoryIcon from "@/assets/course-history.png";
 import uploadCoursesIcon from "@/assets/upload-courses.png";
+import { usePathname } from "next/navigation";
 
 // these are all the menu items that will be displayed in the admin dashboard
 const menuItems = [
-  { name: "Home", href: "/admin", icon: homeIcon },
+  { name: "Home", href: "/admin/", icon: homeIcon },
   { name: "Departments", href: "/admin/departments", icon: departmentsIcon },
   {
     name: "Graduate Assistants",
@@ -36,10 +38,12 @@ const menuItems = [
 ];
 
 const Menu = () => {
+const pathname = usePathname()
+
   return (
     <div className="mt-4 text-sm ">
       {menuItems.map((item) => (
-        <div className="flex flex-col gap-4" key={item.name}>
+        <div className={`flex flex-col gap-4 ${pathname === (item.href) ? "bg-gray-200/90 rounded-md" : ""}`} key={item.name}>
           <Link
             href={item.href}
             className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight"

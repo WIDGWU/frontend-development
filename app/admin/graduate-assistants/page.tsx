@@ -10,10 +10,10 @@ const Page = () => {
         <Tabs defaultValue="individual" className="w-full">
           <TabsList>
             <TabsTrigger value="individual" className="text-xl px-4 py-2">
-              Individual View
+              Individual Courses With GA
             </TabsTrigger>
             <TabsTrigger value="aggregate" className="text-xl px-4 py-2">
-              Aggregate View
+              GA Teaching Record
             </TabsTrigger>
           </TabsList>
           <TabsContent value="individual">
