@@ -7,10 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import upIcon from "@/assets/up-icon.png";
-import downIcon from "@/assets/down-icon.png";
-import Image from "next/image";
-import { X } from "lucide-react";
+import { ArrowDown, X } from "lucide-react";
 
 const TermSelector = ({
   filterValues,
@@ -53,23 +50,14 @@ const TermSelector = ({
         <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
           <DropdownMenuTrigger asChild>
             <Button
-              className="relative px-4 py-2 border border-gray-300 rounded bg-white text-black cursor-pointer flex items-center hover:bg-[#F9F9F8] focus:outline-none"
+              className="relative px-4 py-2 border border-gray-300 rounded bg-white text-black cursor-pointer flex items-center gap-1 hover:bg-[#F9F9F8] focus:outline-none"
               onClick={() => setIsOpen(!isOpen)}
             >
-              Term
-              <span className="ml-1"></span>
-              <Image
-                src={upIcon}
-                alt="up icon"
-                className={`absolute right-2 w-4 h-4 transition-opacity duration-300 ease-in-out ${
-                  isOpen ? "opacity-100" : "opacity-0"
-                }`}
-              />
-              <Image
-                src={downIcon}
-                alt="down icon"
-                className={`absolute right-2 w-4 h-4 transition-opacity duration-300 ease-in-out ${
-                  isOpen ? "opacity-0" : "opacity-100"
+              <span>Term</span>
+
+              <ArrowDown
+                className={`transition-all duration-300 ${
+                  isOpen ? "-rotate-180" : ""
                 }`}
               />
             </Button>
@@ -98,10 +86,7 @@ const TermSelector = ({
             key={term}
             className="flex items-center justify-center bg-gray-200 px-4 py-3 rounded-full text-sm"
           >
-            <span>
-
-            {term}
-            </span>
+            <span>{term}</span>
             <button onClick={() => handleRemoveTerm(term)} className="ml-2">
               <X size={16} className="p-0.5 bg-black text-white rounded-full" />
             </button>

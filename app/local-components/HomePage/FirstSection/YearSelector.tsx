@@ -21,17 +21,6 @@ const YearSelector = ({
     filterValues[0]?.academicYear || null
   );
 
-  // Create dynamic terms array from filterValues
-  // const terms = useMemo(() => {
-  //   const years = filterValues.map((item) => item.substring(0, 4));
-  //   const uniqueYears = [...new Set(years)];
-  //   const sortedYears = uniqueYears.sort((a, b) => parseInt(b) - parseInt(a));
-  //   return sortedYears.map((year) => {
-  //     const nextYear = (parseInt(year) + 1).toString();
-  //     return `${year}-${nextYear}`;
-  //   });
-  // }, [filterValues]);
-
   const handleRadioChange = (term: { year: number; academicYear: string }) => {
     setSelectedTerm(term.academicYear);
     setYear(term.year);

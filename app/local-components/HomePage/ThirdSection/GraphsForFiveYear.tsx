@@ -6,7 +6,7 @@ import RangeSelector from "./RangeSelector";
 import { getFiveYearReport } from "@/app/api/reports";
 
 interface GraphsForFiveYearProps {
-  filterValues: string[];
+  filterValues: {startYear:number, range: string}[];
 }
 
 const GraphsForFiveYear = ({ filterValues }: GraphsForFiveYearProps) => {
@@ -16,6 +16,7 @@ const GraphsForFiveYear = ({ filterValues }: GraphsForFiveYearProps) => {
   // Fetch data for the selected range
   useEffect(() => {
     if (selectedRange !== null) {
+      console.log("Selected Range:", selectedRange);
       getFiveYearReport(selectedRange).then((data) => {
         const endYear = selectedRange;
         const startYear = endYear - 4;

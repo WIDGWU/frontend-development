@@ -24,7 +24,7 @@ const CoursesAvailable = ({
     <div className="bg-white rounded-xl w-full h-full p-4 m-2">
       <div className="flex justify-between items-center">
         <h1 className="text-lg font-semibold">
-          Total Sections Available vs total courses seats available for AY{" "}
+          Total Sections Available vs Total Courses available for AY{" "}
           {selectedRange} to AY {selectedRange !== null && selectedRange - 4}
         </h1>
         <Image src={moreIcon} alt="" width={20} height={20} />
