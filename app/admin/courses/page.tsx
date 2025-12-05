@@ -14,6 +14,7 @@ import {
   DepartmentFilter,
   InstructorFilter,
 } from "@/app/local-components/CoursePage/CourseFilter";
+import { colleges } from "@/app/helpers/constants";
 interface Course {
   COURSE_ID: string;
   Course: string;
@@ -48,9 +49,9 @@ const Courses = () => {
     null
   );
 
-  const [courseCollegeDescription, setCourseDescription] = useState<string[]>(
-    []
-  );
+  // const [courseCollegeDescription, setCourseCollegeDescription] = useState<
+  //   string[]
+  // >(Object.keys(colleges));
   const [
     selectedCourseCollegeDescription,
     setSelectedCourseCollegeDescription,
@@ -81,7 +82,7 @@ const Courses = () => {
     });
     getCourseCategory().then((data) => {
       setCourseTerm(data.Course_Term_Code);
-      setCourseDescription(data.Course_College_Desc);
+      // setCourseCollegeDescription(data.Course_College_Desc);
       setCourseNumberPrefix(data.Course_Prefix);
       setInstructor(data.Instructor_Full_Name);
     });
@@ -89,6 +90,7 @@ const Courses = () => {
 
   // Filter data based on selected filters
   useEffect(() => {
+    setLoading(true);
     let filtered = courses;
     if (selectedCourseTerm) {
       filtered = filtered.filter(
@@ -96,8 +98,10 @@ const Courses = () => {
       );
     }
     if (selectedCourseCollegeDescription) {
+      const validNames = colleges[selectedCourseCollegeDescription];
       filtered = filtered.filter(
-        (c) => c.Course_College_Desc === selectedCourseCollegeDescription
+        (c) => validNames.aliases.includes(c.Course_College_Desc)
+        // (c) => c.Course_College_Desc === selectedCourseCollegeDescription
       );
     }
     if (selectedCourseNumberPrefix) {
@@ -111,6 +115,7 @@ const Courses = () => {
       );
     }
     setFilteredCourses(filtered);
+    setLoading(false);
   }, [
     selectedCourseTerm,
     selectedCourseCollegeDescription,
@@ -131,7 +136,7 @@ const Courses = () => {
             setSelectedCourseTerm={setSelectedCourseTerm}
           />
           <CourseCollegeDescriptionFilter
-            courseCollegeDescription={courseCollegeDescription}
+            courseCollegeDescription={Object.keys(colleges)}
             selectedCourseCollegeDescription={selectedCourseCollegeDescription}
             setSelectedCourseCollegeDescription={
               setSelectedCourseCollegeDescription

@@ -12,17 +12,35 @@ export const getReports = async (year) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}annual_report/?year=${year}`,
+    const response = await axios.get(`${baseURL}annual_report/?year=${year}`, {
+      headers,
+    });
+
+    console.log("Response data:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+export const deleteRecordsByTermCode = async (termCode) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.delete(
+      `${baseURL}delete_term/?term_code=${termCode}`,
       {
         headers,
       }
     );
 
-    // console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error fetching reports:", error);
+    console.error("Error deleting term records:", error);
     throw error;
   }
 };
@@ -35,12 +53,9 @@ export const getReportsByTerm = async (term) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}report_by_term/?term=${term}`,
-      {
-        headers,
-      }
-    );
+    const response = await axios.get(`${baseURL}report_by_term/?term=${term}`, {
+      headers,
+    });
 
     // console.log("Term Response data:", response.data);
     return response.data;
@@ -132,12 +147,9 @@ export const getFiveYearReport = async (year) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}wid_5y_report/?year=${year}`,
-      {
-        headers,
-      }
-    );
+    const response = await axios.get(`${baseURL}wid_5y_report/?year=${year}`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -172,12 +184,9 @@ export const getCourseCategory = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}get_course_categories/`,
-      {
-        headers,
-      }
-    );
+    const response = await axios.get(`${baseURL}get_course_categories/`, {
+      headers,
+    });
     console.log("Course Categories:", response.data);
     return response.data;
   } catch (error) {
@@ -194,12 +203,9 @@ export const getAllCoursesHistory = async () => {
       accept: "application/json",
     };
 
-    const response = await axios.get(
-      `${baseURL}get_all_courses_history/`,
-      {
-        headers,
-      }
-    );
+    const response = await axios.get(`${baseURL}get_all_courses_history/`, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -216,13 +222,10 @@ export const getCourseApprovalById = async (course_id) => {
     };
 
     // console.log("This function is called");
-    const response = await axios.get(
-      `${baseURL}get_course_history_by_id/`,
-      {
-        headers,
-        params: { course_id },
-      }
-    );
+    const response = await axios.get(`${baseURL}get_course_history_by_id/`, {
+      headers,
+      params: { course_id },
+    });
     return response;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -339,11 +342,9 @@ export const addCourseApprovals = async (data) => {
       accept: "application/json",
     };
 
-    const response = await axios.post(
-      `${baseURL}add_course_approvals/`,
-      data,
-      { headers }
-    );
+    const response = await axios.post(`${baseURL}add_course_approvals/`, data, {
+      headers,
+    });
     return response.data;
   } catch (error) {
     console.error("Error adding course approvals:", error);
@@ -379,18 +380,14 @@ export const uploadCourses = async (formData) => {
     const headers = {
       "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
-    };  
+    };
 
-    const response = await axios.post(
-      `${baseURL}upload_courses/`,
-      formData,
-      {
-        headers: {
-          ...headers,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await axios.post(`${baseURL}upload_courses/`, formData, {
+      headers: {
+        ...headers,
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error uploading courses:", error);
