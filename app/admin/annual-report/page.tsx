@@ -2,7 +2,8 @@
 import { getCourseCategory } from "@/app/api/reports";
 import EnrollmentData from "@/app/local-components/AnnualReportsPage/EnrollmentData";
 import GraduateAssistantData from "@/app/local-components/AnnualReportsPage/GraduateAssistantData";
-import YearSelector from "@/app/local-components/HomePage/FirstSection/YearSelector";
+import YearBanner from "@/app/local-components/AnnualReportsPage/YearBanner";
+import YearSelector from "@/app/local-components/AnnualReportsPage/YearSelector";
 import { deriveAcademicYears } from "@/lib/helpers";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -32,25 +33,12 @@ const Page = () => {
   }
 
   return (
-    <div className="">
-      {/* <YearSelector
-        filterValues={deriveAcademicYears(termCodes.Course_Term_Code)}
-        setYear={setYear}
-      /> */}
-      <div className="p-4">
-        <YearSelector filterValues={academicYears} setYear={setYear} />
-      </div>
+    <div className="p-4 space-y-5">
+      <YearSelector filterValues={academicYears} setYear={setYear} />
 
-      <div className="p-10 bg-blue-300 text-center text-xl">
-        <p>
-          Annual Report for <br />{" "}
-          <span className="font-bold text-4xl">
-            {year} - {year + 1} AY
-          </span>
-        </p>
-      </div>
+      <YearBanner year={year} />
 
-      <div className="p-4">
+      <div className="space-y-10">
         <EnrollmentData year={year} />
 
         <GraduateAssistantData year={year} />
