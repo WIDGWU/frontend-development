@@ -8,22 +8,10 @@ import { deriveAcademicYears, getFiveYearRanges } from "@/lib/helpers";
 
 // Home Page for Admin
 const AdminPage = () => {
-
   const { data: termCodes, isLoading } = useQuery({
     queryKey: ["termCodes"],
     queryFn: () => getCourseCategory(),
   });
-
-  // const handleDelete = async (termCode: string) => {
-  //   try {
-  //     // Call the API to delete records by term code
-  //     const response = await deleteRecordsByTermCode(termCode);
-  //     console.log("Delete response:", response);
-  //     // Optionally, you can refetch data or update the UI accordingly
-  //   } catch (error) {
-  //     console.error("Error deleting records:", error);
-  //   }
-  // }
 
   if (isLoading) {
     return <div>Loading...</div>;

@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAllCourses, getCourseCategory } from "@/app/api/reports";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,12 +67,12 @@ const Courses = () => {
     null
   );
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSelectedCourseTerm(null);
     setSelectedCourseCollegeDescription(null);
     setSelectedCourseNumberPrefix(null);
     setSelectedInstructor(null);
-  };
+  }, []);
 
   useEffect(() => {
     getAllCourses().then((data) => {

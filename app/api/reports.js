@@ -16,7 +16,26 @@ export const getReports = async (year) => {
       headers,
     });
 
-    console.log("Response data:", response.data);
+    console.log("Annual Reports:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+export const getCourseReports = async (year) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(`${baseURL}annual_course_report/?year=${year}`, {
+      headers,
+    });
+
+    console.log("Course Annual Reports:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
