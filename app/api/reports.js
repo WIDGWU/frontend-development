@@ -31,9 +31,12 @@ export const getCourseReports = async (year) => {
       accept: "application/json",
     };
 
-    const response = await axios.get(`${baseURL}annual_course_report/?year=${year}`, {
-      headers,
-    });
+    const response = await axios.get(
+      `${baseURL}annual_course_report/?year=${year}`,
+      {
+        headers,
+      }
+    );
 
     console.log("Course Annual Reports:", response.data);
     return response.data;
@@ -95,6 +98,69 @@ export const getGADetails = async () => {
     const response = await axios.get(`${baseURL}get_all_GA/`, {
       headers,
     });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+export const getGACount = async (year) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}get_annual_ga_count/?year=${year}`,
+      {
+        headers,
+      }
+    );
+    console.log("GA Count:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+export const getGAReport = async (year, type) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}annual_ga_report/?year=${year}&type=${type}`,
+      {
+        headers,
+      }
+    );
+    console.log("GA Report:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+export const getGAStudentsServed = async (year) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(
+      `${baseURL}get_annual_students_served/?year=${year}`,
+      {
+        headers,
+      }
+    );
+    console.log("GA Students Served:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);

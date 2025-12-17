@@ -1,6 +1,7 @@
 "use client";
 import { getCourseCategory } from "@/app/api/reports";
 import EnrollmentData from "@/app/local-components/AnnualReportsPage/EnrollmentData";
+import GraduateAssistantData from "@/app/local-components/AnnualReportsPage/GraduateAssistantData";
 import YearSelector from "@/app/local-components/HomePage/FirstSection/YearSelector";
 import { deriveAcademicYears } from "@/lib/helpers";
 import { useQuery } from "@tanstack/react-query";
@@ -52,88 +53,7 @@ const Page = () => {
       <div className="p-4">
         <EnrollmentData year={year} />
 
-        <div className="space-y-4">
-          <h1>GA Data</h1>
-          <div>
-            <h2>Total</h2>
-            <div>
-              <p>Number of individual WID GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of course sections served by GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of students served</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Salary-Only WID GAs POSITIONS</p>
-              <p></p>
-            </div>
-          </div>
-
-          <div>
-            <h2>Summer {year}</h2>
-            <div>
-              <p>Number of individual WID GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of course sections served by GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of students served</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Salary-Only WID GAs POSITIONS</p>
-              <p></p>
-            </div>
-          </div>
-
-          <div>
-            <h2>Fall {year}</h2>
-            <div>
-              <p>Number of individual WID GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of course sections served by GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of students served</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Salary-Only WID GAs POSITIONS</p>
-              <p></p>
-            </div>
-          </div>
-
-          <div>
-            <h2>Spring {year + 1}</h2>
-            <div>
-              <p>Number of individual WID GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of course sections served by GAs</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Number of students served</p>
-              <p></p>
-            </div>
-            <div>
-              <p>Salary-Only WID GAs POSITIONS</p>
-              <p></p>
-            </div>
-          </div>
-        </div>
+        <GraduateAssistantData year={year} />
       </div>
     </div>
   );
