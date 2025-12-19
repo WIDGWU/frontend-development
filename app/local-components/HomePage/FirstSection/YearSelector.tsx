@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Check } from "lucide-react";
 
 const YearSelector = ({
   filterValues,
@@ -17,48 +17,65 @@ const YearSelector = ({
   setYear: (year: number) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTerm, setSelectedTerm] = useState<string | null>(
-    filterValues[0]?.academicYear || null
-  );
+  const [selectedYear, setSelectedYear] = useState(filterValues[0]);
 
-  const handleRadioChange = (term: { year: number; academicYear: string }) => {
-    setSelectedTerm(term.academicYear);
+  const handleSelect = (term: { year: number; academicYear: string }) => {
+    setSelectedYear(term);
     setYear(term.year);
+    setIsOpen(false);
   };
 
-  console.log("filterValues in YearSelector:", filterValues);
-
   return (
-    <div className="flex items-center select-none">
-      <p className="mr-4">Select a year</p>
-      <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+    <div className="flex items-center gap-3">
+      <span className="text-slate-600 font-medium">Academic Year</span>
+
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <Button
-            className="relative px-4 py-2 border border-gray-300 rounded bg-white text-black cursor-pointer flex items-center gap-1 hover:bg-[#F9F9F8] focus:outline-none"
-            onClick={() => setIsOpen(!isOpen)}
+            variant="outline"
+            className="
+              flex items-center gap-2
+              rounded-full px-4 py-2
+              border-slate-300
+              bg-white
+              hover:bg-slate-50
+              text-slate-800
+              text-md
+            "
           >
-            <span>Year</span>
-
-            <ArrowDown className={`transition-all duration-300 ${isOpen ? "-rotate-180" : ""}`} />
+            <span className="font-medium">{selectedYear?.academicYear}</span>
+            <ArrowDown
+              className={`h-4 w-4 transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="max-h-48 overflow-y-auto">
-          {filterValues.map((term) => (
-            <DropdownMenuItem
-              key={term.academicYear}
-              onSelect={(e) => e.preventDefault()}
-            >
-              <div className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  checked={selectedTerm === term.academicYear}
-                  onChange={() => handleRadioChange(term)}
-                  className="form-radio"
-                />
+
+        <DropdownMenuContent align="start" className="w-44 p-1">
+          {filterValues.map((term) => {
+            const isSelected = selectedYear?.academicYear === term.academicYear;
+
+            return (
+              <DropdownMenuItem
+                key={term.academicYear}
+                onSelect={() => handleSelect(term)}
+                className={`
+                  flex items-center justify-between
+                  cursor-pointer rounded-md px-3 py-2
+                  text-md
+                  ${
+                    isSelected
+                      ? "bg-slate-100 font-medium"
+                      : "hover:bg-slate-50"
+                  }
+                `}
+              >
                 <span>{term.academicYear}</span>
-              </div>
-            </DropdownMenuItem>
-          ))}
+                {isSelected && <Check className="h-4 w-4 text-slate-700" />}
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

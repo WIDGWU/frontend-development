@@ -14,7 +14,7 @@ const EnrollmentData = ({ year }: { year: number }) => {
 
   return (
     <section className="space-y-6">
-      <h2 className="text-xl font-semibold">Enrollment Data</h2>
+      <h2 className="text-center text-2xl font-semibold">Enrollment Data</h2>
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* TOTAL */}
@@ -35,7 +35,7 @@ const EnrollmentData = ({ year }: { year: number }) => {
           />
           <StatItem
             label="Course Sections Offered"
-            value={reports.total_courses}
+            value={reports.total_sections}
           />
           <StatItem
             label="Seat Occupancy Rate"
@@ -59,7 +59,7 @@ const EnrollmentData = ({ year }: { year: number }) => {
           />
           <StatItem
             label="Sections Offered"
-            value={reports.total_summer_courses}
+            value={reports.total_summer_sections}
           />
           <StatItem
             label="Occupancy Rate"
@@ -76,7 +76,7 @@ const EnrollmentData = ({ year }: { year: number }) => {
           <StatItem label="Enrollment" value={reports.total_fall_enrollment} />
           <StatItem
             label="Sections Offered"
-            value={reports.total_fall_courses}
+            value={reports.total_fall_sections}
           />
           <StatItem
             label="Occupancy Rate"
@@ -100,7 +100,7 @@ const EnrollmentData = ({ year }: { year: number }) => {
           />
           <StatItem
             label="Sections Offered"
-            value={reports.total_spring_courses}
+            value={reports.total_spring_sections}
           />
           <StatItem
             label="Occupancy Rate"

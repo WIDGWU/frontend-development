@@ -155,10 +155,11 @@ const GraphsForYear = ({ filterValues }: GraphsForTermProps) => {
       <div className="flex gap-4 justify-between flex-wrap my-4">
         {formattedReports.differenceCards?.map((card: any, index: number) => (
           <DifferenceCard
-            key={index}
+            key={index + card.text}
             text={card.text}
             difference={card.difference}
             percent={card.percent}
+            variant={index % 2 === 0 ? "spring" : "fall"}
           />
         ))}
       </div>

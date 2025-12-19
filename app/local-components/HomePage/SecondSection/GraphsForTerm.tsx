@@ -85,8 +85,6 @@ const GraphsForTerm = ({ filterValues }: GraphsForTermProps) => {
       />
       <div className="w-full flex items-center justify-center my-2">
         <ComparisonBarChart
-          // selectedTerm={selectedTerm}
-          // yearlyBasedSeats={yearlyBasedSeats}
           termBasedSeats={termBasedSeats}
         />
       </div>

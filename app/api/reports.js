@@ -235,6 +235,7 @@ export const getFiveYearReport = async (year) => {
     const response = await axios.get(`${baseURL}wid_5y_report/?year=${year}`, {
       headers,
     });
+    console.log("5 Year Report:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);

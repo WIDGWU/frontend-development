@@ -18,11 +18,11 @@ const AdminPage = () => {
   }
 
   return (
-    <main className="m-4">
-      {/* Three graphs are shown, graphs for year, individual term and for five year long period */}
-      {/* <button onClick={() => handleDelete('202402')}>Delete</button> */}
+    <main className="p-4 space-y-10">
       <GraphsForYear filterValues={deriveAcademicYears(termCodes.Course_Term_Code)} />
+      
       <GraphsForTerm filterValues={termCodes.Course_Term_Code} />
+      
       <GraphsForFiveYear filterValues={getFiveYearRanges(termCodes.Course_Term_Code)} />
     </main>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const RangeSelector = ({
   filterValues,
@@ -20,46 +20,72 @@ const RangeSelector = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Handle radio change
-  const handleRadioChange = (year: { startYear: number; range: string }) => {
+  const selectedLabel = useMemo(() => {
+    return (
+      filterValues.find((v) => v.startYear === selectedRange)?.range ??
+      "Select range"
+    );
+  }, [filterValues, selectedRange]);
+
+  const handleSelect = (year: { startYear: number; range: string }) => {
     setSelectedRange(year.startYear);
+    setIsOpen(false);
   };
 
   return (
-    <div className="flex items-center select-none">
-      <p className="mr-4">Select the 5 year range</p>
-      <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+    <div className="flex items-center gap-3 select-none">
+      <span className="text-slate-600 font-medium">
+        Select 5-year range
+      </span>
+
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <Button
-            className="relative px-4 py-2 border border-gray-300 rounded bg-white text-black cursor-pointer flex items-center gap-1 hover:bg-[#F9F9F8] focus:outline-none"
-            onClick={() => setIsOpen(!isOpen)}
+            variant="outline"
+            className="min-w-[180px] justify-between px-4 py-2 text-slate-800 bg-white hover:bg-slate-50 border-slate-300"
           >
-            <span>Year</span>
+            <span className="text-sm font-medium">
+              {selectedLabel}
+            </span>
 
-            <ArrowDown
-              className={`transition-all duration-300 ${
-                isOpen ? "-rotate-180" : ""
+            <ChevronDown
+              className={`h-4 w-4 transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
               }`}
             />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="max-h-48 overflow-y-auto">
-          {filterValues.map((year) => (
-            <DropdownMenuItem
-              key={year.range}
-              onSelect={(e) => e.preventDefault()}
-            >
-              <div className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  checked={selectedRange === year.startYear}
-                  onChange={() => handleRadioChange(year)}
-                  className="form-radio"
+
+        <DropdownMenuContent
+          align="start"
+          className="w-[180px] max-h-56 overflow-y-auto rounded-xl p-1"
+        >
+          {filterValues.map((year) => {
+            const isSelected = selectedRange === year.startYear;
+
+            return (
+              <DropdownMenuItem
+                key={year.range}
+                onSelect={(e) => e.preventDefault()}
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 cursor-pointer
+                  ${
+                    isSelected
+                      ? "bg-slate-100 font-medium text-slate-900"
+                      : "text-slate-700 hover:bg-slate-50"
+                  }`}
+                onClick={() => handleSelect(year)}
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full border ${
+                    isSelected
+                      ? "bg-blue-600 border-blue-600"
+                      : "border-slate-400"
+                  }`}
                 />
-                <span>{year.range}</span>
-              </div>
-            </DropdownMenuItem>
-          ))}
+                <span className="text-sm">{year.range}</span>
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

@@ -3,9 +3,10 @@ import { getCourseCategory } from "@/app/api/reports";
 import EnrollmentData from "@/app/local-components/AnnualReportsPage/EnrollmentData";
 import GraduateAssistantData from "@/app/local-components/AnnualReportsPage/GraduateAssistantData";
 import YearBanner from "@/app/local-components/AnnualReportsPage/YearBanner";
-import YearSelector from "@/app/local-components/AnnualReportsPage/YearSelector";
+import YearSelector from "@/app/local-components/HomePage/FirstSection/YearSelector";
 import { deriveAcademicYears } from "@/lib/helpers";
 import { useQuery } from "@tanstack/react-query";
+import { LoaderCircle } from "lucide-react";
 import React, { useState } from "react";
 
 const Page = () => {
@@ -29,7 +30,11 @@ const Page = () => {
   }, [academicYears, year]);
 
   if (isLoading || year === null) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center">
+        <LoaderCircle className="animate-spin" />
+      </div>
+    );
   }
 
   return (
@@ -38,7 +43,7 @@ const Page = () => {
 
       <YearBanner year={year} />
 
-      <div className="space-y-10">
+      <div className="pt-10 pb-20 space-y-20">
         <EnrollmentData year={year} />
 
         <GraduateAssistantData year={year} />

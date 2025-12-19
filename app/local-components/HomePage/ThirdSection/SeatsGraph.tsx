@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import {
   LineChart,
   Line,
@@ -11,73 +10,99 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import moreIcon from "@/assets/moreDark.png";
 
 const SeatsGraph = ({
   rangeData,
   selectedRange,
+  title,
+  description,
+  type = "year",
 }: {
   rangeData: any[];
   selectedRange: number | null;
+  title: string;
+  description: string;
+  type: "term" | "year";
 }) => {
+  console.log("selectedRange:", selectedRange);
+
   return (
-    <div className="bg-white rounded-xl w-full h-full p-4 m-2">
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">
-          Seats Available vs Enrolled Seats from AY {selectedRange} to AY{" "}
-          {selectedRange !== null && selectedRange - 4}
-        </h1>
-        <Image src={moreIcon} alt="" width={20} height={20} />
+    <div className="bg-white rounded-2xl w-full h-full p-6 shadow-sm">
+      {/* Header */}
+      <div className="mb-4">
+        <h2 className="text-base font-semibold text-slate-800">{title}</h2>
+        <p className="text-sm text-slate-500">
+          Academic Years {selectedRange !== null && selectedRange - 4} –{" "}
+          {selectedRange}
+        </p>
       </div>
-      <div className="text-sm  m-2">
-        NOTE: The Year Like 2024 generally indicates the value of AY calendar as
-        202402, 202403, 202501.
-      </div>
-      <ResponsiveContainer width="100%" height="90%">
+
+      {/* Subtle note */}
+      <div className="mb-4 text-xs text-slate-400 max-w-xl">{description}</div>
+
+      {/* Chart */}
+      <ResponsiveContainer width="100%" height={320}>
         <LineChart
-          width={500}
-          height={300}
           data={rangeData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
+          margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
-          <XAxis
-            dataKey="year"
-            axisLine={false}
-            tick={{ fill: "#d1d5db" }}
-            tickLine={false}
-            tickMargin={10}
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#f1f5f9"
+            vertical={false}
           />
+
+          <XAxis
+            dataKey={type}
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: "#64748b", fontSize: 12 }}
+          />
+
           <YAxis
             axisLine={false}
-            tick={{ fill: "#d1d5db" }}
             tickLine={false}
-            tickMargin={20}
+            tick={{ fill: "#64748b", fontSize: 12 }}
           />
-          <Tooltip />
+
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#ffffff",
+              borderRadius: "8px",
+              border: "1px solid #e5e7eb",
+              fontSize: "12px",
+            }}
+            labelStyle={{ fontWeight: 600, color: "#334155" }}
+          />
+
           <Legend
-            align="center"
             verticalAlign="top"
-            wrapperStyle={{ paddingTop: "10px", paddingBottom: "30px" }}
+            align="right"
+            iconType="circle"
+            wrapperStyle={{
+              fontSize: "12px",
+              paddingBottom: "12px",
+            }}
           />
+
           <Line
             type="monotone"
             dataKey="total_seats"
             name="Total Seats"
-            stroke="#E69F00"
-            strokeWidth={5}
+            stroke="#f59e0b"
+            strokeWidth={3}
+            dot={false}
+            activeDot={{ r: 5 }}
           />
+
           <Line
             type="monotone"
             dataKey="total_enrollment"
             name="Total Enrolled"
-            stroke="#0072B2"
-            strokeWidth={5}
+            stroke="#2563eb"
+            strokeWidth={3}
+            dot={false}
+            activeDot={{ r: 5 }}
           />
         </LineChart>
       </ResponsiveContainer>

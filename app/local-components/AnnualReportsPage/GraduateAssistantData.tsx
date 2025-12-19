@@ -23,7 +23,7 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">GA Data</h1>
+      <h1 className="text-center text-2xl font-semibold">GA Data</h1>
 
       {/* <div className="grid grid-cols-2 gap-5">
         <div className="border border-blue-900 rounded-lg">
@@ -163,12 +163,10 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
           <StatItem
             label="Individual WID GAs"
             value={reports.summer_ga_count.toLocaleString()}
-            highlight
           />
           <StatItem
             label="Salary-Only WID GAs Positions"
             value={reports.summer_ga_count_by_type.toLocaleString()}
-            highlight
           />
           <StatItem
             label="Students Served"
@@ -182,12 +180,10 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
           <StatItem
             label="Individual WID GAs"
             value={reports.fall_ga_count.toLocaleString()}
-            highlight
           />
           <StatItem
             label="Salary-Only WID GAs Positions"
             value={reports.fall_ga_count_by_type.toLocaleString()}
-            highlight
           />
           <StatItem
             label="Students Served"
@@ -205,12 +201,10 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
           <StatItem
             label="Individual WID GAs"
             value={reports.spring_ga_count.toLocaleString()}
-            highlight
           />
           <StatItem
             label="Salary-Only WID GAs Positions"
             value={reports.spring_ga_count_by_type.toLocaleString()}
-            highlight
           />
           <StatItem
             label="Students Served"

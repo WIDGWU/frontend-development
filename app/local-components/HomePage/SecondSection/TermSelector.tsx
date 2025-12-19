@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import {
   DropdownMenu,
@@ -19,80 +20,94 @@ const TermSelector = ({
   setSelectedTerm: (term: string[]) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const [availableTerms, setAvailableTerms] = useState<string[]>([]);
 
-  // Update availableTerms when years or selectedTerm changes
   useEffect(() => {
-    // Filter out terms that are already selected
-    const filteredTerms = filterValues.filter(
-      (term) => !selectedTerm.includes(term)
+    setAvailableTerms(
+      filterValues.filter((term) => !selectedTerm.includes(term))
     );
-    setAvailableTerms(filteredTerms);
   }, [filterValues, selectedTerm]);
 
-  // function to handle the checkbox
-  const handleCheckbox = (term: string) => {
+  const handleAddTerm = (term: string) => {
     setSelectedTerm([...selectedTerm, term]);
-    setAvailableTerms(availableTerms.filter((t) => t !== term));
   };
 
-  // function to remove the term from selected terms
   const handleRemoveTerm = (term: string) => {
     setSelectedTerm(selectedTerm.filter((t) => t !== term));
-    setAvailableTerms([...availableTerms, term]);
   };
 
   return (
-    <div className="flex flex-col items-start select-none space-y-4">
-      <div className="flex items-center space-x-2">
-        <p>Select terms to compare</p>
-        <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+    <div className="flex flex-col gap-3 select-none">
+      {/* Label */}
+      <div className="flex items-center gap-3">
+        <p className="text-slate-600 font-medium">
+          Select terms to compare
+        </p>
+
+        {/* Dropdown */}
+        <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
             <Button
-              className="relative px-4 py-2 border border-gray-300 rounded bg-white text-black cursor-pointer flex items-center gap-1 hover:bg-[#F9F9F8] focus:outline-none"
-              onClick={() => setIsOpen(!isOpen)}
+              variant="outline"
+              className="flex items-center gap-2 rounded-lg px-4 py-2 text-slate-800 hover:bg-slate-50"
             >
-              <span>Term</span>
-
+              <span>Add term</span>
               <ArrowDown
-                className={`transition-all duration-300 ${
+                className={`h-4 w-4 transition-transform ${
                   isOpen ? "-rotate-180" : ""
                 }`}
               />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="max-h-48 overflow-y-auto">
+
+          <DropdownMenuContent className="max-h-56 w-56 overflow-y-auto rounded-xl">
+            {availableTerms.length === 0 && (
+              <div className="px-4 py-2 text-sm text-slate-400">
+                All terms selected
+              </div>
+            )}
+
             {availableTerms.map((term) => (
-              <DropdownMenuItem key={term} onSelect={(e) => e.preventDefault()}>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedTerm.includes(term)}
-                    className="form-checkbox"
-                    onChange={() => handleCheckbox(term)}
-                  />
-                  <span>{term}</span>
-                </div>
+              <DropdownMenuItem
+                key={term}
+                onSelect={(e) => {
+                  e.preventDefault();
+                  handleAddTerm(term);
+                }}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedTerm.includes(term)}
+                  readOnly
+                  className="accent-slate-800"
+                />
+                <span>{term}</span>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {selectedTerm.map((term) => (
-          <p
-            key={term}
-            className="flex items-center justify-center bg-gray-200 px-4 py-3 rounded-full text-sm"
-          >
-            <span>{term}</span>
-            <button onClick={() => handleRemoveTerm(term)} className="ml-2">
-              <X size={16} className="p-0.5 bg-black text-white rounded-full" />
-            </button>
-          </p>
-        ))}
-      </div>
+      {/* Selected Chips */}
+      {selectedTerm.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {selectedTerm.map((term) => (
+            <span
+              key={term}
+              className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-700 border border-slate-300"
+            >
+              {term}
+              <button
+                onClick={() => handleRemoveTerm(term)}
+                className="ml-1 rounded-full p-0.5 hover:bg-slate-300"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
