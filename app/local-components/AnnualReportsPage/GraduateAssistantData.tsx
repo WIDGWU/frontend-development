@@ -151,7 +151,7 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
             label="Students Served"
             value={reports.total_students_served}
           />
-          <StatItem label="Course Sections Served by GAs" value={0} />
+          <StatItem label="Course Sections Served by GAs" value={reports.total_sections_count} />
         </ReportCard>
 
         {/* SUMMER */}
@@ -172,7 +172,7 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
             label="Students Served"
             value={reports.summer_students_served}
           />
-          <StatItem label="Course Sections Served by GAs" value={0} />
+          <StatItem label="Course Sections Served by GAs" value={reports.summer_sections_count} />
         </ReportCard>
 
         {/* FALL */}
@@ -189,7 +189,7 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
             label="Students Served"
             value={reports.fall_students_served}
           />
-          <StatItem label="Course Sections Served by GAs" value={0} />
+          <StatItem label="Course Sections Served by GAs" value={reports.fall_sections_count} />
         </ReportCard>
 
         {/* SPRING */}
@@ -210,7 +210,7 @@ const GraduateAssistantData = ({ year }: GraduateAssistantDataProps) => {
             label="Students Served"
             value={reports.spring_students_served}
           />
-          <StatItem label="Course Sections Served by GAs" value={0} />
+          <StatItem label="Course Sections Served by GAs" value={reports.spring_sections_count} />
         </ReportCard>
       </div>
     </div>

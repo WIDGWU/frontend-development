@@ -16,7 +16,7 @@ export const getReports = async (year) => {
       headers,
     });
 
-    console.log("Annual Reports:", response.data);
+    // console.log("Annual Reports:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -38,7 +38,7 @@ export const getCourseReports = async (year) => {
       }
     );
 
-    console.log("Course Annual Reports:", response.data);
+    // console.log("Course Annual Reports:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -79,7 +79,7 @@ export const getReportsByTerm = async (term) => {
       headers,
     });
 
-    // console.log("Term Response data:", response.data);
+    console.log("Term Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -118,7 +118,7 @@ export const getGACount = async (year) => {
         headers,
       }
     );
-    console.log("GA Count:", response.data);
+    // console.log("GA Count:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -139,7 +139,7 @@ export const getGAReport = async (year, type) => {
         headers,
       }
     );
-    console.log("GA Report:", response.data);
+    // console.log("GA Report:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -160,7 +160,7 @@ export const getGAStudentsServed = async (year) => {
         headers,
       }
     );
-    console.log("GA Students Served:", response.data);
+    // console.log("GA Students Served:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -235,7 +235,7 @@ export const getFiveYearReport = async (year) => {
     const response = await axios.get(`${baseURL}wid_5y_report/?year=${year}`, {
       headers,
     });
-    console.log("5 Year Report:", response.data);
+    // console.log("5 Year Report:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -254,7 +254,7 @@ export const getAllCourses = async () => {
     const response = await axios.get(`${baseURL}get_all_courses/`, {
       headers,
     });
-    console.log("All Courses:", response.data);
+    // console.log("All Courses:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -273,7 +273,7 @@ export const getCourseCategory = async () => {
     const response = await axios.get(`${baseURL}get_course_categories/`, {
       headers,
     });
-    console.log("Course Categories:", response.data);
+    // console.log("Course Categories:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -307,7 +307,7 @@ export const getCourseApprovalById = async (course_id) => {
       accept: "application/json",
     };
 
-    // console.log("This function is called");
+    console.log("This function is called");
     const response = await axios.get(`${baseURL}get_course_history_by_id/`, {
       headers,
       params: { course_id },
