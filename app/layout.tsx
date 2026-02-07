@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
 import { AuthProvider } from "./context/AuthContext";
 import "./globals.css";
 import QueryProvider from "@/providers/QueryProvider";
-
-// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Writing in Disciplines",

@@ -2,12 +2,13 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import { Loader } from "./Loader";
 
 export default function ProtectedRoute({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
@@ -20,7 +21,7 @@ export default function ProtectedRoute({
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        Loading...
+        <Loader />
       </div>
     );
   }

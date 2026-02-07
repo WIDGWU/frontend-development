@@ -5,6 +5,7 @@ import GraphsForYear from "../local-components/HomePage/FirstSection/GraphsForYe
 import { getCourseCategory } from "@/app/api/reports";
 import { useQuery } from "@tanstack/react-query";
 import { deriveAcademicYears, getFiveYearRanges } from "@/lib/helpers";
+import { Loader } from "../local-components/Loader";
 
 // Home Page for Admin
 const AdminPage = () => {
@@ -14,16 +15,20 @@ const AdminPage = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
     <main className="p-4 space-y-10">
-      <GraphsForYear filterValues={deriveAcademicYears(termCodes?.Course_Term_Code)} />
-      
+      <GraphsForYear
+        filterValues={deriveAcademicYears(termCodes?.Course_Term_Code)}
+      />
+
       <GraphsForTerm filterValues={termCodes?.Course_Term_Code} />
-      
-      <GraphsForFiveYear filterValues={getFiveYearRanges(termCodes?.Course_Term_Code)} />
+
+      <GraphsForFiveYear
+        filterValues={getFiveYearRanges(termCodes?.Course_Term_Code)}
+      />
     </main>
   );
 };
