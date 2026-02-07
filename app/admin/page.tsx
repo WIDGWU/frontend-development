@@ -19,11 +19,11 @@ const AdminPage = () => {
 
   return (
     <main className="p-4 space-y-10">
-      <GraphsForYear filterValues={deriveAcademicYears(termCodes.Course_Term_Code)} />
+      <GraphsForYear filterValues={deriveAcademicYears(termCodes?.Course_Term_Code)} />
       
-      <GraphsForTerm filterValues={termCodes.Course_Term_Code} />
+      <GraphsForTerm filterValues={termCodes?.Course_Term_Code} />
       
-      <GraphsForFiveYear filterValues={getFiveYearRanges(termCodes.Course_Term_Code)} />
+      <GraphsForFiveYear filterValues={getFiveYearRanges(termCodes?.Course_Term_Code)} />
     </main>
   );
 };
