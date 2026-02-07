@@ -14,7 +14,7 @@ export default function DashboardLayout({
     <ProtectedRoute>
       <div className="h-screen flex">
         {/* The left section will have a menu bar to select all the options */}
-        <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4 bg-primary">
+        <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4 bg-white">
           <Link
             href="/"
             className="space-y-2"

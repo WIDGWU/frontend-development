@@ -77,7 +77,7 @@ const GraphsForTerm = ({ filterValues }: GraphsForTermProps) => {
 
   return (
     <div>
-      <h1 className="font-bold text-2xl mb-4">Comparison of different Terms</h1>
+      <h1 className="font-bold text-xl mb-2">Per Term Seats Comparison</h1>
       <TermSelector
         filterValues={filterValues}
         selectedTerm={selectedTerm}

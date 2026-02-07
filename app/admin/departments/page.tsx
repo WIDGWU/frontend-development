@@ -19,7 +19,6 @@ const Page = () => {
 
   return (
     <main className="m-4">
-      <h1 className="text-2xl font-bold mb-4">Departments</h1>
       <DepartmentCourseCountChat
         departmentsCourseCount={departmentsCourseCount}
       />

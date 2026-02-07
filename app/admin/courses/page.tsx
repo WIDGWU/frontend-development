@@ -46,7 +46,7 @@ const Courses = () => {
   const [loading, setLoading] = useState(true);
   const [courseTerm, setCourseTerm] = useState<string[]>([]);
   const [selectedCourseTerm, setSelectedCourseTerm] = useState<string | null>(
-    null
+    null,
   );
 
   // const [courseCollegeDescription, setCourseCollegeDescription] = useState<
@@ -64,7 +64,7 @@ const Courses = () => {
 
   const [instructor, setInstructor] = useState<string[]>([]);
   const [selectedInstructor, setSelectedInstructor] = useState<string | null>(
-    null
+    null,
   );
 
   const clearFilters = useCallback(() => {
@@ -94,24 +94,24 @@ const Courses = () => {
     let filtered = courses;
     if (selectedCourseTerm) {
       filtered = filtered.filter(
-        (c) => c.Course_Term_Code === selectedCourseTerm
+        (c) => c.Course_Term_Code === selectedCourseTerm,
       );
     }
     if (selectedCourseCollegeDescription) {
       const validNames = colleges[selectedCourseCollegeDescription];
       filtered = filtered.filter(
-        (c) => validNames.aliases.includes(c.Course_College_Desc)
+        (c) => validNames.aliases.includes(c.Course_College_Desc),
         // (c) => c.Course_College_Desc === selectedCourseCollegeDescription
       );
     }
     if (selectedCourseNumberPrefix) {
       filtered = filtered.filter(
-        (c) => c.Course_Number.split(" ")[0] === selectedCourseNumberPrefix
+        (c) => c.Course_Number.split(" ")[0] === selectedCourseNumberPrefix,
       );
     }
     if (selectedInstructor) {
       filtered = filtered.filter(
-        (c) => c.Instructor_Full_Name === selectedInstructor
+        (c) => c.Instructor_Full_Name === selectedInstructor,
       );
     }
     setFilteredCourses(filtered);
@@ -126,35 +126,32 @@ const Courses = () => {
 
   return (
     <main className="m-4">
-      <div className="flex items-center">
-        <h4 className="text-xl font-semibold my-4 mr-4">Courses </h4>
-        <div className="flex items-center justify-space-between gap-4 mx-4">
-          {/* Content for filtration goes here */}
-          <CourseTermFilter
-            courseTerm={courseTerm}
-            selectedCourseTerm={selectedCourseTerm}
-            setSelectedCourseTerm={setSelectedCourseTerm}
-          />
-          <CourseCollegeDescriptionFilter
-            courseCollegeDescription={Object.keys(colleges)}
-            selectedCourseCollegeDescription={selectedCourseCollegeDescription}
-            setSelectedCourseCollegeDescription={
-              setSelectedCourseCollegeDescription
-            }
-          />
-          <DepartmentFilter
-            department={courseNumberPrefix}
-            selectedDepartment={selectedCourseNumberPrefix}
-            setSelectedDepartment={setSelectedCourseNumberPrefix}
-          />
-          <InstructorFilter
-            instructor={instructor}
-            selectedInstructor={selectedInstructor}
-            setSelectedInstructor={setSelectedInstructor}
-          />
+      <div className="flex items-center justify-space-between gap-4">
+        {/* Content for filtration goes here */}
+        <CourseTermFilter
+          courseTerm={courseTerm}
+          selectedCourseTerm={selectedCourseTerm}
+          setSelectedCourseTerm={setSelectedCourseTerm}
+        />
+        <CourseCollegeDescriptionFilter
+          courseCollegeDescription={Object.keys(colleges)}
+          selectedCourseCollegeDescription={selectedCourseCollegeDescription}
+          setSelectedCourseCollegeDescription={
+            setSelectedCourseCollegeDescription
+          }
+        />
+        <DepartmentFilter
+          department={courseNumberPrefix}
+          selectedDepartment={selectedCourseNumberPrefix}
+          setSelectedDepartment={setSelectedCourseNumberPrefix}
+        />
+        <InstructorFilter
+          instructor={instructor}
+          selectedInstructor={selectedInstructor}
+          setSelectedInstructor={setSelectedInstructor}
+        />
 
-          <Button onClick={clearFilters}> Clear all filters</Button>
-        </div>
+        <Button onClick={clearFilters}> Clear all filters</Button>
       </div>
 
       <div className="flex items-center justify-between my-4">

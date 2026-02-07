@@ -7,15 +7,6 @@ import Link from "next/link";
 const CourseApproval = () => {
   return (
     <main className="m-4">
-      <div className="mb-5 space-y-2">
-        <h4 className="text-xl font-semibold">Course Approval </h4>
-
-        <p className="text-gray-600">
-          Manage course proposals, changes, and approval workflows using
-          CourseLeaf tools.
-        </p>
-      </div>
-
       {/* Tabs */}
       <Tabs defaultValue="cim" className="w-full">
         <TabsList className="grid w-full grid-cols-2">

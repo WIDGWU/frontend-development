@@ -1,24 +1,33 @@
 "use client";
 import Image from "next/image";
-import Search from "@/assets/search.png";
 import Carol from "@/assets/Carol-Hayes.jpg";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { PAGES } from "../helpers/constants";
 
 const Navbar = () => {
+  const pathname = usePathname();
+
+  const [pageTitle, setPageTitle] = useState("");
+
   const { logout, user } = useAuth();
+
+  useEffect(() => {
+    const pathList = pathname.split("/");
+    const activePage = pathList[2];
+
+    const title =
+      PAGES.find((page) => page.rootLink.includes(activePage))?.name ||
+      "Dashboard";
+    setPageTitle(title);
+  }, [pathname]);
 
   return (
     <div className="flex items-center justify-between p-4">
-      {/* SEARCH BAR */}
-      <div className="hidden md:flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-gray-300 px-2">
-        <Image src={Search} alt="" width={14} height={14} />
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-[200px] p-2 bg-transparent outline-none"
-        />
-      </div>
+      <h1 className="w-full text-2xl text-primary font-bold">{pageTitle}</h1>
+
       {/* ICONS AND USER */}
       <div className="flex items-center gap-6 justify-end w-full">
         {/* User details */}
@@ -26,8 +35,10 @@ const Navbar = () => {
           <span className="text-xs leading-3 font-medium">
             {user?.email || "User"}
           </span>
+
           <span className="text-xs text-gray-500">Admin</span>
         </div>
+
         <Image
           src={Carol}
           alt=""
@@ -35,6 +46,7 @@ const Navbar = () => {
           height={40}
           className="rounded-full object-cover"
         />
+
         <Button onClick={logout} variant="outline" size="sm">
           Log Out
         </Button>

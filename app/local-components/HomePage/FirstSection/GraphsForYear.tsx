@@ -127,8 +127,8 @@ const GraphsForYear = ({ filterValues }: GraphsForTermProps) => {
 
   return (
     <div>
-      <h1 className="font-bold text-2xl mb-4">
-        Comparison of seats for Fall, Spring and Summer term
+      <h1 className="font-bold text-xl mb-2">
+        Yearly Term Seats Comparsion
       </h1>
       <YearSelector filterValues={filterValues} setYear={setYear} />
 
