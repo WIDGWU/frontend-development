@@ -16,7 +16,6 @@ export const getReports = async (year) => {
       headers,
     });
 
-    // console.log("Annual Reports:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -38,7 +37,6 @@ export const getCourseReports = async (year) => {
       }
     );
 
-    // console.log("Course Annual Reports:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -118,7 +116,6 @@ export const getGACount = async (year) => {
         headers,
       }
     );
-    // console.log("GA Count:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -139,7 +136,6 @@ export const getGAReport = async (year, type) => {
         headers,
       }
     );
-    // console.log("GA Report:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -160,7 +156,6 @@ export const getGAStudentsServed = async (year) => {
         headers,
       }
     );
-    // console.log("GA Students Served:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -235,7 +230,6 @@ export const getFiveYearReport = async (year) => {
     const response = await axios.get(`${baseURL}wid_5y_report/?year=${year}`, {
       headers,
     });
-    // console.log("5 Year Report:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -254,7 +248,6 @@ export const getAllCourses = async () => {
     const response = await axios.get(`${baseURL}get_all_courses/`, {
       headers,
     });
-    // console.log("All Courses:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -273,7 +266,6 @@ export const getCourseCategory = async () => {
     const response = await axios.get(`${baseURL}get_course_categories/`, {
       headers,
     });
-    // console.log("Course Categories:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);

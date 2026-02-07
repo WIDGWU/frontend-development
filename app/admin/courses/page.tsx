@@ -49,9 +49,6 @@ const Courses = () => {
     null,
   );
 
-  // const [courseCollegeDescription, setCourseCollegeDescription] = useState<
-  //   string[]
-  // >(Object.keys(colleges));
   const [
     selectedCourseCollegeDescription,
     setSelectedCourseCollegeDescription,
@@ -82,7 +79,6 @@ const Courses = () => {
     });
     getCourseCategory().then((data) => {
       setCourseTerm(data.Course_Term_Code);
-      // setCourseCollegeDescription(data.Course_College_Desc);
       setCourseNumberPrefix(data.Course_Prefix);
       setInstructor(data.Instructor_Full_Name);
     });
@@ -194,11 +190,11 @@ const Courses = () => {
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Course : </span>
-                        {course.Course ? course.Course : "N/A"}
+                        {course.Course ?? "N/A"}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Section Number : </span>
-                        {course.Section_Number ? course.Section_Number : "N/A"}
+                        {course.Section_Number ?? "N/A"}
                       </p>
 
                       <p className="text-left text-gray-600">
@@ -222,52 +218,44 @@ const Courses = () => {
                         <span className="font-bold">
                           Course Status Description:
                         </span>
-                        {course.Course_Status_Desc
-                          ? course.Course_Status_Desc
-                          : "N/A"}
+                        {course.Course_Status_Desc ?? "N/A"}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Actual Enrollment: </span>{" "}
-                        {course.Actual_Enrollment
-                          ? course.Actual_Enrollment
-                          : 0}
+                        {course.Actual_Enrollment ?? 0}
                       </p>
 
                       <p className="text-left text-gray-600">
                         <span className="font-bold">CrossList ID: </span>{" "}
-                        {course.CrossList_ID ? course.CrossList_ID : "N/A"}
+                        {course.CrossList_ID ?? "N/A"}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">CrossList Actual: </span>{" "}
-                        {course.Cross_List_Actual
-                          ? course.Cross_List_Actual
-                          : 0}
+                        {course.Cross_List_Actual ?? 0}
                       </p>
                     </div>
                     <div className="flex-1">
                       <p className="text-left text-gray-600">
                         <span className="font-bold">CRN : </span>
-                        {course.CRN ? course.CRN : "N/A"}
+                        {course.CRN ?? "N/A"}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Section Title: </span>
-                        {course.Section_Title ? course.Section_Title : "N/A"}
+                        {course.Section_Title ?? "N/A"}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">
                           Schedule Type Description:{" "}
                         </span>
-                        {course.Schedule_Type_Desc
-                          ? course.Schedule_Type_Desc
-                          : "N/A"}
+                        {course.Schedule_Type_Desc ?? "N/A"}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Maximum Enrollment: </span>
-                        {course.Max_Enrollment ? course.Max_Enrollment : 0}
+                        {course.Max_Enrollment ?? 0}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Variable Credits: </span>
-                        {course.Variable_Credits ? course.Variable_Credits : 0}
+                        {course.Variable_Credits ?? 0}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">
@@ -284,15 +272,13 @@ const Courses = () => {
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">Cross List Maximum: </span>
-                        {course.Cross_List_Max ? course.Cross_List_Max : 0}
+                        {course.Cross_List_Max ?? 0}
                       </p>
                       <p className="text-left text-gray-600">
                         <span className="font-bold">
                           Course Link Identifier:
                         </span>
-                        {course.Course_Link_Identifier
-                          ? course.Course_Link_Identifier
-                          : "N/A"}
+                        {course.Course_Link_Identifier ?? "N/A"}
                       </p>
                     </div>
                   </div>

@@ -12,7 +12,7 @@ import React, { useState } from "react";
 const Page = () => {
   const [year, setYear] = useState<number | null>(null);
 
-  const { data: termCodes, isLoading } = useQuery({
+  const { data: termCodes, isLoading, isError } = useQuery({
     queryKey: ["termCodes"],
     queryFn: getCourseCategory,
   });
@@ -35,6 +35,10 @@ const Page = () => {
         <LoaderCircle className="animate-spin" />
       </div>
     );
+  }
+
+  if (isError) {
+    return <div>Error loading data.</div>;
   }
 
   return (

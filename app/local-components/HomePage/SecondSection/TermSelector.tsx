@@ -24,7 +24,7 @@ const TermSelector = ({
 
   useEffect(() => {
     setAvailableTerms(
-      filterValues.filter((term) => !selectedTerm.includes(term))
+      filterValues?.filter((term) => !selectedTerm.includes(term))
     );
   }, [filterValues, selectedTerm]);
 
@@ -61,13 +61,13 @@ const TermSelector = ({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="max-h-56 w-56 overflow-y-auto rounded-xl">
-            {availableTerms.length === 0 && (
+            {availableTerms?.length === 0 && (
               <div className="px-4 py-2 text-sm text-slate-400">
                 All terms selected
               </div>
             )}
 
-            {availableTerms.map((term) => (
+            {availableTerms?.map((term) => (
               <DropdownMenuItem
                 key={term}
                 onSelect={(e) => {

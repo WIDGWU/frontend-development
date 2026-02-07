@@ -1,8 +1,8 @@
 export function deriveAcademicYears(termCodes: string[]) {
   const years = new Set<number>();
 
-  termCodes.forEach(code => {
-    const year = parseInt(code.slice(0, 4), 10);
+  termCodes?.forEach(code => {
+    const year = Number.parseInt(code.slice(0, 4), 10);
     const term = code.slice(4);
 
     // academic year start logic
@@ -23,8 +23,8 @@ export function getFiveYearRanges(termCodes: string[]) {
   // Step 1: compute academic-year start years from term codes
   const academicYearStarts = new Set<number>();
 
-  termCodes.forEach(code => {
-    const year = parseInt(code.slice(0, 4), 10);
+  termCodes?.forEach(code => {
+    const year = Number.parseInt(code.slice(0, 4), 10);
     const term = code.slice(4);
 
     const start = term === "03" ? year : year - 1;
