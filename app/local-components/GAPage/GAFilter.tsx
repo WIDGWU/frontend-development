@@ -5,6 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 // Filter based on GA Type
 export const GATypeFilter = ({
@@ -17,8 +19,11 @@ export const GATypeFilter = ({
   setSelectedGAType: (value: string | null) => void;
 }) => {
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedGAType(value)}>
+    <div className="flex items-center gap-2 select-none">
+      <Select
+        value={selectedGAType || undefined}
+        onValueChange={(value) => setSelectedGAType(value)}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a GA Type">
             {selectedGAType || "Select a GA Type"}
@@ -32,6 +37,17 @@ export const GATypeFilter = ({
           ))}
         </SelectContent>
       </Select>
+      {selectedGAType && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setSelectedGAType(null)}
+          title="Clear GA Type filter"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };
@@ -47,8 +63,11 @@ export const HomeSchoolFilter = ({
   setSelectedHomeSchool: (value: string | null) => void;
 }) => {
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedHomeSchool(value)}>
+    <div className="flex items-center gap-2 select-none">
+      <Select
+        value={selectedHomeSchool || undefined}
+        onValueChange={(value) => setSelectedHomeSchool(value)}
+      >
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="Select a Home School">
             {selectedHomeSchool || "Select a Home School"}
@@ -62,6 +81,17 @@ export const HomeSchoolFilter = ({
           ))}
         </SelectContent>
       </Select>
+      {selectedHomeSchool && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setSelectedHomeSchool(null)}
+          title="Clear Home School filter"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };
@@ -77,8 +107,11 @@ export const HomeDepartmentFilter = ({
   setSelectedDepartment: (value: string | null) => void;
 }) => {
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedDepartment(value)}>
+    <div className="flex items-center gap-2 select-none">
+      <Select
+        value={selectedDepartment || undefined}
+        onValueChange={(value) => setSelectedDepartment(value)}
+      >
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="Select a Home Department">
             {selectedDepartment || "Select a Home Department"}
@@ -92,6 +125,17 @@ export const HomeDepartmentFilter = ({
           ))}
         </SelectContent>
       </Select>
+      {selectedDepartment && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setSelectedDepartment(null)}
+          title="Clear Home Department filter"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };
@@ -107,8 +151,11 @@ export const CourseTermFilter = ({
   setSelectedCourseTerm: (value: string | null) => void;
 }) => {
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedCourseTerm(value)}>
+    <div className="flex items-center gap-2 select-none">
+      <Select
+        value={selectedCourseTerm || undefined}
+        onValueChange={(value) => setSelectedCourseTerm(value)}
+      >
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="Select Course Term">
             {selectedCourseTerm || "Select Course Term"}
@@ -122,11 +169,22 @@ export const CourseTermFilter = ({
           ))}
         </SelectContent>
       </Select>
+      {selectedCourseTerm && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setSelectedCourseTerm(null)}
+          title="Clear Course Term filter"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };
 
-// Filter based on Home Department
+// Filter based on Course Department
 export const CourseDepartmentFilter = ({
   courseDepartment,
   selectedCourseDepartment,
@@ -137,8 +195,11 @@ export const CourseDepartmentFilter = ({
   setSelectedCourseDepartment: (value: string | null) => void;
 }) => {
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedCourseDepartment(value)}>
+    <div className="flex items-center gap-2 select-none">
+      <Select
+        value={selectedCourseDepartment || undefined}
+        onValueChange={(value) => setSelectedCourseDepartment(value)}
+      >
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="Select Teaching Department">
             {selectedCourseDepartment || "Select Teaching Department"}
@@ -152,6 +213,17 @@ export const CourseDepartmentFilter = ({
           ))}
         </SelectContent>
       </Select>
+      {selectedCourseDepartment && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setSelectedCourseDepartment(null)}
+          title="Clear Course Department filter"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };

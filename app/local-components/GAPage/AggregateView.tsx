@@ -1,14 +1,39 @@
 import { useState, useEffect } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   getCollectiveGADetails,
   getGACategoryDetails,
-  getCollectiveFilteredGA,
 } from "@/app/api/reports";
 import {
   CourseTermFilter,
   GATypeFilter,
 } from "@/app/local-components/GAPage/GAFilter";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Loader } from "@/app/local-components/Loader";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Filter } from "lucide-react";
 
 type GA = {
   GA_Net_ID: string;
@@ -22,16 +47,41 @@ type GA = {
   Total_Max_Enrollment: number;
 };
 
+type GAResponse = {
+  results: GA[];
+  page: number;
+  page_size: number;
+  total: number;
+  total_pages: number;
+};
+
 const AggregateView = () => {
-  const [ga, setGA] = useState<GA[]>([]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const initialPage = Number(searchParams.get("page") ?? "1") || 1;
+  const initialPageSize = Number(searchParams.get("page_size") ?? "50") || 50;
+  const initialSearch = searchParams.get("search") ?? "";
+  const initialGAType = searchParams.get("ga_type") ?? null;
+  const initialCourseTermCode = searchParams.get("course_term_code") ?? null;
+
   const [filteredGA, setFilteredGA] = useState<GA[]>([]);
   const [totalGACount, setTotalGACount] = useState<number>(0);
   const [gaType, setGAType] = useState<string[]>([]);
-  const [selectedGAType, setSelectedGAType] = useState<string | null>(null);
+  const [selectedGAType, setSelectedGAType] = useState<string | null>(
+    initialGAType
+  );
   const [courseTerm, setCourseTerm] = useState<string[]>([]);
   const [selectedCourseTerm, setSelectedCourseTerm] = useState<string | null>(
-    null
+    initialCourseTermCode
   );
+
+  const [page, setPage] = useState<number>(initialPage);
+  const [pageSize, setPageSize] = useState<number>(initialPageSize);
+  const [searchInput, setSearchInput] = useState<string>(initialSearch);
+  const [search, setSearch] = useState<string>(initialSearch);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   // Function to get initials of first name and last name
   const getInitials = (firstName: string, lastName: string) => {
@@ -44,64 +94,239 @@ const AggregateView = () => {
     setSelectedCourseTerm(null);
   };
 
-  // Fetch data from API
-  useEffect(() => {
-    getGACategoryDetails().then((data) => {
-      setGAType(data.GA_Type);
-      setCourseTerm(data.Course_Term_Code);
-    });
-    getCollectiveGADetails().then((data) => {
-      setGA(data);
-      setFilteredGA(data);
-      setTotalGACount(data.length);
-    });
-  }, []);
+  // Fetch data from API using React Query
+  const {
+    data: gaCategoryDetails,
+    isLoading: isGaCategoryLoading,
+    isError: isGaCategoryError,
+  } = useQuery({
+    queryKey: ["gaCategoryDetails"],
+    queryFn: getGACategoryDetails,
+  });
 
+  // Build filters object for API call
+  const filters = {
+    ...(selectedGAType ? { ga_type: selectedGAType } : {}),
+    ...(selectedCourseTerm ? { course_term_code: selectedCourseTerm } : {}),
+  };
+
+  const {
+    data: gaDetails,
+    isLoading: isGaDetailsLoading,
+    isError: isGaDetailsError,
+  } = useQuery<GAResponse>({
+    queryKey: [
+      "collectiveGADetails",
+      page,
+      pageSize,
+      search,
+      selectedGAType,
+      selectedCourseTerm,
+    ],
+    queryFn: () => getCollectiveGADetails(page, pageSize, search, filters),
+    placeholderData: keepPreviousData,
+  });
+
+  // Sync category data into local state once loaded
   useEffect(() => {
-    // If course term is selected, use API filtering and then apply GA type filter locally
-    if (selectedCourseTerm) {
-      getCollectiveFilteredGA(selectedCourseTerm).then((data) => {
-        // Apply GA type filter to the API response if needed
-        let filtered = data;
-        if (selectedGAType) {
-          filtered = filtered.filter((g: GA) => g.GA_Type === selectedGAType);
-        }
-        setFilteredGA(filtered);
-      });
-    }
-    // If only GA type is selected without course term, filter locally
-    else {
-      let filtered = ga;
-      if (selectedGAType) {
-        filtered = filtered.filter((g) => g.GA_Type === selectedGAType);
-      }
-      setFilteredGA(filtered);
-    }
-  }, [selectedGAType, selectedCourseTerm, ga]);
+    if (!gaCategoryDetails) return;
+    setGAType(gaCategoryDetails.GA_Type);
+    setCourseTerm(gaCategoryDetails.Course_Term_Code);
+  }, [gaCategoryDetails]);
+
+  // Sync GA details into local state once loaded
+  // Since filtering is now done server-side, filteredGA is just the results
+  useEffect(() => {
+    if (!gaDetails) return;
+    const pageResults = gaDetails.results || [];
+    setFilteredGA(pageResults);
+    setTotalGACount(gaDetails.total ?? pageResults.length);
+  }, [gaDetails]);
+
+  const isLoading = isGaCategoryLoading || isGaDetailsLoading;
+  const isError = isGaCategoryError || isGaDetailsError;
+
+  const currentPage = gaDetails?.page ?? page;
+  const totalPages = Math.max(1, gaDetails?.total_pages ?? 1);
+
+  // Debounce search input to avoid refetching on every keypress
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      setSearch(searchInput.trim());
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [searchInput]);
+
+  // Reset to page 1 whenever search, page size, or filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, pageSize, selectedGAType, selectedCourseTerm]);
+
+  // Sync pagination + search + filters state to the URL so results can be shared
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (page > 1) params.set("page", String(page));
+    if (pageSize !== 50) params.set("page_size", String(pageSize));
+    if (selectedGAType) params.set("ga_type", selectedGAType);
+    if (selectedCourseTerm) params.set("course_term_code", selectedCourseTerm);
+
+    const query = params.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+
+    router.replace(url, { scroll: false });
+  }, [
+    search,
+    page,
+    pageSize,
+    selectedGAType,
+    selectedCourseTerm,
+    pathname,
+    router,
+  ]);
+
+  const PaginationControls = () => (
+    <div className="flex items-center gap-4">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+        disabled={currentPage <= 1}
+      >
+        Previous
+      </Button>
+      <span className="text-sm text-gray-600">
+        Page {currentPage} of {totalPages}
+      </span>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+        disabled={currentPage >= totalPages}
+      >
+        Next
+      </Button>
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <main className="m-4">
+        <Loader />
+      </main>
+    );
+  }
+
+  if (isError) {
+    return (
+      <main className="m-4">
+        <div className="flex items-center justify-center h-96">
+          <p className="text-lg text-red-600">
+            There was a problem loading Graduate Assistant data.
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="m-4">
-      <div className="flex items-center">
-        <h4 className="text-xl font-semibold my-4 mr-4">Filter </h4>
+      <div className="flex items-center justify-end my-4">
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              className="gap-2 bg-primary text-white hover:bg-primary/95 hover:text-light"
+            >
+              <Filter className="h-4 w-4" />
+              Filters
+            </Button>
+          </SheetTrigger>
+
+          <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle>Filter Graduate Assistants</SheetTitle>
+              <SheetDescription>
+                Select filters to narrow down your search results
+              </SheetDescription>
+            </SheetHeader>
+
+            <div className="mt-6">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="ga-type">
+                  <AccordionTrigger>GA Type</AccordionTrigger>
+                  <AccordionContent>
+                    <GATypeFilter
+                      gaType={gaType}
+                      selectedGAType={selectedGAType}
+                      setSelectedGAType={setSelectedGAType}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="course-term">
+                  <AccordionTrigger>Course Term</AccordionTrigger>
+                  <AccordionContent>
+                    <CourseTermFilter
+                      courseTerm={courseTerm}
+                      selectedCourseTerm={selectedCourseTerm}
+                      setSelectedCourseTerm={setSelectedCourseTerm}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <div className="mt-6">
+                <Button onClick={clearFilters} className="w-full">
+                  Clear all filters
+                </Button>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
-      <div className="flex items-center justify-space-between gap-4">
-        <GATypeFilter
-          gaType={gaType}
-          selectedGAType={selectedGAType}
-          setSelectedGAType={setSelectedGAType}
-        />
-        <CourseTermFilter
-          courseTerm={courseTerm}
-          selectedCourseTerm={selectedCourseTerm}
-          setSelectedCourseTerm={setSelectedCourseTerm}
-        />
-        <Button onClick={clearFilters}>Clear Filters</Button>
+
+      <div className="flex flex-col md:flex-row md:items-center gap-4 my-4">
+        <div className="flex-1">
+          <Input
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder='Search (e.g., "doe")'
+            className="border-primary"
+          />
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Page size</span>
+          <Select
+            value={`${pageSize}`}
+            onValueChange={(value) => setPageSize(Number(value))}
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Select size" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {searchInput.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setSearchInput("")}
+            >
+              Clear
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center justify-between my-4">
-        <h4 className="text-xl font-semibold">
-          Total GA Count: {filteredGA.length} out of {totalGACount}
+        <h4 className="text-lg font-semibold">
+          Showing {filteredGA.length} on this page (Total: {totalGACount})
         </h4>
+        <PaginationControls />
       </div>
 
       {filteredGA.length > 0 ? (
@@ -164,6 +389,10 @@ const AggregateView = () => {
           Sorry, No matching results were found.
         </div>
       )}
+
+      <div className="flex justify-end mt-6">
+        <PaginationControls />
+      </div>
     </main>
   );
 };

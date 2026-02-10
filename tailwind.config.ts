@@ -12,7 +12,8 @@ export default {
   		colors: {
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
-			primary: '#033c5a'
+			primary: '#033c5a',
+			light: '#e3dccc'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

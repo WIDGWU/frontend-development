@@ -85,16 +85,37 @@ export const getReportsByTerm = async (term) => {
   }
 };
 
-// Calls /get_all_GA/ endpoint to get all GA details
-export const getGADetails = async () => {
+// Calls /get_all_GA/ endpoint to get all GA details (paginated + searchable + filterable)
+export const getGADetails = async (
+  page = 1,
+  pageSize = 50,
+  search = "",
+  filters = {}
+) => {
   try {
     const headers = {
       "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
+    const params = {
+      page,
+      page_size: pageSize,
+      ...(search ? { search } : {}),
+      ...(filters.ga_type ? { ga_type: filters.ga_type } : {}),
+      ...(filters.home_school ? { home_school: filters.home_school } : {}),
+      ...(filters.home_dept ? { home_dept: filters.home_dept } : {}),
+      ...(filters.course_term_code
+        ? { course_term_code: filters.course_term_code }
+        : {}),
+      ...(filters.course_prefix
+        ? { course_prefix: filters.course_prefix }
+        : {}),
+    };
+
     const response = await axios.get(`${baseURL}get_all_GA/`, {
       headers,
+      params,
     });
     return response.data;
   } catch (error) {
@@ -163,16 +184,32 @@ export const getGAStudentsServed = async (year) => {
   }
 };
 
-// Calls /get_collective_GA for collective GA details
-export const getCollectiveGADetails = async () => {
+// Calls /get_collective_GA for collective GA details (paginated + searchable + filterable)
+export const getCollectiveGADetails = async (
+  page = 1,
+  pageSize = 50,
+  search = "",
+  filters = {}
+) => {
   try {
     const headers = {
       "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
+    const params = {
+      page,
+      page_size: pageSize,
+      ...(search ? { search } : {}),
+      ...(filters.ga_type ? { ga_type: filters.ga_type } : {}),
+      ...(filters.course_term_code
+        ? { course_term_code: filters.course_term_code }
+        : {}),
+    };
+
     const response = await axios.get(`${baseURL}get_collective_GA/`, {
       headers,
+      params,
     });
     return response.data;
   } catch (error) {
