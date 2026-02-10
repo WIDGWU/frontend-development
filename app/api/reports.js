@@ -274,16 +274,40 @@ export const getFiveYearReport = async (year) => {
   }
 };
 
-// get_all_courses
-export const getAllCourses = async () => {
+// get_all_courses (paginated + searchable + filterable)
+export const getAllCourses = async (
+  page = 1,
+  pageSize = 50,
+  search = "",
+  filters = {}
+) => {
   try {
     const headers = {
       "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
       accept: "application/json",
     };
 
+    const params = {
+      page,
+      page_size: pageSize,
+      ...(search ? { search } : {}),
+      ...(filters.course_term_code
+        ? { course_term_code: filters.course_term_code }
+        : {}),
+      ...(filters.course_college_desc
+        ? { course_college_desc: filters.course_college_desc }
+        : {}),
+      ...(filters.course_prefix
+        ? { course_prefix: filters.course_prefix }
+        : {}),
+      ...(filters.instructor_full_name
+        ? { instructor_full_name: filters.instructor_full_name }
+        : {}),
+    };
+
     const response = await axios.get(`${baseURL}get_all_courses/`, {
       headers,
+      params,
     });
     return response.data;
   } catch (error) {
