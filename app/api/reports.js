@@ -211,6 +211,7 @@ export const getCollectiveGADetails = async (
       headers,
       params,
     });
+    console.log("Collective GA Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -312,6 +313,25 @@ export const getAllCourses = async (
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
+    throw error;
+  }
+};
+
+// get_course_by_id - fetch a single course by course_id
+export const getCourseById = async (courseId) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.get(`${baseURL}get_course_by_id/`, {
+      headers,
+      params: { course_id: courseId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching course by id:", error);
     throw error;
   }
 };

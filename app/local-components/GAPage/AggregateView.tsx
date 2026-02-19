@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Filter } from "lucide-react";
+import { CourseDetailModal } from "@/app/local-components/GAPage/CourseDetailModal";
 
 type GA = {
   GA_Net_ID: string;
@@ -82,6 +83,7 @@ const AggregateView = () => {
   const [searchInput, setSearchInput] = useState<string>(initialSearch);
   const [search, setSearch] = useState<string>(initialSearch);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
 
   // Function to get initials of first name and last name
   const getInitials = (firstName: string, lastName: string) => {
@@ -369,13 +371,17 @@ const AggregateView = () => {
                     <span className="font-bold">Courses : </span>
                     <span className="flex flex-col space-y-2 mt-2">
                       {g.Courses &&
-                        g.Courses.split(",").map((course, index) => (
-                          <span
+                        g.Courses.split(",").map((courseId, index) => (
+                          <button
                             key={index}
-                            className="bg-gray-200 px-2 py-1 rounded-full text-sm mr-2 text-center"
+                            type="button"
+                            onClick={() =>
+                              setSelectedCourseId(courseId.trim())
+                            }
+                            className="w-full bg-gray-200 px-2 py-1 rounded-full text-sm mr-2 text-center hover:bg-gray-300 cursor-pointer"
                           >
-                            {course}
-                          </span>
+                            {courseId.trim()}
+                          </button>
                         ))}
                     </span>
                   </p>
@@ -393,6 +399,11 @@ const AggregateView = () => {
       <div className="flex justify-end mt-6">
         <PaginationControls />
       </div>
+
+      <CourseDetailModal
+        courseId={selectedCourseId}
+        onClose={() => setSelectedCourseId(null)}
+      />
     </main>
   );
 };
