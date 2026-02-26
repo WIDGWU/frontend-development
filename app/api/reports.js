@@ -219,6 +219,46 @@ export const getCollectiveGADetails = async (
   }
 };
 
+// Calls /get_courses_with_GA_terms/ for course-centric GA assignment records (paginated + searchable + filterable)
+export const getCoursesWithGATerms = async (
+  page = 1,
+  pageSize = 50,
+  search = "",
+  filters = {}
+) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const params = {
+      page,
+      page_size: pageSize,
+      ...(search ? { search } : {}),
+      ...(filters.ga_type ? { ga_type: filters.ga_type } : {}),
+      ...(filters.home_school ? { home_school: filters.home_school } : {}),
+      ...(filters.home_dept ? { home_dept: filters.home_dept } : {}),
+      ...(filters.course_term_code
+        ? { course_term_code: filters.course_term_code }
+        : {}),
+      ...(filters.course_prefix ? { course_prefix: filters.course_prefix } : {}),
+    };
+
+    const response = await axios.get(
+      `${baseURL}get_courses_with_GA_terms/`,
+      {
+        headers,
+        params,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching course GA term assignments:", error);
+    throw error;
+  }
+};
+
 // Calls /get_GA_category/ endpoint to get specific parameter GA details
 export const getGACategoryDetails = async () => {
   try {

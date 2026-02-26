@@ -64,17 +64,18 @@ const AggregateView = () => {
   const initialPage = Number(searchParams.get("page") ?? "1") || 1;
   const initialPageSize = Number(searchParams.get("page_size") ?? "50") || 50;
   const initialSearch = searchParams.get("search") ?? "";
-  const initialGAType = searchParams.get("ga_type") ?? null;
-  const initialCourseTermCode = searchParams.get("course_term_code") ?? null;
+  const initialGAType =
+    searchParams.get("ga_type")?.split(",").filter(Boolean) ?? [];
+  const initialCourseTermCode =
+    searchParams.get("course_term_code")?.split(",").filter(Boolean) ?? [];
 
   const [filteredGA, setFilteredGA] = useState<GA[]>([]);
   const [totalGACount, setTotalGACount] = useState<number>(0);
   const [gaType, setGAType] = useState<string[]>([]);
-  const [selectedGAType, setSelectedGAType] = useState<string | null>(
-    initialGAType
-  );
+  const [selectedGAType, setSelectedGAType] =
+    useState<string[]>(initialGAType);
   const [courseTerm, setCourseTerm] = useState<string[]>([]);
-  const [selectedCourseTerm, setSelectedCourseTerm] = useState<string | null>(
+  const [selectedCourseTerm, setSelectedCourseTerm] = useState<string[]>(
     initialCourseTermCode
   );
 
@@ -92,8 +93,8 @@ const AggregateView = () => {
 
   // Function to clear all filters
   const clearFilters = () => {
-    setSelectedGAType(null);
-    setSelectedCourseTerm(null);
+    setSelectedGAType([]);
+    setSelectedCourseTerm([]);
   };
 
   // Fetch data from API using React Query
@@ -106,10 +107,12 @@ const AggregateView = () => {
     queryFn: getGACategoryDetails,
   });
 
-  // Build filters object for API call
+  // Build filters object for API call (comma-separated strings for multi-value params)
   const filters = {
-    ...(selectedGAType ? { ga_type: selectedGAType } : {}),
-    ...(selectedCourseTerm ? { course_term_code: selectedCourseTerm } : {}),
+    ...(selectedGAType.length > 0 ? { ga_type: selectedGAType.join(",") } : {}),
+    ...(selectedCourseTerm.length > 0
+      ? { course_term_code: selectedCourseTerm.join(",") }
+      : {}),
   };
 
   const {
@@ -151,6 +154,9 @@ const AggregateView = () => {
   const currentPage = gaDetails?.page ?? page;
   const totalPages = Math.max(1, gaDetails?.total_pages ?? 1);
 
+  const hasActiveFilters =
+    selectedGAType.length > 0 || selectedCourseTerm.length > 0;
+
   // Debounce search input to avoid refetching on every keypress
   useEffect(() => {
     const handle = setTimeout(() => {
@@ -170,8 +176,9 @@ const AggregateView = () => {
     if (search) params.set("search", search);
     if (page > 1) params.set("page", String(page));
     if (pageSize !== 50) params.set("page_size", String(pageSize));
-    if (selectedGAType) params.set("ga_type", selectedGAType);
-    if (selectedCourseTerm) params.set("course_term_code", selectedCourseTerm);
+    if (selectedGAType.length) params.set("ga_type", selectedGAType.join(","));
+    if (selectedCourseTerm.length)
+      params.set("course_term_code", selectedCourseTerm.join(","));
 
     const query = params.toString();
     const url = query ? `${pathname}?${query}` : pathname;
@@ -235,15 +242,23 @@ const AggregateView = () => {
     <main className="m-4">
       <div className="flex items-center justify-end my-4">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              className="gap-2 bg-primary text-white hover:bg-primary/95 hover:text-light"
-            >
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
-          </SheetTrigger>
+          <div className="flex items-center gap-2">
+            {hasActiveFilters && (
+              <Button onClick={clearFilters} className="">
+                Clear all filters
+              </Button>
+            )}
+
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                className="gap-2 bg-primary text-white hover:bg-primary/95 hover:text-light"
+              >
+                <Filter className="h-4 w-4" />
+                Filters
+              </Button>
+            </SheetTrigger>
+          </div>
 
           <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
             <SheetHeader>

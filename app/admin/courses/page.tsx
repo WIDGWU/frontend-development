@@ -77,29 +77,31 @@ const Courses = () => {
   const initialPage = Number(searchParams.get("page") ?? "1") || 1;
   const initialPageSize = Number(searchParams.get("page_size") ?? "50") || 50;
   const initialSearch = searchParams.get("search") ?? "";
-  const initialCourseTerm = searchParams.get("course_term_code") ?? null;
-  const initialCourseCollegeDesc = searchParams.get("course_college_desc") ?? null;
-  const initialCoursePrefix = searchParams.get("course_prefix") ?? null;
-  const initialInstructor = searchParams.get("instructor_full_name") ?? null;
+  const initialCourseTerm =
+    searchParams.get("course_term_code")?.split(",").filter(Boolean) ?? [];
+  const initialCourseCollegeDesc =
+    searchParams.get("course_college_desc")?.split(",").filter(Boolean) ?? [];
+  const initialCoursePrefix =
+    searchParams.get("course_prefix")?.split(",").filter(Boolean) ?? [];
+  const initialInstructor =
+    searchParams.get("instructor_full_name")?.split(",").filter(Boolean) ?? [];
 
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
   const [totalCourseCount, setTotalCourseCount] = useState<number>(0);
   const [courseTerm, setCourseTerm] = useState<string[]>([]);
-  const [selectedCourseTerm, setSelectedCourseTerm] = useState<string | null>(
+  const [selectedCourseTerm, setSelectedCourseTerm] = useState<string[]>(
     initialCourseTerm
   );
   const [
     selectedCourseCollegeDescription,
     setSelectedCourseCollegeDescription,
-  ] = useState<string | null>(initialCourseCollegeDesc);
+  ] = useState<string[]>(initialCourseCollegeDesc);
   const [courseNumberPrefix, setCourseNumberPrefix] = useState<string[]>([]);
-  const [selectedCourseNumberPrefix, setSelectedCourseNumberPrefix] = useState<
-    string | null
-  >(initialCoursePrefix);
+  const [selectedCourseNumberPrefix, setSelectedCourseNumberPrefix] =
+    useState<string[]>(initialCoursePrefix);
   const [instructor, setInstructor] = useState<string[]>([]);
-  const [selectedInstructor, setSelectedInstructor] = useState<string | null>(
-    initialInstructor
-  );
+  const [selectedInstructor, setSelectedInstructor] =
+    useState<string[]>(initialInstructor);
 
   const [page, setPage] = useState<number>(initialPage);
   const [pageSize, setPageSize] = useState<number>(initialPageSize);
@@ -108,10 +110,10 @@ const Courses = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const clearFilters = () => {
-    setSelectedCourseTerm(null);
-    setSelectedCourseCollegeDescription(null);
-    setSelectedCourseNumberPrefix(null);
-    setSelectedInstructor(null);
+    setSelectedCourseTerm([]);
+    setSelectedCourseCollegeDescription([]);
+    setSelectedCourseNumberPrefix([]);
+    setSelectedInstructor([]);
   };
 
   // Fetch data from API using React Query
@@ -125,22 +127,30 @@ const Courses = () => {
   });
 
   // Build filters object for API call
-  // For course_college_desc, convert the college key to comma-separated aliases
-  const getCollegeAliases = (collegeKey: string | null): string | null => {
-    if (!collegeKey || !colleges[collegeKey]) return null;
-    return colleges[collegeKey].aliases.join(",");
+  // For course_college_desc, convert selected college keys to comma-separated aliases (all aliases for all selected colleges)
+  const getCollegeAliasesForKeys = (keys: string[]): string => {
+    return keys
+      .flatMap((k) => colleges[k]?.aliases ?? [])
+      .filter(Boolean)
+      .join(",");
   };
 
   const filters = {
-    ...(selectedCourseTerm ? { course_term_code: selectedCourseTerm } : {}),
-    ...(selectedCourseCollegeDescription
-      ? { course_college_desc: getCollegeAliases(selectedCourseCollegeDescription) }
+    ...(selectedCourseTerm.length > 0
+      ? { course_term_code: selectedCourseTerm.join(",") }
       : {}),
-    ...(selectedCourseNumberPrefix
-      ? { course_prefix: selectedCourseNumberPrefix }
+    ...(selectedCourseCollegeDescription.length > 0
+      ? {
+          course_college_desc: getCollegeAliasesForKeys(
+            selectedCourseCollegeDescription
+          ),
+        }
       : {}),
-    ...(selectedInstructor
-      ? { instructor_full_name: selectedInstructor }
+    ...(selectedCourseNumberPrefix.length > 0
+      ? { course_prefix: selectedCourseNumberPrefix.join(",") }
+      : {}),
+    ...(selectedInstructor.length > 0
+      ? { instructor_full_name: selectedInstructor.join(",") }
       : {}),
   };
 
@@ -212,13 +222,17 @@ const Courses = () => {
     if (search) params.set("search", search);
     if (page > 1) params.set("page", String(page));
     if (pageSize !== 50) params.set("page_size", String(pageSize));
-    if (selectedCourseTerm) params.set("course_term_code", selectedCourseTerm);
-    if (selectedCourseCollegeDescription)
-      params.set("course_college_desc", selectedCourseCollegeDescription);
-    if (selectedCourseNumberPrefix)
-      params.set("course_prefix", selectedCourseNumberPrefix);
-    if (selectedInstructor)
-      params.set("instructor_full_name", selectedInstructor);
+    if (selectedCourseTerm.length)
+      params.set("course_term_code", selectedCourseTerm.join(","));
+    if (selectedCourseCollegeDescription.length)
+      params.set(
+        "course_college_desc",
+        selectedCourseCollegeDescription.join(",")
+      );
+    if (selectedCourseNumberPrefix.length)
+      params.set("course_prefix", selectedCourseNumberPrefix.join(","));
+    if (selectedInstructor.length)
+      params.set("instructor_full_name", selectedInstructor.join(","));
 
     const query = params.toString();
     const url = query ? `${pathname}?${query}` : pathname;
@@ -285,7 +299,7 @@ const Courses = () => {
       <div className="flex items-center justify-end my-4">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <div className="flex items-center gap-2">
-            {(selectedCourseTerm || selectedCourseCollegeDescription || selectedCourseNumberPrefix || selectedInstructor) && <Button onClick={clearFilters} className="">
+            {(selectedCourseTerm.length > 0 || selectedCourseCollegeDescription.length > 0 || selectedCourseNumberPrefix.length > 0 || selectedInstructor.length > 0) && <Button onClick={clearFilters} className="">
               Clear all filters
             </Button>}
 

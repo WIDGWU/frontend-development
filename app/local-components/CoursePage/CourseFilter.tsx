@@ -1,10 +1,7 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { X } from "lucide-react";
 
 export const CourseTermFilter = ({
   courseTerm,
@@ -12,25 +9,50 @@ export const CourseTermFilter = ({
   setSelectedCourseTerm,
 }: {
   courseTerm: string[];
-  selectedCourseTerm: string | null;
-  setSelectedCourseTerm: (value: string | null) => void;
+  selectedCourseTerm: string[];
+  setSelectedCourseTerm: (value: string[]) => void;
 }) => {
+  const toggle = (option: string, checked: boolean) => {
+    if (checked) setSelectedCourseTerm([...selectedCourseTerm, option]);
+    else setSelectedCourseTerm(selectedCourseTerm.filter((x) => x !== option));
+  };
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedCourseTerm(value)}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a course term">
-            {selectedCourseTerm || "Select a course term"}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {courseTerm?.map((term, index) => (
-            <SelectItem key={index} value={term}>
-              {term}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col gap-2 select-none">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-600">
+          {selectedCourseTerm.length > 0
+            ? `${selectedCourseTerm.length} selected`
+            : "Select one or more"}
+        </span>
+        {selectedCourseTerm.length > 0 && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setSelectedCourseTerm([])}
+            title="Clear Course Term filter"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
+        {courseTerm?.map((option, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <Checkbox
+              id={`course-term-${index}`}
+              checked={selectedCourseTerm.includes(option)}
+              onCheckedChange={(checked) => toggle(option, checked === true)}
+            />
+            <Label
+              htmlFor={`course-term-${index}`}
+              className="text-sm font-normal cursor-pointer"
+            >
+              {option}
+            </Label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -41,27 +63,57 @@ export const CourseCollegeDescriptionFilter = ({
   setSelectedCourseCollegeDescription,
 }: {
   courseCollegeDescription: string[];
-  selectedCourseCollegeDescription: string | null;
-  setSelectedCourseCollegeDescription: (value: string | null) => void;
+  selectedCourseCollegeDescription: string[];
+  setSelectedCourseCollegeDescription: (value: string[]) => void;
 }) => {
+  const toggle = (option: string, checked: boolean) => {
+    if (checked)
+      setSelectedCourseCollegeDescription([
+        ...selectedCourseCollegeDescription,
+        option,
+      ]);
+    else
+      setSelectedCourseCollegeDescription(
+        selectedCourseCollegeDescription.filter((x) => x !== option)
+      );
+  };
   return (
-    <div className="flex items-center select-none">
-      <Select
-        onValueChange={(value) => setSelectedCourseCollegeDescription(value)}
-      >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a college">
-            {selectedCourseCollegeDescription || "Select a college"}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {courseCollegeDescription?.map((college, index) => (
-            <SelectItem key={index} value={college}>
-              {college}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col gap-2 select-none">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-600">
+          {selectedCourseCollegeDescription.length > 0
+            ? `${selectedCourseCollegeDescription.length} selected`
+            : "Select one or more"}
+        </span>
+        {selectedCourseCollegeDescription.length > 0 && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setSelectedCourseCollegeDescription([])}
+            title="Clear College filter"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
+        {courseCollegeDescription?.map((option, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <Checkbox
+              id={`course-college-${index}`}
+              checked={selectedCourseCollegeDescription.includes(option)}
+              onCheckedChange={(checked) => toggle(option, checked === true)}
+            />
+            <Label
+              htmlFor={`course-college-${index}`}
+              className="text-sm font-normal cursor-pointer"
+            >
+              {option}
+            </Label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -72,25 +124,50 @@ export const DepartmentFilter = ({
   setSelectedDepartment,
 }: {
   department: string[];
-  selectedDepartment: string | null;
-  setSelectedDepartment: (value: string | null) => void;
+  selectedDepartment: string[];
+  setSelectedDepartment: (value: string[]) => void;
 }) => {
+  const toggle = (option: string, checked: boolean) => {
+    if (checked) setSelectedDepartment([...selectedDepartment, option]);
+    else setSelectedDepartment(selectedDepartment.filter((x) => x !== option));
+  };
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedDepartment(value)}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a department">
-            {selectedDepartment || "Select a department"}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {department?.map((cn, index) => (
-            <SelectItem key={index} value={cn}>
-              {cn}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col gap-2 select-none">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-600">
+          {selectedDepartment.length > 0
+            ? `${selectedDepartment.length} selected`
+            : "Select one or more"}
+        </span>
+        {selectedDepartment.length > 0 && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setSelectedDepartment([])}
+            title="Clear Department filter"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
+        {department?.map((option, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <Checkbox
+              id={`department-${index}`}
+              checked={selectedDepartment.includes(option)}
+              onCheckedChange={(checked) => toggle(option, checked === true)}
+            />
+            <Label
+              htmlFor={`department-${index}`}
+              className="text-sm font-normal cursor-pointer"
+            >
+              {option}
+            </Label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -101,25 +178,50 @@ export const InstructorFilter = ({
   setSelectedInstructor,
 }: {
   instructor: string[];
-  selectedInstructor: string | null;
-  setSelectedInstructor: (value: string | null) => void;
+  selectedInstructor: string[];
+  setSelectedInstructor: (value: string[]) => void;
 }) => {
+  const toggle = (option: string, checked: boolean) => {
+    if (checked) setSelectedInstructor([...selectedInstructor, option]);
+    else setSelectedInstructor(selectedInstructor.filter((x) => x !== option));
+  };
   return (
-    <div className="flex items-center select-none">
-      <Select onValueChange={(value) => setSelectedInstructor(value)}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a Instructor">
-            {selectedInstructor || "Select a Instructor"}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {instructor?.map((instructor, index) => (
-            <SelectItem key={index} value={instructor}>
-              {instructor}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col gap-2 select-none">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-600">
+          {selectedInstructor.length > 0
+            ? `${selectedInstructor.length} selected`
+            : "Select one or more"}
+        </span>
+        {selectedInstructor.length > 0 && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setSelectedInstructor([])}
+            title="Clear Instructor filter"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
+        {instructor?.map((option, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <Checkbox
+              id={`instructor-${index}`}
+              checked={selectedInstructor.includes(option)}
+              onCheckedChange={(checked) => toggle(option, checked === true)}
+            />
+            <Label
+              htmlFor={`instructor-${index}`}
+              className="text-sm font-normal cursor-pointer"
+            >
+              {option}
+            </Label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
