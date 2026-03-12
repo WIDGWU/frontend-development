@@ -2,7 +2,7 @@ import Menu from "@/app/local-components/Menu";
 import Navbar from "@/app/local-components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/assets/WID_logo.png";
+import Logo from "@/assets/wid_logo.webp";
 import ProtectedRoute from "@/app/local-components/ProtectedRoute";
 
 export default function DashboardLayout({
