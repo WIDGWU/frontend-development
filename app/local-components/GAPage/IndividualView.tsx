@@ -1071,23 +1071,6 @@ const IndividualView = () => {
                       {saving ? "Saving..." : "Save"}
                     </Button>
                   </div>
-                ) : confirmingDelete ? (
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-sm text-gray-600">
-                      Delete this graduate assistant from this course?
-                    </p>
-                    <div className="flex justify-end gap-3">
-                      <Button
-                        variant="outline"
-                        onClick={() => setConfirmingDelete(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button variant="destructive" onClick={handleDelete}>
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
                 ) : (
                   <div className="flex justify-end gap-3">
                     <Button
@@ -1111,6 +1094,38 @@ const IndividualView = () => {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={confirmingDelete}
+        onOpenChange={(open) => {
+          if (!open) setConfirmingDelete(false);
+        }}
+      >
+        <DialogContent
+          className="sm:max-w-md z-[70]"
+          overlayClassName="z-[60]"
+        >
+          <DialogHeader>
+            <DialogTitle>Confirm deletion</DialogTitle>
+            <DialogDescription>
+              {selectedGA
+                ? `Delete ${selectedGA.GA_First_Name} ${selectedGA.GA_Last_Name} (${selectedGA.GA_Net_ID}) from term ${selectedGA.Course_Term_Code}, CRN ${selectedGA.CRN}? This cannot be undone.`
+                : "Delete this graduate assistant assignment? This cannot be undone."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-3 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setConfirmingDelete(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Delete
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
       <ToastContainer />
