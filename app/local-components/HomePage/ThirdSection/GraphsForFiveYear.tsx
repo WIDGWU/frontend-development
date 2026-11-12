@@ -12,12 +12,14 @@ interface GraphsForFiveYearProps {
 }
 
 const GraphsForFiveYear = ({ filterValues }: GraphsForFiveYearProps) => {
-  const [selectedRange, setSelectedRange] = useState<number | null>(null);
+  const [selectedRange, setSelectedRange] = useState<number | null>(
+    filterValues?.[0]?.startYear ?? null
+  );
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["fiveYearReport", selectedRange],
     queryFn: () => getFiveYearReport(selectedRange as number),
-    enabled: selectedRange !== null, // 🔑 prevents running on mount
+    enabled: selectedRange !== null,
   });
 
   // Derive rangeData from the response

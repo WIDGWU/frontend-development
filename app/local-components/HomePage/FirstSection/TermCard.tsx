@@ -98,7 +98,7 @@ const TermCard = ({
       </div>
 
       {/* Footer */}
-      <div className="mt-3 flex justify-between text-xs text-slate-500">
+      <div className="mt-3 flex justify-between text-sm text-slate-500">
         <span>Used</span>
         <span>{Math.round((termValue / totalSeats) * 100)}%</span>
       </div>

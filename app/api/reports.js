@@ -513,6 +513,31 @@ export const getEachDepartmentStatistics = async (department) => {
   }
 };
 
+// PUT /edit_graduate_assistant/ updates one get_all_GA row.
+// Identify the row with GA_Net_ID and Course_Term_Code.
+// CRN is editable; COURSE_ID is rebuilt by the backend as {Course_Term_Code}_{CRN}.
+// Send only fields that should change; omitted fields stay as they are.
+// A 400 can mean missing identity, no editable fields, or an ambiguous
+// NetID + term (multiple assignments in the same term).
+export const editGraduateAssistant = async (data) => {
+  try {
+    const headers = {
+      "X-CSRFToken": process.env.NEXT_PUBLIC_X_CSRFToken,
+      accept: "application/json",
+    };
+
+    const response = await axios.put(
+      `${baseURL}edit_graduate_assistant/`,
+      data,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error editing graduate assistant:", error);
+    throw error;
+  }
+};
+
 // post add_graduate_assistant/ endpoint to add graduate assistant
 export const addGraduateAssistant = async (data) => {
   try {

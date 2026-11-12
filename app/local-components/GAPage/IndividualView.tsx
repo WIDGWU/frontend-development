@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getGADetails, getGACategoryDetails } from "@/app/api/reports";
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import {
+  getGADetails,
+  getGACategoryDetails,
+  deleteGraduateAssistant,
+  editGraduateAssistant,
+} from "@/app/api/reports";
 import {
   CourseTermFilter,
   GATypeFilter,
@@ -12,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PencilIcon from "@/assets/pencilIcon.png";
-import TrashIcon from "@/assets/trashIcon.png";
 import Image from "next/image";
 import {
   Dialog,
@@ -35,7 +43,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { deleteGraduateAssistant } from "@/app/api/reports";
 import { ToastContainer, toast } from "react-toastify";
 import { Loader } from "@/app/local-components/Loader";
 import {
@@ -73,10 +80,87 @@ type GAResponse = {
   total_pages: number;
 };
 
+type GADraft = {
+  GA_First_Name: string;
+  GA_Last_Name: string;
+  GA_Type: string;
+  Home_School: string;
+  Home_Dept: string;
+  Hour_Assignment: string;
+  Course_Number: string;
+  CRN: string;
+  Course_Actual_Enrollment: string;
+  Course_Max_Enrollment: string;
+};
+
+const toDraft = (g: GA): GADraft => {
+  const maxEnrollment = g.Course_Max_Enrollment ?? g.Course_Max_Enrollmen;
+  return {
+    GA_First_Name: g.GA_First_Name ?? "",
+    GA_Last_Name: g.GA_Last_Name ?? "",
+    GA_Type: g.GA_Type ?? "",
+    Home_School: g.Home_School ?? "",
+    Home_Dept: g.Home_Dept ?? "",
+    Hour_Assignment: g.Hour_Assignment ?? "",
+    Course_Number: g.Course_Number ?? "",
+    CRN: g.CRN == null ? "" : String(g.CRN),
+    Course_Actual_Enrollment:
+      g.Course_Actual_Enrollment == null
+        ? ""
+        : String(g.Course_Actual_Enrollment),
+    Course_Max_Enrollment:
+      maxEnrollment == null ? "" : String(maxEnrollment),
+  };
+};
+
+const withCurrentOption = (options: string[], current: string) => {
+  const unique = Array.from(new Set(options.filter(Boolean)));
+  return current && !unique.includes(current) ? [current, ...unique] : unique;
+};
+
+const getApiErrorPayload = (error: unknown) => {
+  if (
+    typeof error !== "object" ||
+    error === null ||
+    !("response" in error) ||
+    typeof error.response !== "object" ||
+    error.response === null
+  ) {
+    return { status: undefined, data: undefined };
+  }
+
+  const response = error.response as { status?: number; data?: unknown };
+  return { status: response.status, data: response.data };
+};
+
+const apiErrorMessage = (error: unknown, fallback: string) => {
+  const { status, data } = getApiErrorPayload(error);
+
+  if (typeof data === "string" && data.trim()) return data;
+  if (typeof data === "object" && data !== null) {
+    if ("message" in data && typeof data.message === "string" && data.message) {
+      return data.message;
+    }
+    if ("detail" in data && typeof data.detail === "string" && data.detail) {
+      return data.detail;
+    }
+    if ("error" in data && typeof data.error === "string" && data.error) {
+      return data.error;
+    }
+  }
+
+  if (status === 400) {
+    return "Could not update this record. It may be missing required fields, or this Net ID has more than one assignment in the same term.";
+  }
+
+  return fallback;
+};
+
 const IndividualView = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
 
   const initialPage = Number(searchParams.get("page") ?? "1") || 1;
   const initialPageSize = Number(searchParams.get("page_size") ?? "50") || 50;
@@ -117,28 +201,34 @@ const IndividualView = () => {
   const [searchInput, setSearchInput] = useState<string>(initialSearch);
   const [search, setSearch] = useState<string>(initialSearch);
 
-  const [editModeCards, setEditModeCards] = useState<Set<number>>(new Set());
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedGA, setSelectedGA] = useState<GA | null>(null);
-  const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
-    null
-  );
+  const [draft, setDraft] = useState<GADraft | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const toggleEditMode = (index: number, g: GA) => {
-    // If already in edit mode, show dialog
-    if (editModeCards.has(index)) {
-      setSelectedGA(g);
-      setSelectedCardIndex(index); // Store the index of the selected card
-      setDialogOpen(true);
-    } else {
-      // Toggle to edit mode
-      setEditModeCards((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(index);
-        return newSet;
-      });
-    }
+  const openDetails = (g: GA) => {
+    setSelectedGA(g);
+    setDraft(toDraft(g));
+    setEditing(false);
+    setSaving(false);
+    setConfirmingDelete(false);
+    setDialogOpen(true);
+  };
+
+  const closeDetails = () => {
+    setDialogOpen(false);
+    setSelectedGA(null);
+    setDraft(null);
+    setEditing(false);
+    setSaving(false);
+    setConfirmingDelete(false);
+  };
+
+  const updateDraft = (field: keyof GADraft, value: string) => {
+    setDraft((current) => (current ? { ...current, [field]: value } : current));
   };
 
   const handleDelete = () => {
@@ -165,12 +255,7 @@ const IndividualView = () => {
           // do hard refresh
           window.location.reload();
 
-          // Close dialog and reset
-          setDialogOpen(false);
-          setSelectedGA(null);
-          setSelectedCardIndex(null);
-
-          setEditModeCards(new Set());
+          closeDetails();
         }
       })
       .catch((error) => {
@@ -188,20 +273,136 @@ const IndividualView = () => {
       });
   };
 
-  const handleCancel = () => {
-    // Remove the selected card from edit mode
-    if (selectedCardIndex !== null) {
-      setEditModeCards((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(selectedCardIndex);
-        return newSet;
-      });
+  const handleSave = () => {
+    if (!selectedGA || !draft || saving) return;
+
+    // Identity only: Net ID + term. CRN is editable and omitted unless changed.
+    const payload: Record<string, string | number> = {
+      GA_Net_ID: selectedGA.GA_Net_ID,
+      Course_Term_Code: selectedGA.Course_Term_Code,
+    };
+
+    const assignText = (
+      key:
+        | "GA_First_Name"
+        | "GA_Last_Name"
+        | "GA_Type"
+        | "Home_School"
+        | "Home_Dept"
+        | "Hour_Assignment"
+        | "Course_Number"
+        | "CRN",
+      original: string | number | null | undefined
+    ) => {
+      const next = draft[key].trim();
+      if (next !== String(original ?? "").trim()) payload[key] = next;
+    };
+
+    assignText("GA_First_Name", selectedGA.GA_First_Name);
+    assignText("GA_Last_Name", selectedGA.GA_Last_Name);
+    assignText("GA_Type", selectedGA.GA_Type);
+    assignText("Home_School", selectedGA.Home_School);
+    assignText("Home_Dept", selectedGA.Home_Dept);
+    assignText("Hour_Assignment", selectedGA.Hour_Assignment);
+    assignText("Course_Number", selectedGA.Course_Number);
+    assignText("CRN", selectedGA.CRN);
+
+    const assignNumber = (
+      key: "Course_Actual_Enrollment" | "Course_Max_Enrollment",
+      raw: string,
+      original: number | undefined,
+      label: string
+    ) => {
+      const trimmed = raw.trim();
+      if (trimmed === "") {
+        if (original == null) return true;
+        toast.error(`${label} needs a number.`);
+        return false;
+      }
+      const value = Number(trimmed);
+      if (!Number.isFinite(value)) {
+        toast.error(`${label} needs a number.`);
+        return false;
+      }
+      if (original == null || value !== Number(original)) {
+        payload[key] = value;
+      }
+      return true;
+    };
+
+    const actualOk = assignNumber(
+      "Course_Actual_Enrollment",
+      draft.Course_Actual_Enrollment,
+      selectedGA.Course_Actual_Enrollment,
+      "Actual enrollment"
+    );
+    if (!actualOk) return;
+
+    const maxOk = assignNumber(
+      "Course_Max_Enrollment",
+      draft.Course_Max_Enrollment,
+      selectedGA.Course_Max_Enrollment ?? selectedGA.Course_Max_Enrollmen,
+      "Max enrollment"
+    );
+    if (!maxOk) return;
+
+    if (Object.keys(payload).length === 2) {
+      toast.info("No changes to save.");
+      setEditing(false);
+      return;
     }
 
-    // Close dialog and reset states
-    setDialogOpen(false);
-    setSelectedGA(null);
-    setSelectedCardIndex(null);
+    setSaving(true);
+    editGraduateAssistant(payload)
+      .then((response) => {
+        if (response.status !== "success") {
+          toast.error(
+            response.message || "Could not update this graduate assistant."
+          );
+          return;
+        }
+
+        toast.success(
+          response.message || "Graduate assistant updated successfully",
+          {
+            position: "top-right",
+            autoClose: 2000,
+          }
+        );
+
+        const nextCRN = draft.CRN.trim();
+        const nextGA: GA = {
+          ...selectedGA,
+          GA_First_Name: draft.GA_First_Name.trim(),
+          GA_Last_Name: draft.GA_Last_Name.trim(),
+          GA_Type: draft.GA_Type.trim(),
+          Home_School: draft.Home_School.trim(),
+          Home_Dept: draft.Home_Dept.trim(),
+          Hour_Assignment: draft.Hour_Assignment.trim(),
+          Course_Number: draft.Course_Number.trim(),
+          CRN: nextCRN,
+          // Backend rebuilds COURSE_ID as {Course_Term_Code}_{CRN}
+          COURSE_ID: `${selectedGA.Course_Term_Code}_${nextCRN}`,
+          Course_Actual_Enrollment:
+            draft.Course_Actual_Enrollment.trim() === ""
+              ? selectedGA.Course_Actual_Enrollment
+              : Number(draft.Course_Actual_Enrollment),
+          Course_Max_Enrollment:
+            draft.Course_Max_Enrollment.trim() === ""
+              ? selectedGA.Course_Max_Enrollment
+              : Number(draft.Course_Max_Enrollment),
+        };
+        setSelectedGA(nextGA);
+        setDraft(toDraft(nextGA));
+        setEditing(false);
+        queryClient.invalidateQueries({ queryKey: ["gaDetails"] });
+      })
+      .catch((error) => {
+        toast.error(
+          apiErrorMessage(error, "Could not update this graduate assistant.")
+        );
+      })
+      .finally(() => setSaving(false));
   };
 
   // Function to get initials of first name and last name
@@ -543,23 +744,16 @@ const IndividualView = () => {
               key={i}
               className="rounded-2xl bg-white p-4 shadow-md hover:shadow-lg transition-shadow duration-300 relative"
             >
-              {/* Dynamic Icon - Toggles between Edit and Delete */}
               <div
-                className={`absolute top-2 right-2 cursor-pointer p-1.5 rounded-full shadow-sm transition-all ${editModeCards.has(i)
-                  ? "bg-red-500 border border-white hover:bg-red-600"
-                  : "bg-white border border-gray-200 hover:bg-gray-100"
-                  }`}
-                onClick={() => toggleEditMode(i, g)} // Pass the GA object here
+                className="absolute top-2 right-2 cursor-pointer p-1.5 rounded-full shadow-sm transition-all bg-white border border-gray-200 hover:bg-gray-100"
+                onClick={() => openDetails(g)}
               >
                 <Image
-                  src={editModeCards.has(i) ? TrashIcon : PencilIcon}
-                  alt={editModeCards.has(i) ? "Delete" : "Edit"}
+                  src={PencilIcon}
+                  alt="View details"
                   width={20}
                   height={20}
-                  className={`w-5 h-5 ${editModeCards.has(i)
-                    ? "brightness-0 invert"
-                    : "text-gray-500"
-                    }`}
+                  className="w-5 h-5 text-gray-500"
                 />
               </div>
 
@@ -618,67 +812,305 @@ const IndividualView = () => {
         <PaginationControls />
       </div>
 
-      {/* Confirmation Dialog */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+      <Dialog
+        open={dialogOpen}
+        onOpenChange={(open) => {
+          if (!open) closeDetails();
+        }}
+      >
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-center">Confirm Deletion</DialogTitle>
-            <DialogDescription className="text-center">
-              Are you sure you want to delete this Graduate Assistant?
+            <DialogTitle>Graduate Assistant details</DialogTitle>
+            <DialogDescription>
+              Full assignment record for this course.
             </DialogDescription>
           </DialogHeader>
 
-          {selectedGA && (
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="flex flex-col items-center mb-4">
+          {selectedGA && draft && (
+            <div className="space-y-4">
+              <div className="flex flex-col items-center">
                 <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-bold text-white">
                   {getInitials(
-                    selectedGA.GA_First_Name,
-                    selectedGA.GA_Last_Name
+                    draft.GA_First_Name || selectedGA.GA_First_Name,
+                    draft.GA_Last_Name || selectedGA.GA_Last_Name
                   )}
                 </div>
-                <h2 className="text-xl font-semibold mt-2">
-                  {selectedGA.GA_First_Name} {selectedGA.GA_Last_Name}
+                <h2 className="text-xl font-semibold mt-2 text-center">
+                  {draft.GA_First_Name} {draft.GA_Last_Name}
                 </h2>
+                <span className="text-sm px-2 py-1 rounded-full bg-gray-200 mt-2">
+                  {selectedGA.GA_Net_ID}
+                </span>
               </div>
 
-              <div className="grid gap-2">
-                <p className="text-gray-600">
-                  <span className="font-semibold">Net ID:</span>{" "}
-                  {selectedGA.GA_Net_ID}
-                </p>
-                <p className="text-gray-600">
-                  <span className="font-semibold">GA Type:</span>{" "}
-                  {selectedGA.GA_Type}
-                </p>
-                <p className="text-gray-600">
-                  <span className="font-semibold">Department:</span>{" "}
-                  {selectedGA.Home_Dept}
-                </p>
-                <p className="text-gray-600">
-                  <span className="font-semibold">School:</span>{" "}
-                  {selectedGA.Home_School}
-                </p>
-                <p className="text-gray-600">
-                  <span className="font-semibold">Hours:</span>{" "}
-                  {selectedGA.Hour_Assignment}
-                </p>
-                <p className="text-gray-600">
-                  <span className="font-semibold">Course ID:</span>{" "}
-                  {selectedGA.COURSE_ID}
-                </p>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 border-t border-gray-200 pt-4">
+                {[
+                  { label: "Net ID", value: selectedGA.GA_Net_ID },
+                  { label: "Course Term", value: selectedGA.Course_Term_Code },
+                  { label: "Course ID", value: selectedGA.COURSE_ID },
+                  { label: "Course Department", value: selectedGA.Course_Dept },
+                ].map((field) => (
+                  <div key={field.label}>
+                    <dt className="text-sm font-semibold text-gray-900">
+                      {field.label}
+                    </dt>
+                    <dd className="text-sm text-gray-600">
+                      {field.value || "—"}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              {editing ? (
+                <div className="space-y-4 border-t border-gray-200 pt-4">
+                  <p className="text-sm text-gray-600">
+                    First and last name update every assignment for this Net
+                    ID. The other fields, including CRN, update only this
+                    course. Net ID and course term identify the row and cannot
+                    be changed. Course ID is rebuilt from term and CRN.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        First name
+                      </span>
+                      <Input
+                        value={draft.GA_First_Name}
+                        onChange={(e) =>
+                          updateDraft("GA_First_Name", e.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        Last name
+                      </span>
+                      <Input
+                        value={draft.GA_Last_Name}
+                        onChange={(e) =>
+                          updateDraft("GA_Last_Name", e.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        GA Type
+                      </span>
+                      <Select
+                        value={draft.GA_Type || undefined}
+                        onValueChange={(value) => updateDraft("GA_Type", value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select GA type" />
+                        </SelectTrigger>
+                        <SelectContent className="z-[60]">
+                          {withCurrentOption(gaType, draft.GA_Type).map(
+                            (type) => (
+                              <SelectItem key={type} value={type}>
+                                {type}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        Home School
+                      </span>
+                      <Select
+                        value={draft.Home_School || undefined}
+                        onValueChange={(value) =>
+                          updateDraft("Home_School", value)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select home school" />
+                        </SelectTrigger>
+                        <SelectContent className="z-[60]">
+                          {withCurrentOption(homeSchool, draft.Home_School).map(
+                            (school) => (
+                              <SelectItem key={school} value={school}>
+                                {school}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        Home Department
+                      </span>
+                      <Input
+                        value={draft.Home_Dept}
+                        onChange={(e) =>
+                          updateDraft("Home_Dept", e.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        Assigned Hours
+                      </span>
+                      <Input
+                        value={draft.Hour_Assignment}
+                        onChange={(e) =>
+                          updateDraft("Hour_Assignment", e.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        CRN
+                      </span>
+                      <Input
+                        value={draft.CRN}
+                        onChange={(e) => {
+                          const numericValue = e.target.value.replace(
+                            /\D/g,
+                            ""
+                          );
+                          updateDraft("CRN", numericValue);
+                        }}
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                      />
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        Course Number
+                      </span>
+                      <Input
+                        value={draft.Course_Number}
+                        onChange={(e) =>
+                          updateDraft("Course_Number", e.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        Actual Enrollment
+                      </span>
+                      <Input
+                        type="number"
+                        value={draft.Course_Actual_Enrollment}
+                        onChange={(e) =>
+                          updateDraft(
+                            "Course_Actual_Enrollment",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1">
+                      <span className="text-sm font-semibold text-gray-900">
+                        Max Enrollment
+                      </span>
+                      <Input
+                        type="number"
+                        value={draft.Course_Max_Enrollment}
+                        onChange={(e) =>
+                          updateDraft("Course_Max_Enrollment", e.target.value)
+                        }
+                      />
+                    </label>
+                  </div>
+                </div>
+              ) : (
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 border-t border-gray-200 pt-4">
+                  {[
+                    { label: "First Name", value: selectedGA.GA_First_Name },
+                    { label: "Last Name", value: selectedGA.GA_Last_Name },
+                    { label: "GA Type", value: selectedGA.GA_Type },
+                    { label: "Home Department", value: selectedGA.Home_Dept },
+                    { label: "Home School", value: selectedGA.Home_School },
+                    {
+                      label: "Assigned Hours",
+                      value: selectedGA.Hour_Assignment
+                        ? `${selectedGA.Hour_Assignment} hours`
+                        : "0 hours",
+                    },
+                    { label: "CRN", value: selectedGA.CRN },
+                    { label: "Course Number", value: selectedGA.Course_Number },
+                    {
+                      label: "Enrollment",
+                      value: `${selectedGA.Course_Actual_Enrollment ?? "—"} / ${
+                        selectedGA.Course_Max_Enrollment ??
+                        selectedGA.Course_Max_Enrollmen ??
+                        "—"
+                      }`,
+                    },
+                  ].map((field) => (
+                    <div key={field.label}>
+                      <dt className="text-sm font-semibold text-gray-900">
+                        {field.label}
+                      </dt>
+                      <dd className="text-sm text-gray-600">
+                        {field.value || "—"}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+
+              <div className="border-t border-gray-200 pt-4">
+                {editing ? (
+                  <div className="flex justify-end gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setDraft(toDraft(selectedGA));
+                        setEditing(false);
+                      }}
+                      disabled={saving}
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={saving}>
+                      {saving ? "Saving..." : "Save"}
+                    </Button>
+                  </div>
+                ) : confirmingDelete ? (
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-sm text-gray-600">
+                      Delete this graduate assistant from this course?
+                    </p>
+                    <div className="flex justify-end gap-3">
+                      <Button
+                        variant="outline"
+                        onClick={() => setConfirmingDelete(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button variant="destructive" onClick={handleDelete}>
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex justify-end gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setDraft(toDraft(selectedGA));
+                        setConfirmingDelete(false);
+                        setEditing(true);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => setConfirmingDelete(true)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           )}
-
-          <div className="flex justify-end gap-3 mt-4">
-            <Button variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleDelete}>
-              Delete
-            </Button>
-          </div>
         </DialogContent>
       </Dialog>
       <ToastContainer />
